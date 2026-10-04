@@ -1,1 +1,160 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 200 200"><path pathLength="1" d="M8 152Q60 147 110 152T194 150"/><path pathLength="1" d="M38 152L88 62L138 152"/><path pathLength="1" d="M88 62L106 152"/><path pathLength="1" d="M140 152L164 112L192 152"/><circle pathLength="1" class="accent" cx="158" cy="62" r="10"/><circle pathLength="1" class="fill-accent" cx="158" cy="62" r="3"/><path class="accent" pathLength="1" d="M147 80H169"/><path pathLength="1" d="M22 156Q30 130 22 104"/><path pathLength="1" d="M22 104C12 108 6 114 3 124"/><path pathLength="1" d="M22 104C34 108 40 114 44 126"/><path pathLength="1" d="M22 104C14 94 6 94 2 100"/><path pathLength="1" d="M22 104C16 100 9 106 4 116"/><path pathLength="1" d="M22 104C30 92 40 92 48 98"/><path pathLength="1" d="M22 104C32 100 41 106 46 118"/><path pathLength="1" d="M22 104C19 96 22 90 30 86"/><path pathLength="1" d="M30 164H80"/><path pathLength="1" d="M60 172H120"/><path class="accent" pathLength="1" d="M52 28Q53.3 32.7 58 34Q53.3 35.3 52 40Q50.7 35.3 46 34Q50.7 32.7 52 28Z"/><path pathLength="1" d="M110 26Q110.9 29.1 114 30Q110.9 30.9 110 34Q109.1 30.9 106 30Q109.1 29.1 110 26Z"/><circle pathLength="1" class="fill-accent" cx="88" cy="46" r="1.3"/><circle pathLength="1" class="fill-accent" cx="130" cy="50" r="1.2"/><circle pathLength="1" cx="184" cy="34" r="1.2"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+<path pathLength="1" class="accent" d="M40 21Q41 25 45 26Q41 27 40 31Q39 27 35 26Q39 25 40 21Z"/>
+<path pathLength="1" d="M88 14.8Q88.6 17.4 91.2 18Q88.6 18.6 88 21.2Q87.4 18.6 84.8 18Q87.4 17.4 88 14.8Z"/>
+<path pathLength="1" d="M20 53.4Q20.5 55.5 22.6 56Q20.5 56.5 20 58.6Q19.5 56.5 17.4 56Q19.5 55.5 20 53.4Z"/>
+<path pathLength="1" class="accent" d="M112 37.6Q112.5 39.5 114.4 40Q112.5 40.5 112 42.4Q111.5 40.5 109.6 40Q111.5 39.5 112 37.6Z"/>
+<circle pathLength="1" cx="60" cy="40" r="0.9"/>
+<circle pathLength="1" class="fine" cx="14" cy="28" r="0.8"/>
+<circle pathLength="1" class="fine" cx="100" cy="12" r="0.8"/>
+<circle pathLength="1" class="fine" cx="74" cy="26" r="0.8"/>
+<circle pathLength="1" class="fine" cx="32" cy="70" r="0.8"/>
+<circle pathLength="1" class="fine soft" cx="128" cy="24" r="0.8"/>
+<circle pathLength="1" class="fine soft" cx="8" cy="84" r="0.8"/>
+<circle pathLength="1" class="fine soft" cx="52" cy="12" r="0.8"/>
+<circle pathLength="1" class="fine soft" cx="120" cy="60" r="0.8"/>
+<circle pathLength="1" class="accent" cx="162" cy="74" r="9"/>
+<circle pathLength="1" class="fill-accent" cx="162" cy="74" r="3"/>
+<circle pathLength="1" class="fine soft" cx="162" cy="74" r="14"/>
+<path pathLength="1" class="accent fine" d="M184 74L189 74"/>
+<path pathLength="1" class="fine" d="M180.5 81.7L183.2 82.8"/>
+<path pathLength="1" class="accent fine" d="M177.6 89.6L181.1 93.1"/>
+<path pathLength="1" class="fine" d="M169.7 92.5L170.8 95.2"/>
+<path pathLength="1" class="accent fine" d="M162 96L162 101"/>
+<path pathLength="1" class="fine" d="M154.3 92.5L153.2 95.2"/>
+<path pathLength="1" class="accent fine" d="M146.4 89.6L142.9 93.1"/>
+<path pathLength="1" class="fine" d="M143.5 81.7L140.8 82.8"/>
+<path pathLength="1" class="accent fine" d="M140 74L135 74"/>
+<path pathLength="1" class="fine" d="M143.5 66.3L140.8 65.2"/>
+<path pathLength="1" class="accent fine" d="M146.4 58.4L142.9 54.9"/>
+<path pathLength="1" class="fine" d="M154.3 55.5L153.2 52.8"/>
+<path pathLength="1" class="accent fine" d="M162 52L162 47"/>
+<path pathLength="1" class="fine" d="M169.7 55.5L170.8 52.8"/>
+<path pathLength="1" class="accent fine" d="M177.6 58.4L181.1 54.9"/>
+<path pathLength="1" class="fine" d="M180.5 66.3L183.2 65.2"/>
+<path pathLength="1" d="M115 50Q117.5 46.5 120 50Q122.5 46.5 125 50"/>
+<path pathLength="1" d="M130 42Q132 39.2 134 42Q136 39.2 138 42"/>
+<path pathLength="1" d="M100.5 60Q102.2 57.5 104 60Q105.8 57.5 107.5 60"/>
+<path pathLength="1" class="soft" d="M164 130L184 110L200 126"/>
+<path pathLength="1" class="soft fine" d="M184 110L190 130"/>
+<path pathLength="1" class="soft fine" d="M186 118L192 122M188 124L196 128"/>
+<path pathLength="1" d="M126.7 116.2L142 92L166 130"/>
+<path pathLength="1" d="M142 92L150 130"/>
+<path pathLength="1" class="fine" d="M139 98L142.9 98.2"/>
+<path pathLength="1" class="fine soft" d="M143.9 98L145.2 97.8"/>
+<path pathLength="1" class="fine" d="M135.9 103L143.9 103.2"/>
+<path pathLength="1" class="fine soft" d="M144.9 103L148.3 102.8"/>
+<path pathLength="1" class="fine" d="M132.7 108L145 108.2"/>
+<path pathLength="1" class="fine soft" d="M146 108L151.5 107.8"/>
+<path pathLength="1" class="fine" d="M129.5 113L146 113.2"/>
+<path pathLength="1" class="fine soft" d="M147 113L154.7 112.8"/>
+<path pathLength="1" class="fine" d="M128.7 118L147.1 118.2"/>
+<path pathLength="1" class="fine soft" d="M148.1 118L157.8 117.8"/>
+<path pathLength="1" class="fine" d="M132.1 123L148.1 123.2"/>
+<path pathLength="1" class="fine soft" d="M149.1 123L161 122.8"/>
+<path pathLength="1" class="fine" d="M135.4 128L149.2 128.2"/>
+<path pathLength="1" class="fine soft" d="M150.2 128L164.1 127.8"/>
+<path pathLength="1" class="fine soft" d="M145.7 100l-1.6 2.6"/>
+<path pathLength="1" class="fine soft" d="M146.5 104l-1.6 2.6"/>
+<path pathLength="1" class="fine soft" d="M147.4 108l-1.6 2.6M149.8 108l-1.6 2.6"/>
+<path pathLength="1" class="fine soft" d="M148.2 112l-1.6 2.6M150.6 112l-1.6 2.6"/>
+<path pathLength="1" class="fine soft" d="M149.1 116l-1.6 2.6M151.5 116l-1.6 2.6M153.9 116l-1.6 2.6"/>
+<path pathLength="1" class="fine soft" d="M149.9 120l-1.6 2.6M152.3 120l-1.6 2.6M154.7 120l-1.6 2.6M157.1 120l-1.6 2.6"/>
+<path pathLength="1" class="fine soft" d="M150.7 124l-1.6 2.6M153.1 124l-1.6 2.6M155.5 124l-1.6 2.6M157.9 124l-1.6 2.6"/>
+<path pathLength="1" class="fine soft" d="M151.6 128l-1.6 2.6M154 128l-1.6 2.6M156.4 128l-1.6 2.6M158.8 128l-1.6 2.6M161.2 128l-1.6 2.6"/>
+<path pathLength="1" d="M36 130L86 56L136 130"/>
+<path pathLength="1" d="M86 56L104 130"/>
+<path pathLength="1" class="fine" d="M80 66.4L88 66"/>
+<path pathLength="1" class="fine soft" d="M89.2 66L92 65.7"/>
+<path pathLength="1" class="fine" d="M76 72.4L89.5 72"/>
+<path pathLength="1" class="fine soft" d="M90.7 72L96 71.7"/>
+<path pathLength="1" class="fine" d="M71.9 78.4L91 78"/>
+<path pathLength="1" class="fine soft" d="M92.2 78L100.1 77.7"/>
+<path pathLength="1" class="fine" d="M67.9 84.4L92.4 84"/>
+<path pathLength="1" class="fine soft" d="M93.6 84L104.1 83.7"/>
+<path pathLength="1" class="fine" d="M63.8 90.4L93.9 90"/>
+<path pathLength="1" class="fine soft" d="M95.1 90L108.2 89.7"/>
+<path pathLength="1" class="fine" d="M59.8 96.4L95.3 96"/>
+<path pathLength="1" class="fine soft" d="M96.5 96L112.2 95.7"/>
+<path pathLength="1" class="fine" d="M55.7 102.4L96.8 102"/>
+<path pathLength="1" class="fine soft" d="M98 102L116.3 101.7"/>
+<path pathLength="1" class="fine" d="M51.7 108.4L98.2 108"/>
+<path pathLength="1" class="fine soft" d="M99.4 108L120.3 107.7"/>
+<path pathLength="1" class="fine" d="M47.6 114.4L99.7 114"/>
+<path pathLength="1" class="fine soft" d="M100.9 114L124.4 113.7"/>
+<path pathLength="1" class="fine" d="M43.6 120.4L101.2 120"/>
+<path pathLength="1" class="fine soft" d="M102.4 120L128.4 119.7"/>
+<path pathLength="1" class="fine" d="M39.5 126.4L102.6 126"/>
+<path pathLength="1" class="fine soft" d="M103.8 126L132.5 125.7"/>
+<path pathLength="1" class="fine soft" d="M92.4 70l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M93.4 74l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M94.4 78l-2.2 3M97.4 78l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M95.3 82l-2.2 3M98.3 82l-2.2 3M101.3 82l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M96.3 86l-2.2 3M99.3 86l-2.2 3M102.3 86l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M97.3 90l-2.2 3M100.3 90l-2.2 3M103.3 90l-2.2 3M106.3 90l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M98.2 94l-2.2 3M101.2 94l-2.2 3M104.2 94l-2.2 3M107.2 94l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M99.2 98l-2.2 3M102.2 98l-2.2 3M105.2 98l-2.2 3M108.2 98l-2.2 3M111.2 98l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M100.2 102l-2.2 3M103.2 102l-2.2 3M106.2 102l-2.2 3M109.2 102l-2.2 3M112.2 102l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M101.2 106l-2.2 3M104.2 106l-2.2 3M107.2 106l-2.2 3M110.2 106l-2.2 3M113.2 106l-2.2 3M116.2 106l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M102.1 110l-2.2 3M105.1 110l-2.2 3M108.1 110l-2.2 3M111.1 110l-2.2 3M114.1 110l-2.2 3M117.1 110l-2.2 3M120.1 110l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M103.1 114l-2.2 3M106.1 114l-2.2 3M109.1 114l-2.2 3M112.1 114l-2.2 3M115.1 114l-2.2 3M118.1 114l-2.2 3M121.1 114l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M104.1 118l-2.2 3M107.1 118l-2.2 3M110.1 118l-2.2 3M113.1 118l-2.2 3M116.1 118l-2.2 3M119.1 118l-2.2 3M122.1 118l-2.2 3M125.1 118l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M105.1 122l-2.2 3M108.1 122l-2.2 3M111.1 122l-2.2 3M114.1 122l-2.2 3M117.1 122l-2.2 3M120.1 122l-2.2 3M123.1 122l-2.2 3M126.1 122l-2.2 3"/>
+<path pathLength="1" class="fine soft" d="M106 126l-2.2 3M109 126l-2.2 3M112 126l-2.2 3M115 126l-2.2 3M118 126l-2.2 3M121 126l-2.2 3M124 126l-2.2 3M127 126l-2.2 3M130 126l-2.2 3"/>
+<path pathLength="1" class="fine" d="M74 130L74 123Q77 120 80 123L80 130"/>
+<path pathLength="1" class="soft" d="M4 132Q40 128 76 133T130 132T196 131"/>
+<path pathLength="1" d="M0 142Q22 134 46 142T88 146"/>
+<path pathLength="1" class="fine" d="M4 150Q26 144 46 150"/>
+<path pathLength="1" class="fine soft" d="M8 156Q22 152 38 156"/>
+<path pathLength="1" d="M138 142Q160 137 180 142T200 141"/>
+<path pathLength="1" class="fine" d="M144 148Q162 145 180 148"/>
+<path pathLength="1" class="fine soft" d="M150 154Q162 152 174 154"/>
+<path pathLength="1" class="fine soft" d="M150 146L146 150M158 145L154 149M166 146L162 150"/>
+<path pathLength="1" class="fine soft" d="M14 146L11 150M22 144L19 148M30 146L27 150"/>
+<path pathLength="1" class="soft" d="M200 192Q180 166 150 137"/>
+<path pathLength="1" class="soft" d="M186 200Q172 172 147 137.5"/>
+<path pathLength="1" class="fine soft" d="M190 190l-2.6 -2.6"/>
+<path pathLength="1" class="fine soft" d="M176 172l-2.2 -2.3"/>
+<path pathLength="1" class="fine soft" d="M164 160l-1.8 -2"/>
+<path pathLength="1" class="fine soft" d="M156 150l-1.4 -1.7"/>
+<path pathLength="1" class="fine soft" d="M151 143l-1 -1.4"/>
+<path pathLength="1" d="M108 134C102 148 122 150 112 166S92 184 86 200"/>
+<path pathLength="1" d="M114 134C112 142 134 148 126 162S110 182 108 200"/>
+<path pathLength="1" class="fine" d="M109 142h3"/>
+<path pathLength="1" class="fine" d="M111 150h6"/>
+<path pathLength="1" class="fine" d="M113 158h5"/>
+<path pathLength="1" class="fine" d="M109 168h6"/>
+<path pathLength="1" class="fine" d="M102 178h8"/>
+<path pathLength="1" class="fine" d="M98 190h7"/>
+<path pathLength="1" class="fine soft" d="M116 146h3"/>
+<path pathLength="1" class="fine soft" d="M108 164h3"/>
+<path pathLength="1" class="fine soft" d="M104 184h3"/>
+<path pathLength="1" class="fine soft" d="M111 173h2"/>
+<path pathLength="1" class="fine" d="M122 166L121 161M125 167L126 162M128 166L129 163"/>
+<path pathLength="1" class="fine soft" d="M130 174Q150 170 172 176"/>
+<path pathLength="1" class="fine soft" d="M140 184Q160 180 186 188"/>
+<path pathLength="1" class="fine soft" d="M126 190Q150 186 170 195"/>
+<path pathLength="1" class="fine" d="M132 156Q148 152 162 156"/>
+<path pathLength="1" class="accent fine" d="M40 178Q52 172 64 176Q68 182 56 185Q42 185 40 178Z"/>
+<path pathLength="1" class="fine soft" d="M48 179h7M54 182h5"/>
+<path pathLength="1" class="fine soft" d="M2 176Q16 170 30 174"/>
+<path pathLength="1" d="M20 192Q28 160 26 124"/>
+<path pathLength="1" d="M26 192Q34 160 31 125"/>
+<path pathLength="1" class="fine" d="M25.9 130q2.6 1.2 5 .4"/>
+<path pathLength="1" class="fine" d="M25.5 136q2.6 1.2 5 .4"/>
+<path pathLength="1" class="fine" d="M25 142q2.6 1.2 5 .4"/>
+<path pathLength="1" class="fine" d="M24.6 148q2.6 1.2 5 .4"/>
+<path pathLength="1" class="fine" d="M24.1 154q2.6 1.2 5 .4"/>
+<path pathLength="1" class="fine" d="M23.6 160q2.6 1.2 5 .4"/>
+<path pathLength="1" class="fine" d="M23.2 166q2.6 1.2 5 .4"/>
+<path pathLength="1" class="fine" d="M22.7 172q2.6 1.2 5 .4"/>
+<path pathLength="1" class="fine" d="M22.3 178q2.6 1.2 5 .4"/>
+<path pathLength="1" class="fine" d="M21.8 184q2.6 1.2 5 .4"/>
+<path pathLength="1" d="M28 124C18 122 10 128 6 140M28 124C20 114 10 114 5 120M28 124C32 110 42 106 52 112M28 124C38 120 46 126 50 136M28 124C26 112 30 102 38 98M28 124C22 114 20 106 22 99"/>
+<path pathLength="1" class="fine" d="M22 126L19 132M17 129L13 134M12 133L8 138"/>
+<path pathLength="1" class="fine" d="M18 118L16 123M12 117L9 121"/>
+<path pathLength="1" class="fine" d="M38 111L38 116M43 109L45 114M48 112L50 116"/>
+<path pathLength="1" class="fine" d="M40 121L42 126M45 125L48 129M48 130L50 134"/>
+<path pathLength="1" class="fine" d="M29 106L33 107M31 101L34 103M24 106L21 108"/>
+<circle pathLength="1" class="accent" cx="29" cy="127" r="1.4"/>
+<circle pathLength="1" class="accent" cx="25" cy="127" r="1.2"/>
+</svg>

@@ -431,10 +431,11 @@ body[data-theme="dusk"]        { --bg: #C99A5B;       --fg: var(--ink); --fg-sof
 
 .sec-ill svg, .frame svg { stroke-width: var(--lw, 1.25); }
 .sec svg .accent { stroke: var(--accent); }
-.sec svg .fill-accent { fill: var(--accent); stroke: none; }
+.sec svg .fill-accent, .end-scene svg .fill-accent { fill: var(--accent); stroke: none; }
+.et-piece svg .fill-accent { fill: var(--terracotta); stroke: none; }
 /* Detalle fino (texturas, sombreados) y trazo secundario atenuado. */
-.sec-ill svg .fine { stroke-width: calc(var(--lw, 1.25) * .55); }
-.sec-ill svg .soft { opacity: .55; }
+.sec-ill svg .fine, .et-piece svg .fine, .end-scene svg .fine { stroke-width: calc(var(--lw, 1.25) * .55); }
+.sec-ill svg .soft, .et-piece svg .soft, .end-scene svg .soft { opacity: .55; }
 
 .sec-sep {
   display: flex;
