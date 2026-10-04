@@ -422,7 +422,7 @@ body[data-theme="rose-night"]  { --bg: #232A35;       --fg: #E6DDCB;    --fg-sof
 .sec-text .hl.is-marked { background-size: 100% 36%; }
 
 .sec-text {
-  text-align: left;
+  text-align: center;
   font-size: clamp(17px, 4.6vw, 19px);
   line-height: 1.8;
   color: var(--fg);
@@ -509,6 +509,9 @@ body[data-theme="rose-night"]  { --bg: #232A35;       --fg: #E6DDCB;    --fg-sof
   align-items: center;
   justify-content: center;
   padding: calc(24px + var(--safe-t)) calc(24px + var(--safe-r)) calc(24px + var(--safe-b)) calc(24px + var(--safe-l));
+  /* La línea del saludo se desplaza mientras se escribe: que no ensanche la página (zoom en iOS). */
+  overflow: hidden;
+  overflow: clip;
 }
 
 .gr-wrap {
@@ -944,4 +947,299 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
   .me-flap, .me-half, .me-mark, .gift-card { transition-duration: 0.01s; transition-delay: 0s; }
   .gift.is-open .me-flap { transform: none; opacity: 0; }
   .gift.is-open .me-left, .gift.is-open .me-right { transform: none; }
+}
+
+/* === BLOQUE: carga === */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
+  background-color: var(--paper);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+#loader.is-on { opacity: 1; }
+
+.ld-svg {
+  display: block;
+  width: 180px;
+  max-width: 70vw;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ld-line { stroke-dasharray: 1 2; stroke-dashoffset: 1; stroke-width: 1.4; }
+.ld-nib { fill: var(--paper); }
+.ld-acc { stroke: var(--terracotta); }
+.ld-drop { fill: var(--terracotta); stroke: none; }
+
+#loader.is-on .ld-line { animation: ld-draw 4.6s linear infinite, ld-fade 4.6s linear infinite; }
+#loader.is-on .ld-pen-x { animation: ld-x 4.6s linear infinite; }
+#loader.is-on .ld-pen-y { animation: ld-y 4.6s linear infinite; }
+
+@keyframes ld-draw {
+  0% { stroke-dashoffset: 1; }
+  62%, 99.9% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 1; }
+}
+@keyframes ld-fade {
+  0%, 72% { opacity: 1; }
+  88%, 100% { opacity: 0; }
+}
+@keyframes ld-x {
+  0% { transform: translateX(0); }
+  62%, 72% { transform: translateX(110px); animation-timing-function: ease-in-out; }
+  92%, 100% { transform: translateX(0); }
+}
+@keyframes ld-y {
+  0% { transform: translateY(0); animation-timing-function: ease-in-out; }
+  6.2% { transform: translateY(-6px); animation-timing-function: ease-in-out; }
+  18.6% { transform: translateY(6px); animation-timing-function: ease-in-out; }
+  31% { transform: translateY(-6px); animation-timing-function: ease-in-out; }
+  43.4% { transform: translateY(6px); animation-timing-function: ease-in-out; }
+  55.8% { transform: translateY(-6px); animation-timing-function: ease-in-out; }
+  62% { transform: translateY(0); animation-timing-function: ease-in-out; }
+  67%, 90% { transform: translateY(-10px); animation-timing-function: ease-in-out; }
+  98%, 100% { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #loader { transition-duration: 0.3s; }
+  #loader.is-on .ld-line { stroke-dashoffset: 0; animation: ld-pulse 3s ease-in-out infinite; }
+  #loader.is-on .ld-pen-x { animation: none; transform: translateX(110px); }
+  #loader.is-on .ld-pen-y { animation: none; }
+}
+@keyframes ld-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+/* === BLOQUE: vida === */
+/* Animaciones continuas, lentas y sutiles. Solo transform, opacity y stroke-dashoffset.
+   Empiezan cuando la sección ya se dibujó (.is-alive, lo añade animations.js) y se pausan
+   fuera de pantalla (--lvps). Los retardos son positivos con fill-mode backwards: el estado
+   inicial de cada keyframe coincide con el dibujo en reposo. */
+.lv-run, .lv-glint, .lv-flow { opacity: 0; }
+
+.sec.is-alive [class*="lv-"] {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation-duration: calc(var(--t, 7s) + var(--v, 0) * 0.9s);
+  animation-delay: calc(var(--w, 0) * 1.1s + var(--rd, 0s));
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+}
+
+/* nombres de animación */
+.sec.is-alive .lv-sway    { animation-name: lv-sway; }
+.sec.is-alive .lv-drift   { animation-name: lv-drift; --t: 11s; }
+.sec.is-alive .lv-float   { animation-name: lv-float; --t: 6.5s; }
+.sec.is-alive .lv-twinkle { animation-name: lv-twinkle; --t: 4.8s; }
+.sec.is-alive .lv-sparkle { animation-name: lv-sparkle; --t: 5.4s; }
+.sec.is-alive .lv-pulse   { animation-name: lv-pulse; --t: 4.6s; }
+.sec.is-alive .lv-breathe { animation-name: lv-breathe; --t: 7s; }
+.sec.is-alive .lv-fall    { animation-name: lv-fall; --t: 12s; }
+.sec.is-alive .lv-rain    { animation-name: lv-rain; --t: 9s; }
+.sec.is-alive .lv-rise    { animation-name: lv-rise; --t: 7s; }
+.sec.is-alive .lv-ripple  { animation-name: lv-ripple; --t: 7s; }
+.sec.is-alive .lv-wave    { animation-name: lv-wave; --t: 9s; }
+.sec.is-alive .lv-bob     { animation-name: lv-bob; --t: 9s; }
+.sec.is-alive .lv-shard   { animation-name: lv-shard; --t: 10s; }
+.sec.is-alive .lv-glow    { animation-name: lv-glow; animation-duration: 5.6s; animation-delay: calc(var(--k, 0) * 0.45s + var(--rd, 0s)); }
+.sec.is-alive .lv-lamp    { animation-name: lv-lamp; --t: 9s; }
+.sec.is-alive .lv-glide   { animation-name: lv-glide; --t: 12s; }
+.sec.is-alive .lv-lean    { animation-name: lv-lean; --t: 8s; transform-origin: 50% 100%; }
+.sec.is-alive .lv-beat    { animation-name: lv-beat; animation-duration: 3.2s; animation-timing-function: ease-out; }
+.sec.is-alive .lv-flicker { animation-name: lv-flicker; animation-duration: 3.4s; transform-origin: 50% 100%; }
+.sec.is-alive .lv-tick    { animation-name: lv-tick; animation-duration: 4s; transform-box: view-box; transform-origin: 96px 114px; }
+.sec.is-alive .lv-spin    { animation-name: lv-spin; animation-duration: 56s; animation-timing-function: linear; transform-box: view-box; transform-origin: 96px 98px; }
+.sec.is-alive .lv-run     { animation-name: lv-run; --t: 10s; animation-timing-function: linear; }
+.sec.is-alive .lv-flow    { animation-name: lv-flow; animation-duration: 1s; animation-delay: 0s; animation-timing-function: linear; opacity: 1; }
+.sec.is-alive .lv-glint   { animation-name: lv-glint; --t: 10s; }
+
+/* parámetros */
+.lv-r { --rd: 3.3s; }
+.lv-sway { --a: 2.5deg; }
+.lv-drift.lv-s { --dx: 2.2px; --dy: 1.2px; --t: 12s; }
+.lv-float.lv-plane { --fx: 3px; --fy: -5px; --fr: -1.4deg; }
+.lv-float.lv-sm { --fx: 0.6px; --fy: -1.4px; --fr: 0.5deg; }
+.lv-wave.lv-sm { --wx: -2.6px; }
+.lv-sway.lv-o-tl, .lv-sway.lv-o-tr, .lv-sway.lv-o-bl, .lv-sway.lv-o-br { --a: 0.9deg; }
+.lv-sway.lv-o-t { --a: 5deg; }
+.lv-sway.lv-o-flower { --a: 2.5deg; }
+.lv-sway.lv-o-flower7 { --a: 2.2deg; }
+.lv-breathe.lv-o-tl, .lv-breathe.lv-o-tr, .lv-breathe.lv-o-bl, .lv-breathe.lv-o-br { --s: 1.06; }
+.lv-breathe.lv-big { --s: 1.05; }
+circle.lv-pulse { --s: 1.7; }
+.lv-lean-r { --a: -0.9deg; }
+.lv-lean-l { --a: 0.9deg; }
+.lv-ecg { --dl: 24px; }
+.sec svg .soft[class*="lv-"] { --lo: 0.55; }
+
+/* orígenes de transformación (después de la regla general, misma especificidad) */
+.sec.is-alive .lv-o-tl { transform-origin: 0% 0%; }
+.sec.is-alive .lv-o-tr { transform-origin: 100% 0%; }
+.sec.is-alive .lv-o-bl { transform-origin: 0% 100%; }
+.sec.is-alive .lv-o-br { transform-origin: 100% 100%; }
+.sec.is-alive .lv-o-b  { transform-origin: 50% 100%; }
+.sec.is-alive .lv-o-t  { transform-origin: 50% 0%; }
+.sec.is-alive .lv-o-flower  { transform-origin: 15% 100%; }
+.sec.is-alive .lv-o-flower7 { transform-origin: 47% 100%; }
+.sec.is-alive .lv-needle { --a: 5deg; --t: 9s; transform-box: view-box; transform-origin: 100px 152px; }
+.sec.is-alive .lv-arm    { --a: 1.2deg; --t: 12s; transform-box: view-box; transform-origin: 172px 170px; }
+.sec.is-alive .lv-wing-r { --a: -1.4deg; --t: 8s; transform-box: view-box; transform-origin: 119px 105px; }
+.sec.is-alive .lv-wing-l { --a: 1.4deg; --t: 8s; transform-box: view-box; transform-origin: 81px 105px; }
+
+/* trazos que corren: copias sin pathLength, invisibles hasta que la sección vive */
+.lv-run {
+  stroke: var(--accent);
+  stroke-dasharray: var(--dl, 12px) calc(var(--len, 300px) + 24px);
+}
+.lv-run.lv-ecg { stroke: var(--fg); }
+.lv-flow {
+  stroke: var(--bg);
+  stroke-width: calc(var(--lw, 1.25) * 1.7);
+  stroke-dasharray: 1.4px 3.6px;
+}
+.lv-glint { stroke: var(--accent); stroke-width: calc(var(--lw, 1.25) * 1.3); }
+
+/* pausa fuera de pantalla */
+.sec:not(.is-vis) { --lvps: paused; }
+.sec.is-alive [class*="lv-"] { animation-play-state: var(--lvps, running); }
+
+@keyframes lv-sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(var(--a, 2.5deg)); }
+  75% { transform: rotate(calc(var(--a, 2.5deg) * -1)); }
+}
+@keyframes lv-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(var(--dx, 5px), var(--dy, 0px)); }
+}
+@keyframes lv-float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(var(--fx, 1px), var(--fy, -3px)) rotate(var(--fr, 0.8deg)); }
+}
+@keyframes lv-twinkle {
+  0%, 100% { opacity: var(--lo, 1); }
+  50% { opacity: calc(var(--lo, 1) * 0.3); }
+}
+@keyframes lv-sparkle {
+  0%, 100% { opacity: var(--lo, 1); transform: scale(1); }
+  50% { opacity: calc(var(--lo, 1) * 0.25); transform: scale(0.7); }
+}
+@keyframes lv-pulse {
+  0%, 100% { opacity: var(--lo, 1); transform: scale(1); }
+  50% { opacity: calc(var(--lo, 1) * 0.55); transform: scale(var(--s, 1.05)); }
+}
+@keyframes lv-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(var(--s, 1.012)); }
+}
+@keyframes lv-fall {
+  0%, 12% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  62% { opacity: 1; transform: translate(7px, 20px) rotate(24deg); }
+  84% { opacity: 0; transform: translate(11px, 29px) rotate(36deg); }
+  85% { opacity: 0; transform: translate(0, -7px) rotate(0deg); }
+  100% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+}
+@keyframes lv-rain {
+  0%, 10% { opacity: 1; transform: translateY(0); }
+  70% { opacity: 0.85; transform: translateY(11px); }
+  88% { opacity: 0; transform: translateY(15px); }
+  89% { opacity: 0; transform: translateY(-3px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes lv-rise {
+  0%, 8% { opacity: 1; transform: translate(0, 0) scale(1); }
+  68% { opacity: 0; transform: translate(1px, -9px) scale(1.06); }
+  69% { opacity: 0; transform: translate(0, 4px) scale(1); }
+  100% { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+@keyframes lv-ripple {
+  0%, 10% { opacity: 1; transform: scale(1); }
+  62% { opacity: 0; transform: scale(1.22); }
+  63% { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes lv-wave {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(var(--wx, -6px), 1.2px); }
+}
+@keyframes lv-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(1.6px); }
+}
+@keyframes lv-shard {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(1.6px, -2px) rotate(2deg); }
+}
+@keyframes lv-glow {
+  0%, 100% { opacity: 1; }
+  45% { opacity: 0.32; }
+}
+@keyframes lv-lamp {
+  0%, 100% { opacity: 1; }
+  35% { opacity: 0.6; }
+  60% { opacity: 0.9; }
+  80% { opacity: 0.68; }
+}
+@keyframes lv-glide {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(5px, -3px) rotate(-3deg); }
+}
+@keyframes lv-lean {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(var(--a, 0.9deg)); }
+}
+@keyframes lv-beat {
+  0%, 40%, 100% { transform: scaleY(1); }
+  10% { transform: scaleY(1.45); }
+  20% { transform: scaleY(0.9); }
+  30% { transform: scaleY(1.18); }
+}
+@keyframes lv-flicker {
+  0%, 100% { opacity: 1; transform: scale(1, 1); }
+  20% { opacity: 0.8; transform: scale(0.97, 0.94); }
+  45% { opacity: 1; transform: scale(0.96, 1.06); }
+  70% { opacity: 0.86; transform: scale(1.03, 0.96); }
+}
+@keyframes lv-tick {
+  0%, 50%, 100% { transform: rotate(0deg); }
+  54%, 96% { transform: rotate(1.6deg); }
+}
+@keyframes lv-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes lv-run {
+  0% { opacity: 0; stroke-dashoffset: var(--dl, 12px); }
+  4% { opacity: 1; }
+  60% { opacity: 1; stroke-dashoffset: calc(var(--len, 300px) * -1); }
+  66%, 100% { opacity: 0; stroke-dashoffset: calc(var(--len, 300px) * -1); }
+}
+@keyframes lv-flow {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -5px; }
+}
+@keyframes lv-glint {
+  0%, 100% { opacity: 0; transform: translateX(0); }
+  15% { opacity: 0.85; }
+  48% { opacity: 0.85; transform: translateX(28px); }
+  58% { opacity: 0; transform: translateX(33px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="lv-"] { animation: none !important; }
+  .lv-run, .lv-glint, .lv-flow { opacity: 0 !important; }
 }

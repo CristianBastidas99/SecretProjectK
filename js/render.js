@@ -58,6 +58,21 @@ function prepareDraw(svg) {
   });
 }
 
+// Vida continua: índices por tipo de animación (--k) para escalonar fases y duraciones sin repetir el patrón.
+// Las clases lv-* las pone el propio SVG; el CSS (bloque vida) decide qué hacen y cuándo.
+function prepareAlive(svg) {
+  const count = {};
+  svg.querySelectorAll('[class*="lv-"]').forEach((el) => {
+    const key = Array.from(el.classList).find((c) => c.startsWith('lv-'));
+    if (!key) return;
+    const k = count[key] || 0;
+    count[key] = k + 1;
+    el.style.setProperty('--k', String(k));
+    el.style.setProperty('--w', String(k % 6));
+    el.style.setProperty('--v', String(k % 3));
+  });
+}
+
 function baseSvg(src) {
   const svg = src.cloneNode(true);
   svg.removeAttribute('width');
@@ -96,6 +111,7 @@ function frameClone(src, part) {
   }
   prepareDraw(svg);
   prepareGlyphPath(svg);
+  prepareAlive(svg);
   return svg;
 }
 
@@ -377,6 +393,7 @@ export async function renderLetter(data, container) {
           }
           const svg = baseSvg(src);
           prepareDraw(svg);
+          prepareAlive(svg);
           ill.appendChild(svg);
         })
       );

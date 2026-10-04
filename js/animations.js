@@ -77,6 +77,24 @@ export function initAnimations(root, ending) {
     return;
   }
 
+  // Vida continua: cuando el dibujado de entrada ya terminó (~3 s tras is-in) la sección recibe
+  // is-alive; mientras no esté en pantalla (is-vis) el CSS pausa sus animaciones.
+  const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const goAlive = (sec) => {
+    sec.querySelectorAll('.lv-run').forEach((p) => {
+      try {
+        p.style.setProperty('--len', Math.max(8, Math.round(p.getTotalLength())) + 'px');
+      } catch (err) { /* sin longitud: se usa el valor por defecto */ }
+    });
+    sec.classList.add('is-alive');
+  };
+  const visIO = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => e.target.classList.toggle('is-vis', e.isIntersecting));
+    },
+    { rootMargin: '10% 0px' }
+  );
+
   // Entrada: revelado de cada sección (una sola vez).
   const revealIO = new IntersectionObserver(
     (entries) => {
@@ -84,6 +102,7 @@ export function initAnimations(root, ending) {
         if (e.isIntersecting) {
           e.target.classList.add('is-in');
           revealIO.unobserve(e.target);
+          if (!calm) setTimeout(() => goAlive(e.target), 3300);
         }
       });
     },
@@ -182,6 +201,7 @@ export function initAnimations(root, ending) {
     if (hl) hlIO.observe(hl);
     revealIO.observe(s);
     activeIO.observe(s);
+    visIO.observe(s);
   });
 
   fitStrokes([root, ending]);

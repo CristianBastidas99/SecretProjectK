@@ -5,7 +5,7 @@ import { renderLetter, renderEnding } from './render.js';
 import { initAnimations } from './animations.js';
 import { playGreeting } from './greeting.js';
 
-export const VERSION = 10;
+export const VERSION = 12;
 
 const OPEN_MS = 950;
 
@@ -19,6 +19,7 @@ const cover = $('cover');
 const greeting = $('greeting');
 const letter = $('letter');
 const ending = $('ending');
+const loader = $('loader');
 
 // Datos descifrados: solo en memoria.
 let carta = null;
@@ -79,7 +80,20 @@ form.addEventListener('submit', async (e) => {
   await wait(OPEN_MS);
   cover.classList.add('is-leaving');
   await wait(700);
-  await rendering;
+
+  // Hueco con red lenta: la pluma solo aparece si el render aún no terminó.
+  let ready = false;
+  rendering.then(() => { ready = true; });
+  await Promise.race([rendering, wait(250)]);
+  if (!ready) {
+    loader.hidden = false;
+    void loader.getBoundingClientRect();
+    loader.classList.add('is-on');
+    await Promise.all([rendering, wait(900)]);
+    loader.classList.remove('is-on');
+    await wait(500);
+    loader.hidden = true;
+  }
   cover.hidden = true;
 
   greeting.hidden = false;
