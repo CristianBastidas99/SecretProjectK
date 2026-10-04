@@ -246,7 +246,60 @@ function buildFireflies() {
   return box;
 }
 
-function buildGift(text) {
+function buildReply(n) {
+  const box = el('div', 'gift-reply');
+  const btn = el('button', 'gift-reply-btn', n.button || '');
+  btn.type = 'button';
+  const hint = n.hint ? el('span', 'gift-reply-hint', n.hint) : null;
+  const status = el('span', 'gift-reply-status');
+  status.setAttribute('role', 'status');
+  status.setAttribute('aria-live', 'polite');
+  box.append(btn);
+  if (hint) box.append(hint);
+  box.append(status);
+  let busy = false;
+  let sent = false;
+  btn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    if (busy || sent) return;
+    busy = true;
+    btn.disabled = true;
+    box.classList.add('is-sending');
+    box.classList.remove('is-error');
+    status.textContent = '';
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 10000);
+    let ok = false;
+    try {
+      const when = new Date().toLocaleString('es', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      const res = await fetch(n.url, {
+        method: 'POST',
+        signal: ctl.signal,
+        body: JSON.stringify({ topic: n.topic, title: n.title, message: (n.message || '') + ' · ' + when, tags: ['gift'] })
+      });
+      ok = !!res.ok;
+    } catch (err) {
+      ok = false;
+    }
+    clearTimeout(timer);
+    box.classList.remove('is-sending');
+    busy = false;
+    if (ok) {
+      sent = true;
+      box.classList.add('is-done');
+      btn.hidden = true;
+      if (hint) hint.hidden = true;
+      status.textContent = n.done || '';
+    } else {
+      btn.disabled = false;
+      box.classList.add('is-error');
+      status.textContent = n.error || '';
+    }
+  });
+  return box;
+}
+
+function buildGift(text, notify) {
   const wrap = el('div', 'gift');
   const btn = el('button', 'gift-btn');
   btn.type = 'button';
@@ -257,9 +310,11 @@ function buildGift(text) {
   const env = el('span', 'gift-env');
   bob.appendChild(env);
   btn.appendChild(bob);
-  const card = el('p', 'gift-card', text);
+  const card = el('div', 'gift-card');
   card.id = 'gift-card';
-  card.setAttribute('aria-live', 'polite');
+  card.appendChild(el('p', 'gift-text', text));
+  const n = notify && typeof notify === 'object' ? notify : null;
+  if (n && typeof n.url === 'string' && n.url && typeof n.topic === 'string' && n.topic) card.appendChild(buildReply(n));
   wrap.append(btn, card);
 
   const setOpen = (on) => {
@@ -295,7 +350,7 @@ export async function renderEnding(closing, footer) {
 
   // Noche: rosas, enredaderas, texto y sobre.
   const night = el('div', 'end-night');
-  const gift = typeof c.gift === 'string' && c.gift.trim() ? buildGift(c.gift.trim()) : null;
+  const gift = typeof c.gift === 'string' && c.gift.trim() ? buildGift(c.gift.trim(), c.notify) : null;
   buildRoses(night, jobs, gift);
   const wrap = el('div', 'end-inner');
   if (c.end) wrap.appendChild(el('p', 'end-text', c.end));

@@ -891,25 +891,60 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
   width: max-content;
   max-width: min(268px, 78vw);
   margin: 0;
-  padding: 14px 20px 16px;
+  padding: 14px 20px 14px;
   background: #F1EADB;
   color: #2B2722;
   border-radius: 3px;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 1.35;
   text-align: center;
-  text-wrap: balance;
-  overflow-wrap: break-word;
   opacity: 0;
   visibility: hidden;
   transform: translate(-50%, 10px) scale(0.96);
   transform-origin: 50% 100%;
   transition: opacity 0.5s var(--ease), transform 0.7s var(--ease), visibility 0s linear 0.7s;
 }
+.gift-text {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.35;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+.gift-reply { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(154, 96, 75, 0.28); }
+.gift-reply-btn {
+  min-height: 44px;
+  min-width: 44px;
+  max-width: 100%;
+  margin: 0;
+  padding: 8px 18px;
+  background: transparent;
+  color: #6E4636;
+  border: 1px solid #9A604B;
+  border-radius: 999px;
+  font-family: var(--font-sans, 'DM Sans', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.25;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+.gift-reply-btn:hover { background: rgba(154, 96, 75, 0.1); }
+.gift-reply-btn:focus-visible { outline: 2px solid #9A604B; outline-offset: 3px; }
+.gift-reply-btn:disabled { cursor: default; opacity: 0.55; }
+.gift-reply.is-sending .gift-reply-btn { animation: reply-wait 1.4s ease-in-out infinite; }
+.gift-reply-hint { font-family: var(--font-sans, 'DM Sans', sans-serif); font-size: 12px; line-height: 1.35; color: #7A6F60; text-wrap: balance; }
+.gift-reply-status { display: block; font-family: var(--font-serif); font-style: italic; font-size: 16px; line-height: 1.35; color: #6E4636; text-wrap: balance; }
+.gift-reply-status:empty { display: none; }
+.gift-reply.is-error .gift-reply-status { font-size: 14px; color: #8A5A3C; animation: reply-fade 0.5s ease both; }
+.gift-reply.is-done { border-top-color: transparent; margin-top: 2px; padding-top: 0; }
+.gift-reply.is-done .gift-reply-status { animation: reply-fade 0.9s ease both, reply-glow 1.8s ease-out both; }
+@keyframes reply-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes reply-wait { 0%, 100% { opacity: 0.45; } 50% { opacity: 0.8; } }
+@keyframes reply-glow { 0% { text-shadow: 0 0 0 rgba(205, 170, 112, 0); } 35% { text-shadow: 0 0 14px rgba(205, 170, 112, 0.95); } 100% { text-shadow: 0 0 0 rgba(205, 170, 112, 0); } }
 .gift-card::after {
   content: "";
   position: absolute;
