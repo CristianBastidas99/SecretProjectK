@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 400 800">
+<g data-part="top">
+<path pathLength="1" class="accent" d="M14 104L96 103.5Q101 96 106 103L122 103L130 114L141 56L153 128L160 98L166 104L214 104Q222 88 232 104L386 105"/>
+<path pathLength="1" d="M14 142Q60 134 112 140"/><path pathLength="1" d="M290 142Q336 136 386 143"/>
+<circle pathLength="1" cx="200" cy="44" r="1.6"/><circle pathLength="1" cx="168" cy="36" r="1.2"/><circle pathLength="1" cx="232" cy="38" r="1.2"/>
+</g>
+<g data-part="bottom">
+<path pathLength="1" d="M178 800Q190 748 197 706"/><path pathLength="1" d="M226 800Q216 750 206 708"/>
+<path pathLength="1" d="M197 706Q180 676 120 648Q80 632 30 630"/>
+<path pathLength="1" d="M206 708Q222 676 282 650Q322 634 372 632"/>
+<path pathLength="1" d="M146 668Q112 676 70 660" class="accent"/>
+<path pathLength="1" d="M254 670Q288 678 330 662" class="accent"/>
+<path pathLength="1" d="M201 704L202 684"/>
+<circle pathLength="1" cx="60" cy="700" r="1.4"/><circle pathLength="1" cx="340" cy="704" r="1.4"/><circle pathLength="1" cx="96" cy="760" r="1.2"/><circle pathLength="1" cx="310" cy="770" r="1.2"/>
+</g>
+</svg>

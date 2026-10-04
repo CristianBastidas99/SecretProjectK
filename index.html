@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#F4EFE6">
+  <title>17 · 10</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Mono:wght@400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=5">
+  <script type="module" src="js/main.js?v=5"></script>
+</head>
+<body>
+
+  <section id="cover" aria-label="Portada">
+    <div class="cover-inner">
+
+      <div class="envelope" id="envelope">
+        <svg viewBox="0 0 320 220" role="img" aria-label="Sobre cerrado con un sello" focusable="false">
+          <g class="env-body" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="12" y="20" width="296" height="190" rx="3" class="env-paper"/>
+            <path d="M13 209 L132 112"/>
+            <path d="M307 209 L188 112"/>
+          </g>
+          <g class="env-flap" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.5 21 L160 130 L307.5 21 Z" class="env-flap-shape"/>
+            <path d="M40 30 L160 119 L280 30" opacity="0.35"/>
+          </g>
+          <g class="env-seal">
+            <g class="seal-half seal-left">
+              <path d="M160 108 A21 21 0 0 0 160 150 L158 143 L160 136 L158 129 L160 122 L158 115 Z" class="seal-fill"/>
+            </g>
+            <g class="seal-half seal-right">
+              <path d="M160 108 A21 21 0 0 1 160 150 L162 143 L160 136 L162 129 L160 122 L162 115 Z" class="seal-fill"/>
+            </g>
+            <g class="seal-mark" fill="none" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="160" cy="129" r="14.5"/>
+              <path d="M160 120 C161 126 163 128 169 129 C163 130 161 132 160 138 C159 132 157 130 151 129 C157 128 159 126 160 120 Z"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <p class="cover-date">17 · 10 · 2026</p>
+
+      <form id="keyform" class="keyform" autocomplete="off" novalidate>
+        <input id="key" name="k" type="text" inputmode="text"
+               autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false"
+               aria-label="Clave" placeholder="· · · · · · · ·" enterkeyhint="go">
+        <button type="submit" id="open">Abrir</button>
+      </form>
+      <p id="note" class="note" role="status" aria-live="polite"></p>
+
+      <p class="cover-hint">sube el volumen 🎧</p>
+    </div>
+  </section>
+
+  <section id="greeting" hidden></section>
+  <main id="letter" hidden></main>
+  <footer id="ending" hidden></footer>
+
+  <audio id="song" playsinline preload="auto"></audio>
+
+</body>
+</html>
