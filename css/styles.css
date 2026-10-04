@@ -923,6 +923,68 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
 }
 .gift.is-open .gift-card { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); transition-delay: 0.3s, 0.3s, 0s; }
 
+/* Invitación: la solapa se entreabre, el sello late y hay luciérnagas. Se detiene al abrir el sobre. */
+.me-lift { transform-box: view-box; transform-origin: 160px 20px; }
+.me-pulse { transform-box: view-box; transform-origin: 160px 129px; }
+.me-cardpaper { fill: #F1EADB; }
+.me-ring { fill: none; stroke: #CDAA70; stroke-width: 2.5; vector-effect: non-scaling-stroke; opacity: 0; transform-box: view-box; transform-origin: 160px 129px; pointer-events: none; }
+.end-night.is-bloom .gift:not(.was-opened) .me-lift { animation: me-lift 9s ease-in-out 5.5s infinite; will-change: transform; }
+.end-night.is-bloom .gift:not(.was-opened) .me-cardmove { animation: me-card 9s ease-in-out 5.5s infinite; will-change: transform; }
+.end-night.is-bloom .gift:not(.was-opened) .me-pulse { animation: me-beat 9s ease-in-out 5.5s infinite; will-change: transform; }
+.end-night.is-bloom .gift:not(.was-opened) .me-ring { animation: me-ring 9s ease-out 5.5s infinite; will-change: transform, opacity; }
+@keyframes me-lift {
+  0%, 46% { transform: scaleY(1); }
+  56%, 62% { transform: scaleY(0.5); }
+  72%, 100% { transform: scaleY(1); }
+}
+@keyframes me-card {
+  0%, 48% { transform: translateY(0); }
+  58%, 63% { transform: translateY(-52px); }
+  73%, 100% { transform: translateY(0); }
+}
+@keyframes me-beat {
+  0%, 16%, 100% { transform: scale(1); }
+  4% { transform: scale(1.09); }
+  8% { transform: scale(1); }
+  11% { transform: scale(1.06); }
+}
+@keyframes me-ring {
+  0% { opacity: 0; transform: scale(1); }
+  2% { opacity: 0.9; }
+  22%, 100% { opacity: 0; transform: scale(3); }
+}
+
+.ff-wrap {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 0;
+  width: min(100%, 760px);
+  height: 46%;
+  margin-left: calc(min(100%, 760px) / -2);
+  pointer-events: none;
+  opacity: 0;
+}
+.end-night.is-bloom .ff-wrap { opacity: 1; transition: opacity 3s ease 5s; }
+.end-night.is-bloom .ff-wrap.is-calm { opacity: 0; transition: opacity 2.5s ease 0s; }
+.ff-wrap.is-done { visibility: hidden; }
+.ff { position: absolute; width: var(--fz, 3px); height: var(--fz, 3px); margin: calc(var(--fz, 3px) / -2) 0 0 calc(var(--fz, 3px) / -2); }
+.ff-glow { display: block; width: 100%; height: 100%; border-radius: 50%; background: #EBD29C; box-shadow: 0 0 12px 4px rgba(233, 201, 135, 0.6); opacity: 0; }
+.end-night.is-bloom .ff-wrap:not(.is-done) .ff { animation: ff-drift var(--fd, 16s) ease-in-out var(--fo, 0s) infinite alternate; will-change: transform; }
+.end-night.is-bloom .ff-wrap:not(.is-done) .ff-glow { animation: ff-blink var(--fb, 5s) ease-in-out var(--fo, 0s) infinite; will-change: opacity; }
+@keyframes ff-drift {
+  0% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(var(--fx), calc(var(--fy) * 0.4), 0); }
+  66% { transform: translate3d(calc(var(--fx) * 0.3), var(--fy), 0); }
+  100% { transform: translate3d(calc(var(--fx) * -0.6), calc(var(--fy) * 0.2), 0); }
+}
+@keyframes ff-blink {
+  0%, 100% { opacity: 0.05; }
+  38% { opacity: 1; }
+  62% { opacity: 0.7; }
+}
+.end-night.is-away .ff, .end-night.is-away .ff-glow, .end-night.is-away .gift * { animation-play-state: paused; }
+
 @keyframes gift-bob {
   0%, 100% { transform: translateY(0) rotate(-1.2deg); }
   50% { transform: translateY(-4px) rotate(1.2deg); }
@@ -945,6 +1007,8 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
   .rz-petal:nth-child(3) { --y: 62%; }
   .rz-petal:nth-child(n+4) { display: none; }
   .me-flap, .me-half, .me-mark, .gift-card { transition-duration: 0.01s; transition-delay: 0s; }
+  .ff-wrap { display: none; }
+  .me-lift, .me-cardmove, .me-pulse, .me-ring { animation: none !important; }
   .gift.is-open .me-flap { transform: none; opacity: 0; }
   .gift.is-open .me-left, .gift.is-open .me-right { transform: none; }
 }

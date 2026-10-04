@@ -221,6 +221,31 @@ function buildRoses(night, jobs, gift) {
   );
 }
 
+// Luciérnagas: puntos de luz cálida; [x%, y%, deriva px, duración deriva s, duración parpadeo s, desfase s, tamaño px]
+const FIREFLIES = [
+  [22, 20, 26, 17, 5.2, 0, 5], [33, 56, 22, 21, 6.4, 3.5, 4.5], [43, 38, 20, 13, 4.6, 7, 4],
+  [60, 44, 20, 15, 5.8, 1.5, 5], [70, 62, 24, 19, 7, 9, 4.5], [80, 24, 28, 23, 5.4, 5, 5], [52, 66, 20, 16, 6.2, 11, 4.5]
+];
+
+function buildFireflies() {
+  const box = el('div', 'ff-wrap');
+  box.setAttribute('aria-hidden', 'true');
+  FIREFLIES.forEach(([x, y, d, dur, bl, off, sz], i) => {
+    const f = el('span', 'ff');
+    f.style.left = x + '%';
+    f.style.top = y + '%';
+    f.style.setProperty('--fx', (i % 2 ? -d : d) + 'px');
+    f.style.setProperty('--fy', (i % 3 === 0 ? d : -d * 0.8) + 'px');
+    f.style.setProperty('--fd', dur + 's');
+    f.style.setProperty('--fb', bl + 's');
+    f.style.setProperty('--fo', '-' + off + 's');
+    f.style.setProperty('--fz', sz + 'px');
+    f.appendChild(el('span', 'ff-glow'));
+    box.appendChild(f);
+  });
+  return box;
+}
+
 function buildGift(text) {
   const wrap = el('div', 'gift');
   const btn = el('button', 'gift-btn');
@@ -238,6 +263,7 @@ function buildGift(text) {
   wrap.append(btn, card);
 
   const setOpen = (on) => {
+    if (on) wrap.classList.add('was-opened');
     wrap.classList.toggle('is-open', on);
     btn.setAttribute('aria-expanded', on ? 'true' : 'false');
     btn.setAttribute('aria-label', on ? 'Cerrar' : 'Abrir');
@@ -285,7 +311,22 @@ export async function renderEnding(closing, footer) {
     wrap.appendChild(p);
   }
   night.appendChild(wrap);
-  if (gift) night.appendChild(gift);
+  if (gift) {
+    const ff = buildFireflies();
+    night.append(ff, gift);
+    gift.addEventListener('click', () => {
+      if (gift.classList.contains('was-opened')) ff.classList.add('is-calm');
+    });
+    ff.addEventListener('transitionend', () => {
+      if (ff.classList.contains('is-calm')) ff.classList.add('is-done');
+    });
+    // Las animaciones de llamada solo corren con el final a la vista.
+    if (typeof IntersectionObserver === 'function') {
+      new IntersectionObserver((es) => {
+        es.forEach((e) => night.classList.toggle('is-away', !e.isIntersecting));
+      }).observe(night);
+    }
+  }
 
   footer.replaceChildren(dusk, night);
   await Promise.all(jobs);
