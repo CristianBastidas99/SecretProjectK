@@ -5,7 +5,7 @@ import { renderLetter, renderEnding } from './render.js';
 import { initAnimations } from './animations.js';
 import { playGreeting } from './greeting.js';
 
-export const VERSION = 6;
+export const VERSION = 8;
 
 const OPEN_MS = 950;
 
@@ -75,6 +75,7 @@ form.addEventListener('submit', async (e) => {
   // Éxito: render en paralelo con la apertura del sobre, luego saludo.
   const rendering = Promise.all([renderLetter(carta, letter), renderEnding(carta.closing, ending)]).catch(() => {});
   envelope.classList.add('is-open');
+  cover.classList.add('is-opening');
   await wait(OPEN_MS);
   cover.classList.add('is-leaving');
   await wait(700);

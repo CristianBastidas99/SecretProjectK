@@ -158,9 +158,23 @@ export function initAnimations(root, ending) {
     idle = setTimeout(update, 150);
   }, { passive: true });
 
+  // Marcador de la frase destacada: se pinta cuando la frase entra en pantalla.
+  const hlIO = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-marked');
+        hlIO.unobserve(e.target);
+      });
+    },
+    { rootMargin: '0px 0px -20% 0px' }
+  );
+
   sections.forEach((s) => {
     const nm = s.querySelector('.sec-num');
     if (nm) numIO.observe(nm);
+    const hl = s.querySelector('.hl');
+    if (hl) hlIO.observe(hl);
     revealIO.observe(s);
     activeIO.observe(s);
   });
@@ -210,7 +224,7 @@ export function initAnimations(root, ending) {
 function initGlyphPath(sec) {
   if (!sec) return;
   const frame = sec.querySelector('.frame-bottom');
-  const quote = sec.querySelector('.sec-quote');
+  const quote = sec.querySelector('.hl');
   if (!frame || !('IntersectionObserver' in window)) {
     if (sec) sec.classList.add('is-gp');
     return;

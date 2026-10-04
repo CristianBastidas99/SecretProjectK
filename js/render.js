@@ -196,18 +196,26 @@ export async function renderLetter(data, container) {
 
     inner.appendChild(el('h2', 'sec-title rv', s.title || ''));
 
-    if (s.quote) {
-      const bq = document.createElement('blockquote');
-      bq.className = 'sec-quote rv';
-      bq.appendChild(el('p', null, s.quote));
-      inner.appendChild(bq);
-    }
-
     const text = el('div', 'sec-text rv');
+    const quote = typeof s.quote === 'string' ? s.quote.trim() : '';
+    let marked = false;
     String(s.text || '')
       .split(/\n\s*\n/)
       .filter((p) => p.trim())
-      .forEach((p) => text.appendChild(el('p', null, p.trim())));
+      .forEach((raw) => {
+        const p = el('p');
+        const t = raw.trim();
+        const at = quote && !marked ? t.indexOf(quote) : -1;
+        if (at >= 0) {
+          marked = true;
+          if (at > 0) p.appendChild(document.createTextNode(t.slice(0, at)));
+          p.appendChild(el('strong', 'hl', quote));
+          if (at + quote.length < t.length) p.appendChild(document.createTextNode(t.slice(at + quote.length)));
+        } else {
+          p.textContent = t;
+        }
+        text.appendChild(p);
+      });
     inner.appendChild(text);
 
     sec.append(top, inner, bottom);
