@@ -5,7 +5,7 @@ import { renderLetter, renderEnding } from './render.js';
 import { initAnimations } from './animations.js';
 import { playGreeting } from './greeting.js';
 
-export const VERSION = 15;
+export const VERSION = 16;
 
 const OPEN_MS = 950;
 
@@ -72,6 +72,9 @@ form.addEventListener('submit', async (e) => {
     showNote(MESSAGES[code] || MESSAGES.NETWORK);
     return;
   }
+
+  // Ambiente suave desde aquí (el elemento ya se desbloqueó en el gesto).
+  if (typeof audio.startAmbient === 'function') audio.startAmbient(VERSION);
 
   // Éxito: render en paralelo con la apertura del sobre, luego saludo.
   const rendering = Promise.all([renderLetter(carta, letter), renderEnding(carta.closing, ending)]).catch(() => {});

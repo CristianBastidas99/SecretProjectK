@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 .claude/
 *.mp3
+!data/a1.mp3

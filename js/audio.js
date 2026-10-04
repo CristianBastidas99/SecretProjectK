@@ -8,11 +8,19 @@ function el() {
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
+// Pista de ambiente (data/a1.mp3, generada por tools/ambient.py): cuerpo en bucle de 0 a LOOP_END
+// y, desde LOOP_END, una salida de 6 s que se desvanece a silencio. Duración total: TOTAL.
+const AMBIENT = 'data/a1.mp3';
+const LOOP_END = 96;
+const LOOP_LEN = 96;
+const TOTAL = 102;
+
 let songUrl = null;       // objectURL de la canción real
 let ready = false;        // la canción está cargada
 let egyptFired = false;   // ya ocurrió egypt:ready
-let autoDone = false;     // ya se intentó el arranque automático
+let autoDone = false;     // ya se intentó el arranque automático de la canción
 let userPaused = false;   // el usuario pausó a mano
+let phase = 'none';       // none | ambient | outro | song
 let ui = null;            // { toggle, fallback, iconPlay, iconPause }
 let wired = false;
 
@@ -31,30 +39,35 @@ export function isReady() {
   return ready;
 }
 
-export function loadSong(bytes) {
+// Música de ambiente: mismo elemento <audio>, ya desbloqueado en el gesto. Si falla, no hay ambiente.
+export function startAmbient(version) {
   const a = el();
-  if (!a) return;
+  if (!a || phase !== 'none') return;
+  wire(a);
+  phase = 'ambient';
+  try { a.volume = 1; } catch (e) { /* iOS: solo lectura */ }
+  a.src = AMBIENT + '?v=' + version;
+  const p = a.play();
+  if (p && typeof p.then === 'function') {
+    p.then(() => {}, () => { if (phase === 'ambient') phase = 'none'; });
+  }
+}
+
+export function loadSong(bytes) {
   const blob = new Blob([bytes], { type: 'audio/mpeg' });
   if (songUrl) URL.revokeObjectURL(songUrl);
   songUrl = URL.createObjectURL(blob);
-  a.src = songUrl;
-  a.load();
   ready = true;
-  wire(a);
   tryAuto();
 }
 
 export function playSong() {
   const a = el();
-  if (!a || !ready) return Promise.resolve(false);
+  if (!a || !ready || phase !== 'song') return Promise.resolve(false);
   if (a.ended) a.currentTime = 0;
   const p = a.play();
   if (p && typeof p.then === 'function') return p.then(() => true, () => false);
   return Promise.resolve(true);
-}
-
-function isSong(a) {
-  return ready && !!songUrl && a.src === songUrl;
 }
 
 function setToggle(playing) {
@@ -82,30 +95,73 @@ function wire(a) {
   if (wired) return;
   wired = true;
   a.addEventListener('playing', () => {
-    if (!isSong(a)) return;
+    if (phase === 'none') return;
     setToggle(true);
     showToggle();
   });
   a.addEventListener('pause', () => {
-    if (!isSong(a) || a.ended) return;
+    if (phase === 'none' || a.ended) return;
     setToggle(false);
   });
   a.addEventListener('ended', () => {
-    if (!isSong(a)) return;
+    if (phase === 'none') return;
     setToggle(false);
+  });
+  a.addEventListener('timeupdate', () => {
+    if (phase === 'ambient') {
+      // Bucle manual: el final enlaza con el inicio sin costura.
+      if (a.currentTime >= LOOP_END - 0.15) a.currentTime -= LOOP_LEN;
+    } else if (phase === 'outro') {
+      if (a.currentTime >= TOTAL - 0.1 && !a.paused) a.pause();
+    }
   });
 }
 
-// Arranque automático: solo la primera vez, y solo con canción lista + Egipto.
-function tryAuto() {
-  if (autoDone || !ready || !egyptFired || userPaused) return;
-  autoDone = true;
+// Egipto empieza: el ambiente salta a su salida y se desvanece solo.
+document.addEventListener('egypt:start', () => {
   const a = el();
-  if (!a) return;
+  if (!a || phase !== 'ambient') return;
+  phase = 'outro';
+  if (a.paused) return;
+  // Bajada breve de volumen (sin efecto en iOS) para que el salto no suene.
+  try { a.volume = 0; } catch (e) { /* ignorar */ }
+  setTimeout(() => {
+    if (phase !== 'outro') return;
+    a.currentTime = LOOP_END;
+    const back = () => {
+      if (phase === 'outro') {
+        try { a.volume = 1; } catch (e) { /* ignorar */ }
+      }
+    };
+    a.addEventListener('seeked', back, { once: true });
+    setTimeout(back, 500);
+  }, 90);
+});
+
+// Cambia el elemento a la canción real (una sola vez).
+function startSong() {
+  const a = el();
+  if (!a || !ready) return;
+  autoDone = true;
+  phase = 'song';
+  try { a.volume = 1; } catch (e) { /* iOS: solo lectura */ }
+  a.src = songUrl;
+  if (userPaused) {
+    // Ella pausó el ambiente: la canción queda lista, sin sonar.
+    setToggle(false);
+    showToggle();
+    return;
+  }
   const p = a.play();
   if (p && typeof p.then === 'function') {
     p.then(() => {}, () => showFallback());
   }
+}
+
+// Arranque único: con canción lista + Egipto.
+function tryAuto() {
+  if (autoDone || !ready || !egyptFired) return;
+  startSong();
 }
 
 // El evento puede llegar antes de initAudio o de loadSong: se registra siempre.
@@ -163,10 +219,17 @@ export function initAudio(closing) {
   wire(a);
 
   toggle.addEventListener('click', () => {
-    if (!ready) return;
+    if (phase === 'none') return;
+    const tryPlay = () => {
+      const p = a.play();
+      if (p && p.catch) p.catch(() => {});
+    };
     if (a.paused || a.ended) {
       userPaused = false;
-      playSong();
+      if (phase === 'song') playSong();
+      else if (phase === 'ambient') tryPlay();
+      else if (a.currentTime < TOTAL - 0.2 && !a.ended) tryPlay();
+      else if (ready && egyptFired) startSong();
     } else {
       userPaused = true;
       a.pause();
@@ -180,11 +243,11 @@ export function initAudio(closing) {
     });
   });
 
-  // Si Egipto y la canción ya estaban listos antes de crear la UI.
-  if (isSong(a) && !a.paused) {
+  // Si algo ya sonaba antes de crear la UI (ambiente o canción).
+  if (phase !== 'none' && !a.paused) {
     setToggle(true);
     showToggle();
-  } else if (ready && autoDone && a.paused && !a.ended && !userPaused && isSong(a) && a.currentTime === 0) {
+  } else if (phase === 'song' && a.paused && !a.ended && !userPaused && a.currentTime === 0) {
     showFallback();
   } else {
     tryAuto();

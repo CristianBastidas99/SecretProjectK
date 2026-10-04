@@ -51,10 +51,38 @@ function fitStrokes(roots) {
   });
 }
 
+// Baile de la sección 11: body.music-on mientras suena la canción real (src blob:, no el WAV de
+// silencio del desbloqueo). --dz-t desfasa el ciclo con la posición de la canción (16 tiempos a 108 BPM).
+let danceSync = () => {};
+function initDance() {
+  const a = document.getElementById('song');
+  if (!a) return;
+  const body = document.body;
+  const CYCLE = (16 * 60) / 108;
+  // Cada llamada reinicia las animaciones del baile con el desfase de la canción (retardo negativo).
+  const sync = () => {
+    const live = !a.paused && !a.ended && String(a.src).startsWith('blob:');
+    if (live) {
+      body.style.setProperty('--dz-t', (-(a.currentTime % CYCLE)).toFixed(3) + 's');
+      if (body.classList.contains('music-on')) {
+        body.classList.remove('music-on');
+        void body.offsetWidth;
+      }
+      body.classList.add('music-on');
+    } else {
+      body.classList.remove('music-on');
+    }
+  };
+  danceSync = sync;
+  ['playing', 'pause', 'ended', 'seeked', 'emptied'].forEach((ev) => a.addEventListener(ev, sync));
+  sync();
+}
+
 export function initAnimations(root, ending) {
   const sections = Array.from(root.querySelectorAll('.sec'));
   const total = sections.length;
   if (!total) return;
+  initDance();
 
   // Indicador fijo NN / 12
   let progress = document.getElementById('progress');
@@ -90,7 +118,11 @@ export function initAnimations(root, ending) {
   };
   const visIO = new IntersectionObserver(
     (entries) => {
-      entries.forEach((e) => e.target.classList.toggle('is-vis', e.isIntersecting));
+      entries.forEach((e) => {
+        e.target.classList.toggle('is-vis', e.isIntersecting);
+        // Al volver a ver la sección 11 el baile se reajusta al compás de la canción.
+        if (e.isIntersecting && e.target === sections[10]) danceSync();
+      });
     },
     { rootMargin: '10% 0px' }
   );

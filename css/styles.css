@@ -243,9 +243,9 @@ button, input { font: inherit; color: inherit; }
 
 .bq {
   position: absolute;
-  bottom: 0;
-  width: 144px;
-  height: 297px;
+  bottom: calc(50% - 422px);
+  width: 156px;
+  height: 321px;
   overflow: visible;
   fill: none;
   stroke-width: 1.8;
@@ -304,17 +304,13 @@ button, input { font: inherit; color: inherit; }
 }
 
 @media (max-width: 340px) {
-  .bq { width: 120px; height: 247px; bottom: 24px; }
-  .bq-l { left: -34px; }
-  .bq-r { right: -34px; }
-}
-
-@media (min-width: 380px) and (min-height: 740px) {
-  .bq { width: 156px; height: 321px; }
+  .bq { width: 110px; height: 227px; bottom: calc(50% - 322px); }
+  .bq-l { left: calc(-26px + var(--safe-l)); }
+  .bq-r { right: calc(-26px + var(--safe-r)); }
 }
 
 @media (min-width: 900px) {
-  .bq { width: 220px; height: 453px; stroke-width: 1.5; }
+  .bq { width: clamp(180px, 29vh, 260px); height: auto; aspect-ratio: 200 / 412; bottom: 0; stroke-width: 1.5; }
   .bq-l { left: max(2vw, calc(50vw - 540px)); }
   .bq-r { right: max(2vw, calc(50vw - 540px)); }
 }
@@ -1341,4 +1337,68 @@ circle.lv-pulse { --s: 1.7; }
 @media (prefers-reduced-motion: reduce) {
   [class*="lv-"] { animation: none !important; }
   .lv-run, .lv-glint, .lv-flow { opacity: 0 !important; }
+}
+
+/* === BLOQUE: baile === */
+/* Sección 11: bailarín de cinco poses. Entrada: solo la pose 1 (los trazos .draw se dibujan y los
+   rellenos aparecen después). Viva (.is-alive): balanceo lento. Con la canción sonando
+   (body.music-on, lo pone animations.js) las poses se alternan con cortes al compás (108 BPM:
+   1 tiempo = 0.5556 s; ciclo de 16 tiempos), el cuerpo rebota y el halo late. --dz-t desfasa el
+   ciclo con la posición de la canción. Solo opacity y transform de grupos; fuera de pantalla
+   se pausa (--lvps). Rellenos: piel/vacío = fondo, traje = acento diluido, pelo = tinta. */
+#s11 .sec-ill { width: clamp(250px, 82vw, 310px); }
+.dz-b, .dz-g, .dz-hair { fill-opacity: 0; transition: fill-opacity 0.8s ease 1.3s, fill 1.2s ease; }
+.sec.is-in .dz-b, .sec.is-in .dz-g, .sec.is-in .dz-hair { fill-opacity: 1; }
+.dz-b { fill: var(--bg); }
+.dz-g { fill: color-mix(in srgb, var(--accent) 17%, var(--bg)); }
+.dz-hair { fill: var(--fg); }
+.dz-gh { stroke: none; }
+.dz-hl { stroke: var(--bg); }
+.dz-pose { opacity: 0; }
+.dz-pose.dz-p1 { opacity: 1; }
+.dz-dancer, .dz-halo { transform-box: view-box; }
+.dz-dancer { transform-origin: 100px 184px; }
+.dz-halo { transform-origin: 100px 96px; }
+
+.sec.is-alive .dz-dancer { animation: dz-idle 7s ease-in-out infinite; }
+.sec.is-alive .dz-halo { animation: dz-breathe 6.5s ease-in-out infinite; }
+
+body.music-on .sec.is-alive .dz-dancer { animation: dz-bob 1.1111s ease-in-out var(--dz-t, 0s) infinite; }
+body.music-on .sec.is-alive .dz-halo { animation: dz-beat 0.5556s ease-out var(--dz-t, 0s) infinite; }
+body.music-on .sec.is-alive .dz-pose { animation-duration: 8.8889s; animation-timing-function: linear; animation-delay: var(--dz-t, 0s); animation-iteration-count: infinite; }
+body.music-on .sec.is-alive .dz-p1 { animation-name: dz-p1; }
+body.music-on .sec.is-alive .dz-p2 { animation-name: dz-p2; }
+body.music-on .sec.is-alive .dz-p3 { animation-name: dz-p3; }
+body.music-on .sec.is-alive .dz-p4 { animation-name: dz-p4; }
+body.music-on .sec.is-alive .dz-p5 { animation-name: dz-p5; }
+.sec.is-alive .dz-dancer, .sec.is-alive .dz-halo, .sec.is-alive .dz-pose,
+body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, body.music-on .sec.is-alive .dz-pose { animation-play-state: var(--lvps, running); }
+
+@keyframes dz-idle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-1.2px) rotate(0.5deg); }
+}
+@keyframes dz-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.018); }
+}
+@keyframes dz-bob {
+  0%, 100% { transform: translateY(2.4px) rotate(0.8deg); }
+  22% { transform: translateY(-1.8px) rotate(0.2deg); }
+  50% { transform: translateY(2.4px) rotate(-0.8deg); }
+  72% { transform: translateY(-1.8px) rotate(-0.2deg); }
+}
+@keyframes dz-beat {
+  0% { transform: scale(1.04); }
+  45%, 100% { transform: scale(1); }
+}
+@keyframes dz-p1 { 0% { opacity: 1; } 12.45% { opacity: 1; } 12.5% { opacity: 0; } 93.7% { opacity: 0; } 93.75% { opacity: 1; } 100% { opacity: 1; } }
+@keyframes dz-p2 { 0% { opacity: 0; } 12.45% { opacity: 0; } 12.5% { opacity: 1; } 18.7% { opacity: 1; } 18.75% { opacity: 0; } 43.7% { opacity: 0; } 43.75% { opacity: 1; } 56.2% { opacity: 1; } 56.25% { opacity: 0; } 81.2% { opacity: 0; } 81.25% { opacity: 1; } 87.45% { opacity: 1; } 87.5% { opacity: 0; } 100% { opacity: 0; } }
+@keyframes dz-p3 { 0% { opacity: 0; } 18.7% { opacity: 0; } 18.75% { opacity: 1; } 24.95% { opacity: 1; } 25% { opacity: 0; } 56.2% { opacity: 0; } 56.25% { opacity: 1; } 68.7% { opacity: 1; } 68.75% { opacity: 0; } 87.45% { opacity: 0; } 87.5% { opacity: 1; } 93.7% { opacity: 1; } 93.75% { opacity: 0; } 100% { opacity: 0; } }
+@keyframes dz-p4 { 0% { opacity: 0; } 37.45% { opacity: 0; } 37.5% { opacity: 1; } 43.7% { opacity: 1; } 43.75% { opacity: 0; } 68.7% { opacity: 0; } 68.75% { opacity: 1; } 74.95% { opacity: 1; } 75% { opacity: 0; } 100% { opacity: 0; } }
+@keyframes dz-p5 { 0% { opacity: 0; } 24.95% { opacity: 0; } 25% { opacity: 1; } 37.45% { opacity: 1; } 37.5% { opacity: 0; } 74.95% { opacity: 0; } 75% { opacity: 1; } 81.2% { opacity: 1; } 81.25% { opacity: 0; } 100% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .dz-dancer, .dz-halo, .dz-pose { animation: none !important; }
+  .dz-b, .dz-g, .dz-hair { fill-opacity: 1; transition: none; }
 }

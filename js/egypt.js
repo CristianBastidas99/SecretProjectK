@@ -27,6 +27,13 @@ function colorAt(p) {
 }
 
 let readyFired = false;
+let startFired = false;
+function fireEgyptStart() {
+  if (startFired) return;
+  startFired = true;
+  document.dispatchEvent(new CustomEvent('egypt:start'));
+}
+
 export function fireEgyptReady() {
   if (readyFired) return;
   readyFired = true;
@@ -134,6 +141,7 @@ export function initEgypt(root, opts) {
       }
     }
 
+    if (p > 0.03) fireEgyptStart();
     if (p >= 0.93) fireEgyptReady();
   }
 
@@ -146,7 +154,10 @@ export function initEgypt(root, opts) {
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule);
   document.addEventListener('section:active', (e) => {
-    if (e.detail && e.detail.index >= 11) fireEgyptReady();
+    if (e.detail && e.detail.index >= 11) {
+      fireEgyptStart();
+      fireEgyptReady();
+    }
     lastP = -2;
     schedule();
   });
