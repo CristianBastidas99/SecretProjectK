@@ -119,18 +119,143 @@ function makeTransition(jobs) {
   return wrap;
 }
 
+// Rosas: los dibujos base (r01-r05, r11) se clonan en las ranuras [data-slot] de las enredaderas y el lecho.
+const ROSE_SLOTS = ['r01', 'r02', 'r03', 'r04', 'r05', 'r11'];
+
+function fillSlots(svg, symbols) {
+  svg.querySelectorAll('[data-slot]').forEach((slot) => {
+    const src = symbols[slot.getAttribute('data-slot')];
+    slot.removeAttribute('data-slot');
+    if (!src) {
+      slot.remove();
+      return;
+    }
+    const pop = document.createElementNS(SVG_NS, 'g');
+    pop.setAttribute('class', 'rz-pop');
+    Array.from(src.childNodes).forEach((n) => pop.appendChild(n.cloneNode(true)));
+    slot.appendChild(pop);
+  });
+}
+
+// Trazos que se dibujan: todo menos los pétalos (que se abren por capas).
+function prepareRz(svg) {
+  let i = 0;
+  svg.querySelectorAll('[pathLength]').forEach((p) => {
+    if (p.closest('.lay, .sep')) return;
+    p.classList.add('draw');
+    p.style.setProperty('--i', String(i % 10));
+    i += 1;
+  });
+}
+
+function rzSvg(src, symbols) {
+  const svg = baseSvg(src);
+  fillSlots(svg, symbols);
+  prepareRz(svg);
+  return svg;
+}
+
+function buildRoses(night, jobs, gift) {
+  const names = ['r06', 'r07', 'r08', 'r09', 'r10'].concat(ROSE_SLOTS);
+  const art = el('div', 'rz');
+  art.setAttribute('aria-hidden', 'true');
+  const vl = el('div', 'rz-vine rz-vine-l');
+  const vr = el('div', 'rz-vine rz-vine-r');
+  const bed = el('div', 'rz-bed');
+  const fall = el('div', 'rz-fall');
+  art.append(vl, vr, bed, fall);
+  night.appendChild(art);
+
+  jobs.push(
+    Promise.all(names.map((n) => loadSvg('svg/illustrations/' + n + '.svg'))).then((list) => {
+      const map = {};
+      names.forEach((n, i) => {
+        map[n] = list[i];
+      });
+      const symbols = {};
+      ROSE_SLOTS.forEach((n) => {
+        symbols[n] = map[n];
+      });
+      if (map.r06) vl.appendChild(rzSvg(map.r06, symbols));
+      if (map.r07) vr.appendChild(rzSvg(map.r07, symbols));
+      if (map.r08) bed.appendChild(rzSvg(map.r08, symbols));
+      // Pétalos que caen muy despacio.
+      if (map.r09) {
+        const spec = [
+          [12, 17, 0, 0.9], [27, 23, 6, 0.7], [41, 19, 12, 1], [58, 26, 3, 0.75], [73, 21, 15, 0.85], [88, 24, 9, 0.7]
+        ];
+        spec.forEach(([x, dur, delay, sc], i) => {
+          const p = el('span', 'rz-petal');
+          p.style.setProperty('--x', x + '%');
+          p.style.setProperty('--fd', dur + 's');
+          p.style.setProperty('--fo', delay + 's');
+          p.style.setProperty('--fs', String(sc));
+          p.style.setProperty('--dx', (i % 2 ? -1 : 1) * (26 + i * 5) + 'px');
+          const s = baseSvg(map.r09);
+          s.classList.add('rz-petal-svg');
+          p.appendChild(s);
+          fall.appendChild(p);
+        });
+      }
+      if (gift && map.r10) {
+        const holder = gift.querySelector('.gift-env');
+        if (holder) holder.appendChild(baseSvg(map.r10));
+      }
+    })
+  );
+}
+
+function buildGift(text) {
+  const wrap = el('div', 'gift');
+  const btn = el('button', 'gift-btn');
+  btn.type = 'button';
+  btn.setAttribute('aria-label', 'Abrir');
+  btn.setAttribute('aria-expanded', 'false');
+  btn.setAttribute('aria-controls', 'gift-card');
+  const bob = el('span', 'gift-bob');
+  const env = el('span', 'gift-env');
+  bob.appendChild(env);
+  btn.appendChild(bob);
+  const card = el('p', 'gift-card', text);
+  card.id = 'gift-card';
+  card.setAttribute('aria-live', 'polite');
+  wrap.append(btn, card);
+
+  const setOpen = (on) => {
+    wrap.classList.toggle('is-open', on);
+    btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    btn.setAttribute('aria-label', on ? 'Cerrar' : 'Abrir');
+  };
+  btn.addEventListener('click', () => setOpen(!wrap.classList.contains('is-open')));
+  wrap.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && wrap.classList.contains('is-open')) setOpen(false);
+  });
+  return wrap;
+}
+
 export async function renderEnding(closing, footer) {
   const c = closing || {};
+  const jobs = [];
+
+  // Atardecer: el sol se oculta tras las pirámides.
+  const dusk = el('div', 'end-dusk');
   const scene = el('div', 'end-scene');
   scene.setAttribute('aria-hidden', 'true');
-  const job = loadSvg('svg/illustrations/e09.svg').then((src) => {
-    if (!src) return;
-    const svg = baseSvg(src);
-    prepareDraw(svg);
-    scene.appendChild(svg);
-  });
+  jobs.push(
+    loadSvg('svg/illustrations/e09.svg').then((src) => {
+      if (!src) return;
+      const svg = baseSvg(src);
+      prepareDraw(svg);
+      scene.appendChild(svg);
+    })
+  );
+  dusk.appendChild(scene);
+
+  // Noche: rosas, enredaderas, texto y sobre.
+  const night = el('div', 'end-night');
+  const gift = typeof c.gift === 'string' && c.gift.trim() ? buildGift(c.gift.trim()) : null;
+  buildRoses(night, jobs, gift);
   const wrap = el('div', 'end-inner');
-  wrap.appendChild(scene);
   if (c.end) wrap.appendChild(el('p', 'end-text', c.end));
   if (c.credit) {
     const p = el('p', 'end-credit');
@@ -143,8 +268,11 @@ export async function renderEnding(closing, footer) {
     p.appendChild(a);
     wrap.appendChild(p);
   }
-  footer.replaceChildren(wrap);
-  await job;
+  night.appendChild(wrap);
+  if (gift) night.appendChild(gift);
+
+  footer.replaceChildren(dusk, night);
+  await Promise.all(jobs);
 }
 
 function makeDivider() {

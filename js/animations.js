@@ -17,7 +17,8 @@ const THEME_COLORS = {
   'paper-light': '#FAF6EE',
   sand: '#E8D6B7',
   gold: '#D2AE72',
-  dusk: '#C99A5B'
+  dusk: '#C99A5B',
+  'rose-night': '#232A35'
 };
 
 function setThemeColor(theme) {
@@ -39,7 +40,7 @@ const STROKE_PX = 1.35;
 function fitStrokes(roots) {
   const svgs = [];
   roots.forEach((r) => {
-    if (r) r.querySelectorAll('.frame svg, .sec-ill svg, .et-piece svg, .end-scene svg').forEach((n) => svgs.push(n));
+    if (r) r.querySelectorAll('.frame svg, .sec-ill svg, .et-piece svg, .end-scene svg, .rz > .rz-vine > svg, .rz > .rz-bed > svg').forEach((n) => svgs.push(n));
   });
   const widths = svgs.map((n) => n.getBoundingClientRect().width); // todas las lecturas primero
   svgs.forEach((n, i) => {
@@ -67,7 +68,11 @@ export function initAnimations(root, ending) {
 
   if (!('IntersectionObserver' in window)) {
     sections.forEach((s) => s.classList.add('is-in', 'is-gp'));
-    if (ending) ending.classList.add('is-in');
+    if (ending) {
+      ending.classList.add('is-in');
+      const nt = ending.querySelector('.end-night');
+      if (nt) nt.classList.add('is-bloom');
+    }
     fireEgyptReady();
     return;
   }
@@ -190,33 +195,147 @@ export function initAnimations(root, ending) {
   initGlyphPath(sections[11]);
   if (ending) initEnding(ending);
 
-  // Final: atardecer; el indicador se retira.
+  // Final: del atardecer a la noche. El fondo se interpola con el scroll (solo variables del body);
+  // las rosas se abren una vez al llegar la noche.
   function initEnding(foot) {
-    const endIO = new IntersectionObserver(
+    const dusk = foot.querySelector('.end-dusk');
+    const night = foot.querySelector('.end-night');
+    const scene = foot.querySelector('.end-scene');
+    if (!dusk || !night) return;
+    const D = { bg: [201, 154, 91], fg: [36, 34, 31], soft: [51, 41, 31], accent: [79, 47, 24] };
+    const N = { bg: [35, 42, 53], fg: [230, 221, 203], soft: [181, 174, 160], accent: [205, 170, 112] };
+    // El cielo pasa por un malva apagado (no por un gris) camino de la noche.
+    const SKY = [[0, [201, 154, 91]], [0.4, [140, 101, 86]], [0.72, [78, 68, 84]], [1, [35, 42, 53]]];
+    const sky = (t) => {
+      for (let i = 1; i < SKY.length; i++) {
+        if (t <= SKY[i][0]) {
+          const [p0, c0] = SKY[i - 1];
+          const [p1, c1] = SKY[i];
+          return mix(c0, c1, (t - p0) / (p1 - p0));
+        }
+      }
+      return mix(N.bg, N.bg, 0);
+    };
+    const mix = (a, b, t) => 'rgb(' + a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(',') + ')';
+    const ease = (t) => t * t * (3 - 2 * t);
+    const body = document.body;
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let footVisible = false;
+    let duskSeen = false;
+    let curP = 0;
+    let bloomed = false;
+    let ticking = false;
+    let lastBand = -1;
+    let lastKey = '';
+
+    const clearScrub = () => {
+      if (!body.classList.contains('is-scrub-end')) return;
+      body.classList.remove('is-scrub-end');
+      body.classList.remove('is-scrub');
+      ['--bg', '--fg', '--fg-soft', '--accent'].forEach((k) => body.style.removeProperty(k));
+    };
+
+    const sync = () => {
+      if (!footVisible) return;
+      if (curP >= 1) {
+        clearScrub();
+        if (body.dataset.theme !== 'rose-night') {
+          body.dataset.theme = 'rose-night';
+          setThemeColor('rose-night');
+        }
+      } else if (curP > 0) {
+        const t = ease(Math.max(0, (curP - 0.45) / 0.55));
+        body.classList.add('is-scrub', 'is-scrub-end');
+        body.style.setProperty('--bg', sky(curP));
+        body.style.setProperty('--fg', mix(D.fg, N.fg, t));
+        body.style.setProperty('--fg-soft', mix(D.soft, N.soft, t));
+        body.style.setProperty('--accent', mix(D.accent, N.accent, t));
+        if (body.dataset.theme !== 'dusk') body.dataset.theme = 'dusk';
+        const band = Math.round(curP * 10);
+        if (band !== lastBand) {
+          lastBand = band;
+          setThemeColor(curP > 0.5 ? 'rose-night' : 'dusk');
+        }
+      } else if (duskSeen) {
+        clearScrub();
+        if (body.dataset.theme !== 'dusk') {
+          body.dataset.theme = 'dusk';
+          setThemeColor('dusk');
+        }
+      }
+    };
+
+    const frame = () => {
+      ticking = false;
+      const vh = window.innerHeight;
+      const top = night.getBoundingClientRect().top;
+      curP = Math.min(1, Math.max(0, (vh * 0.85 - top) / (vh * 0.55)));
+      if (!bloomed && top < vh * 0.6) {
+        bloomed = true;
+        night.classList.add('is-bloom');
+      }
+      const key = curP.toFixed(3) + '|' + footVisible + '|' + duskSeen;
+      if (key !== lastKey) {
+        lastKey = key;
+        if (scene) {
+          const o = curP > 0.08 ? 1 - ease(Math.min(1, (curP - 0.08) / 0.5)) : 1;
+          scene.style.opacity = o < 1 ? o.toFixed(3) : '';
+        }
+        sync();
+      }
+    };
+    const schedule = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(frame);
+    };
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+
+    // El atardecer (el sol baja) empieza cuando la escena entra a la vista.
+    const duskIO = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          endingVisible = e.isIntersecting;
-          syncProgress();
           if (e.isIntersecting) {
             foot.classList.add('is-in');
-            document.body.dataset.theme = 'dusk';
-            setThemeColor('dusk');
-          } else if (e.boundingClientRect.top > 0 && active) {
-            document.body.dataset.theme = active.dataset.theme || 'paper';
-            setThemeColor(active.dataset.theme);
+            duskSeen = true;
+            schedule();
           }
-          update();
         });
       },
       { threshold: 0.3 }
     );
-    endIO.observe(foot);
-    document.addEventListener('section:active', (e) => {
-      if (endingVisible) {
-        document.body.dataset.theme = 'dusk';
-        setThemeColor('dusk');
+    duskIO.observe(dusk);
+
+    const footIO = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        footVisible = e.isIntersecting;
+        endingVisible = e.isIntersecting;
+        syncProgress();
+        if (!e.isIntersecting && e.boundingClientRect.top > 0) {
+          // Se vuelve a subir: el final queda por debajo y se restaura el tema de la sección.
+          duskSeen = false;
+          clearScrub();
+          if (active) {
+            document.body.dataset.theme = active.dataset.theme || 'paper';
+            setThemeColor(active.dataset.theme);
+          }
+        }
+        update();
+        schedule();
+      });
+    });
+    footIO.observe(foot);
+
+    document.addEventListener('section:active', () => {
+      if (footVisible) {
+        lastKey = '';
+        schedule();
       }
     });
+    if (reduceMotion) night.classList.add('is-reduce');
+    schedule();
   }
 }
 

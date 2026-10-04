@@ -337,6 +337,7 @@ body[data-theme="paper-light"] { --bg: #FAF6EE;       --fg: var(--ink); --fg-sof
 body[data-theme="sand"]        { --bg: var(--sand-deep); --fg: var(--ink); --fg-soft: #3A342E;      --accent: #52301A; --hl: #432715; }
 body[data-theme="gold"]        { --bg: #D2AE72;       --fg: var(--ink); --fg-soft: #3A342E;         --accent: #52301A; --hl: #4E2D19; }
 body[data-theme="dusk"]        { --bg: #C99A5B;       --fg: var(--ink); --fg-soft: #33291F;         --accent: #4F2F18; }
+body[data-theme="rose-night"]  { --bg: #232A35;       --fg: #E6DDCB;    --fg-soft: #B5AEA0;         --accent: #CDAA70; }
 
 /* === BLOQUE: carta === */
 #letter { display: block; }
@@ -436,6 +437,8 @@ body[data-theme="dusk"]        { --bg: #C99A5B;       --fg: var(--ink); --fg-sof
 /* Detalle fino (texturas, sombreados) y trazo secundario atenuado. */
 .sec-ill svg .fine, .et-piece svg .fine, .end-scene svg .fine { stroke-width: calc(var(--lw, 1.25) * .55); }
 .sec-ill svg .soft, .et-piece svg .soft, .end-scene svg .soft { opacity: .55; }
+.sec-ill svg .emerald { stroke: var(--emerald, #2F6B5A); }
+.sec-ill svg .fill-emerald { fill: color-mix(in srgb, var(--emerald, #2F6B5A) 22%, transparent); stroke: none; }
 
 .sec-sep {
   display: flex;
@@ -708,52 +711,237 @@ body.is-scrub { transition: none; }
   transition: stroke-dashoffset 2.6s cubic-bezier(0.4, 0, 0.2, 1) calc(2.2s + var(--j, 0) * 0.3s);
 }
 
-/* Final */
-#ending {
+/* Final: atardecer -> noche con rosas */
+#ending { display: block; overflow: hidden; color: var(--fg); }
+
+.end-dusk {
   min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8svh calc(26px + var(--safe-r)) calc(8svh + var(--safe-b)) calc(26px + var(--safe-l));
-  overflow: hidden;
-  color: var(--fg);
+  padding: 8svh calc(26px + var(--safe-r)) 8svh calc(26px + var(--safe-l));
 }
-.end-inner { width: 100%; max-width: 520px; text-align: center; }
 .end-scene { width: min(86vw, 380px); margin: 0 auto; color: var(--fg-soft); }
 .end-scene svg { display: block; width: 100%; height: auto; overflow: hidden; stroke-width: var(--lw, 1.25); }
 .end-scene .accent { stroke: var(--accent); }
-.end-scene .occlude { fill: var(--bg); stroke: none; transition: fill 1.2s ease; }
+.end-scene .occlude { fill: var(--bg); stroke: none; }
+body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
 .end-scene .sun { transform: translateY(-78px); }
 #ending.is-in .sun { transform: translateY(-14px); transition: transform 9s cubic-bezier(0.35, 0.05, 0.3, 1) 1.2s; }
-#ending .draw { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.8s var(--ease) calc(var(--i, 0) * 0.08s); }
-#ending.is-in .draw { stroke-dashoffset: 0; }
+.end-scene .draw { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.8s var(--ease) calc(var(--i, 0) * 0.08s); }
+#ending.is-in .end-scene .draw { stroke-dashoffset: 0; }
+
+.end-night {
+  --bw: min(100vw, 560px);
+  --c-rose: #8FA3BC;
+  --c-rose-d: #5E7591;
+  --c-rose-f: #29343F;
+  --c-rose-f2: #2E3B4A;
+  --c-gold: #CDAA70;
+  --c-stem: #7D8A70;
+  --c-leaf: #26322F;
+  --c-vein: #61705B;
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(96px, 34svh, 290px) calc(26px + var(--safe-r)) 0 calc(26px + var(--safe-l));
+  overflow: hidden;
+  color: var(--fg);
+}
+.end-inner { position: relative; z-index: 3; width: 100%; max-width: 520px; text-align: center; }
 .end-text {
-  margin: 28px 0 0;
+  margin: 0;
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 500;
   font-size: clamp(64px, 20vw, 108px);
   line-height: 1;
   opacity: 0;
-  transition: opacity 2.2s ease 4s;
+  transition: opacity 2.4s ease 1.6s;
 }
 .end-credit {
-  margin: 30px 0 0;
+  margin: 22px auto 0;
+  max-width: 250px;
   font-family: var(--font-mono);
   font-size: 12px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
+  text-wrap: balance;
   line-height: 1.6;
   opacity: 0;
-  transition: opacity 2s ease 5.5s;
+  transition: opacity 2s ease 4s;
 }
 .end-credit a { color: var(--fg-soft); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
-#ending.is-in .end-text { opacity: 1; }
-#ending.is-in .end-credit { opacity: 0.85; }
+.end-night.is-bloom .end-text { opacity: 1; }
+.end-night.is-bloom .end-credit { opacity: 0.85; }
+
+/* Rosas y enredaderas */
+.rz { position: absolute; z-index: 1; left: 50%; width: min(100%, 760px); margin-left: calc(min(100%, 760px) / -2); top: 0; bottom: 0; pointer-events: none; }
+.rz-vine { position: absolute; bottom: 0; width: clamp(92px, 30vw, 170px); aspect-ratio: 120 / 740; transform-origin: 50% 100%; animation: rz-sway var(--sd, 9s) ease-in-out var(--so, 0s) infinite alternate; }
+.rz-vine-l { left: 0; --sd: 9s; --so: -2s; }
+.rz-vine-r { right: 0; --sd: 11s; --so: -5s; }
+.rz-bed { position: absolute; left: 50%; bottom: 0; width: var(--bw); margin-left: calc(var(--bw) / -2); aspect-ratio: 400 / 230; }
+.rz svg { display: block; width: 100%; height: 100%; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.rz svg * { stroke-width: calc(var(--lw, 1.25) * 0.9 / var(--s, 1)); }
+.rz svg .fine { stroke-width: calc(var(--lw, 1.25) * 0.5 / var(--s, 1)); }
+.rz svg .soft { opacity: 0.6; }
+.rz svg .stem { stroke-width: calc(var(--lw, 1.25) * 1.5); }
+.rz svg .stem2 { stroke-width: calc(var(--lw, 1.25) * 1.15); }
+.rz .rs { stroke: var(--c-rose); }
+.rz .rd { stroke: var(--c-rose-d); }
+.rz .rf { fill: var(--c-rose-f); }
+.rz .rf2 { fill: var(--c-rose-f2); }
+.rz .gd { stroke: var(--c-gold); }
+.rz .st, .rz .th { stroke: var(--c-stem); }
+.rz .lf { fill: var(--c-leaf); stroke: var(--c-stem); }
+.rz .vn { stroke: var(--c-vein); }
+.rz svg .th { fill: none; }
+
+/* Estado inicial (antes de abrirse) */
+.rz .draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.rz .stem, .rz .stem2 { transition: stroke-dashoffset var(--dur, 3.4s) cubic-bezier(0.45, 0.05, 0.3, 1) var(--dl, 0s); }
+.rz .draw:not(.stem):not(.stem2) { transition: stroke-dashoffset 1.2s var(--ease) calc(var(--dl, 0s) + var(--i, 0) * 0.05s); }
+.rz-pop { opacity: 0; transform: scale(0.2) rotate(-14deg); transition: transform 1.9s var(--ease) var(--dl, 0s), opacity 1.2s ease var(--dl, 0s); }
+.rz .lay { transform: scale(0.55); opacity: 0.2; transition: transform 1.6s var(--ease), opacity 1.2s ease; }
+.rz .lay-i { transition-delay: calc(var(--dl, 0s) + 0.1s); }
+.rz .lay-m { transition-delay: calc(var(--dl, 0s) + 0.35s); }
+.rz .lay-o { transition-delay: calc(var(--dl, 0s) + 0.6s); }
+.rz .sep { opacity: 0; transition: opacity 1.2s ease calc(var(--dl, 0s) + 0.8s); }
+
+/* Abierto */
+.end-night.is-bloom .rz .draw { stroke-dashoffset: 0; }
+.end-night.is-bloom .rz-pop { opacity: 1; transform: none; }
+.end-night.is-bloom .rz .lay { transform: none; opacity: 1; }
+.end-night.is-bloom .rz .sep { opacity: 1; }
+
+/* Brisa */
+.end-night.is-bloom .rz-vine { will-change: transform; }
+
+@keyframes rz-sway {
+  from { transform: rotate(-0.7deg); }
+  to { transform: rotate(0.9deg); }
+}
+
+/* Pétalos que caen */
+.rz-fall { position: absolute; inset: 0; overflow: hidden; }
+.rz-petal { position: absolute; top: -30px; left: var(--x, 50%); width: 14px; height: 20px; opacity: 0; }
+.rz-petal svg { display: block; width: 100%; height: 100%; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 0.9; }
+.rz-petal .rs { stroke: var(--c-rose); }
+.rz-petal .rd { stroke: var(--c-rose-d); }
+.rz-petal .rf { fill: var(--c-rose-f2); }
+.rz-petal .fine { stroke-width: 0.6; }
+.end-night.is-bloom .rz-petal { animation: rz-fall var(--fd, 20s) linear calc(var(--fo, 0s) + 5s) infinite; will-change: transform, opacity; }
+@keyframes rz-fall {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(0deg) scale(var(--fs, 1)); }
+  8% { opacity: 0.75; }
+  35% { transform: translate3d(calc(var(--dx, 30px) * 0.6), 40svh, 0) rotate(110deg) scale(var(--fs, 1)); }
+  65% { transform: translate3d(calc(var(--dx, 30px) * -0.3), 78svh, 0) rotate(210deg) scale(var(--fs, 1)); }
+  92% { opacity: 0.6; }
+  100% { opacity: 0; transform: translate3d(calc(var(--dx, 30px) * 0.5), 104svh, 0) rotate(300deg) scale(var(--fs, 1)); }
+}
+
+/* Sobre pequeño */
+.gift {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: calc(var(--bw) * 0.235 + var(--safe-b));
+  width: max(92px, calc(var(--bw) * 0.25));
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 1.6s ease 3.4s;
+}
+.end-night.is-bloom .gift { opacity: 1; }
+.gift-btn {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.gift-btn:focus-visible { outline: 1px solid var(--accent); outline-offset: 5px; }
+.gift-bob { display: block; animation: gift-bob 6.5s ease-in-out infinite; will-change: transform; }
+.gift-env { display: block; }
+.gift-env svg { display: block; width: 100%; height: auto; overflow: visible; fill: none; stroke: #4A4137; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35)); }
+.me-paper { fill: #D3CAB8; }
+.me-flap-shape { fill: #DDD5C5; }
+.me-fill { fill: #9A604B; stroke: none; }
+.me-mark { stroke: #EEE7D9; stroke-width: 2.4; opacity: 0.55; transition: opacity 0.4s var(--ease); }
+.me-flap { transform-box: view-box; transform-origin: 160px 20px; transition: transform 0.9s var(--ease), opacity 0.9s var(--ease); }
+.me-half { transform-box: view-box; transform-origin: 160px 129px; transition: transform 0.7s var(--ease), opacity 0.7s var(--ease); }
+.gift.is-open .me-left { transform: translate(-16px, 10px) rotate(-16deg); opacity: 0; }
+.gift.is-open .me-right { transform: translate(16px, 12px) rotate(14deg); opacity: 0; }
+.gift.is-open .me-mark { opacity: 0; }
+.gift.is-open .me-flap { transform: scaleY(-0.8); opacity: 0.92; transition-delay: 0.2s; }
+
+.gift-card {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 16px);
+  width: max-content;
+  max-width: min(268px, 78vw);
+  margin: 0;
+  padding: 14px 20px 16px;
+  background: #F1EADB;
+  color: #2B2722;
+  border-radius: 3px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.35;
+  text-align: center;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 10px) scale(0.96);
+  transform-origin: 50% 100%;
+  transition: opacity 0.5s var(--ease), transform 0.7s var(--ease), visibility 0s linear 0.7s;
+}
+.gift-card::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  background: #F1EADB;
+  transform: rotate(45deg);
+}
+.gift.is-open .gift-card { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); transition-delay: 0.3s, 0.3s, 0s; }
+
+@keyframes gift-bob {
+  0%, 100% { transform: translateY(0) rotate(-1.2deg); }
+  50% { transform: translateY(-4px) rotate(1.2deg); }
+}
+
+@media (max-width: 340px) {
+  .end-night { padding-left: 18px; padding-right: 18px; }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .egypt-transition { height: 150svh; }
   .end-scene .sun, #ending.is-in .sun { transform: translateY(-14px); transition: none; }
-  #ending .draw { stroke-dashoffset: 0; transition: none; }
-  .sec.is-gp .gp-glyph, .sec.is-gp .gp-road { transition: opacity 1s ease; }
-  .end-text, .end-credit { transition-duration: 1s; transition-delay: 0.3s; }
+  .end-scene .draw { stroke-dashoffset: 0; transition: none; }
+  .end-text, .end-credit, .gift { transition-duration: 0.6s; transition-delay: 0s; }
+  .rz .draw { stroke-dashoffset: 0; transition: none; }
+  .rz-pop, .rz .lay, .rz .sep { opacity: 1; transform: none; transition: none; }
+  .rz-vine, .gift-bob, .rz-petal { animation: none; will-change: auto; }
+  .rz-petal { opacity: 0.6; top: var(--y, 20%); }
+  .rz-petal:nth-child(1) { --y: 18%; }
+  .rz-petal:nth-child(2) { --y: 40%; }
+  .rz-petal:nth-child(3) { --y: 62%; }
+  .rz-petal:nth-child(n+4) { display: none; }
+  .me-flap, .me-half, .me-mark, .gift-card { transition-duration: 0.01s; transition-delay: 0s; }
+  .gift.is-open .me-flap { transform: none; opacity: 0; }
+  .gift.is-open .me-left, .gift.is-open .me-right { transform: none; }
 }
