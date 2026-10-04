@@ -278,7 +278,7 @@ body[data-theme="dusk"]        { --bg: #C99A5B;       --fg: var(--ink); --fg-sof
 }
 
 .sec-ill {
-  width: clamp(170px, 52vw, 230px);
+  width: clamp(190px, 60vw, 250px);
   margin: 22px auto 14px;
   color: var(--fg);
 }
@@ -320,6 +320,9 @@ body[data-theme="dusk"]        { --bg: #C99A5B;       --fg: var(--ink); --fg-sof
 .sec-ill svg, .frame svg { stroke-width: var(--lw, 1.25); }
 .sec svg .accent { stroke: var(--accent); }
 .sec svg .fill-accent { fill: var(--accent); stroke: none; }
+/* Detalle fino (texturas, sombreados) y trazo secundario atenuado. */
+.sec-ill svg .fine { stroke-width: calc(var(--lw, 1.25) * .55); }
+.sec-ill svg .soft { opacity: .55; }
 
 .sec-sep {
   display: flex;

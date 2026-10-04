@@ -1,11 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 200 200">
-<path pathLength="1" d="M100 74Q66 60 28 68L27 142Q66 134 100 150"/>
-<path pathLength="1" d="M100 74Q134 60 172 68L173 142Q134 134 100 150"/>
-<path pathLength="1" d="M100 74L100.5 150"/>
-<path pathLength="1" d="M22 150Q64 140 100 158Q136 140 178 150"/>
-<path pathLength="1" d="M27 142L22 150"/><path pathLength="1" d="M173 142L178 150"/>
-<path pathLength="1" d="M42 86Q60 82 80 87"/><path pathLength="1" d="M42 98Q60 94 80 99"/><path pathLength="1" d="M42 110Q56 107 70 110"/>
-<path pathLength="1" d="M126 134Q128 114 130 94"/>
-<path pathLength="1" class="accent" d="M130 94Q121 86 126 78Q132 76 131 86Q133 76 140 76Q144 82 136 90Q142 90 143 96Q138 100 131 94Q126 100 120 94Q121 90 130 94Z"/>
-<path pathLength="1" d="M128 118Q118 112 114 104Q122 104 128 114"/><path pathLength="1" d="M128 110Q138 106 144 112Q138 116 129 112"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+<path pathLength="1" class="soft" d="M14 178Q100 184 186 178"/>
+<path pathLength="1" class="fine soft" d="M30 184Q100 188 170 184"/>
+<path pathLength="1" d="M100 160Q60 148 18 160L16 150L18 78"/>
+<path pathLength="1" d="M100 160Q140 148 182 160L184 150L182 78"/>
+<path pathLength="1" d="M18 160Q60 172 100 168Q140 172 182 160"/>
+<path pathLength="1" d="M100 160L100 168"/>
+<path pathLength="1" d="M24 142Q62 134 100 152"/>
+<path pathLength="1" d="M176 142Q138 134 100 152"/>
+<path pathLength="1" class="fine" d="M24 143.1Q62 136.2 100 154.2"/>
+<path pathLength="1" class="fine" d="M176 143.1Q138 136.2 100 154.2"/>
+<path pathLength="1" class="fine" d="M24 144.2Q62 138.4 100 156.4"/>
+<path pathLength="1" class="fine" d="M176 144.2Q138 138.4 100 156.4"/>
+<path pathLength="1" class="fine" d="M24 145.3Q62 140.6 100 158.6"/>
+<path pathLength="1" class="fine" d="M176 145.3Q138 140.6 100 158.6"/>
+<path pathLength="1" class="fine" d="M24 142L22 152M176 142L178 152"/>
+<path pathLength="1" d="M100 82Q64 62 26 72L24 142Q62 132 100 152"/>
+<path pathLength="1" d="M100 82Q136 62 174 72L176 142Q138 132 100 152"/>
+<path pathLength="1" d="M100 82L100 152"/>
+<path pathLength="1" class="fine" d="M96 86Q64 70 32 77"/>
+<path pathLength="1" class="fine" d="M104 86Q136 70 168 77"/>
+<path pathLength="1" class="soft" d="M100 82Q66 56 30 62Q26 66 26 72"/>
+<path pathLength="1" class="soft" d="M100 82Q134 56 170 62Q174 66 174 72"/>
+<path pathLength="1" class="fine" d="M36 79Q63 74 90 86"/>
+<path pathLength="1" class="fine" d="M36.5 84.6Q63.2 79.3 90 91"/>
+<path pathLength="1" class="fine" d="M37 90.2Q63.5 84.6 90 96"/>
+<path pathLength="1" class="fine" d="M37.5 95.8Q53.8 89.9 70 101"/>
+<path pathLength="1" class="fine" d="M110 87Q137 74 164 80"/>
+<path pathLength="1" class="fine" d="M110 92Q137 79.3 164 85.6"/>
+<path pathLength="1" class="fine" d="M110 97Q130 84.6 150 91.2"/>
+<path pathLength="1" d="M130 140Q126 124 132 108Q135 100 132 94"/>
+<path pathLength="1" d="M129 128Q118 124 114 114Q124 114 129 122"/>
+<path pathLength="1" class="fine" d="M128 126Q122 120 118 116"/>
+<path pathLength="1" d="M130 120Q142 118 148 108Q138 106 131 114"/>
+<path pathLength="1" class="fine" d="M131 116Q138 112 144 109"/>
+<path pathLength="1" class="fine soft" d="M131 134Q122 136 116 132"/>
+<path pathLength="1" class="accent" d="M132 90Q129.5 81.3 133.5 79.1Q136.8 82.4 132 90"/>
+<path pathLength="1" class="accent fine" d="M132.3 87.5L133.2 81.6"/>
+<path pathLength="1" class="accent" d="M132 90Q138.3 83.5 142.2 85.9Q141 90.3 132 90"/>
+<path pathLength="1" class="accent fine" d="M134.3 89.1L139.9 86.8"/>
+<path pathLength="1" class="accent" d="M132 90Q140.7 92.2 140.7 96.8Q136.2 97.9 132 90"/>
+<path pathLength="1" class="accent fine" d="M134 91.5L138.7 95.2"/>
+<path pathLength="1" class="accent" d="M132 90Q134.5 98.7 130.5 100.9Q127.2 97.6 132 90"/>
+<path pathLength="1" class="accent fine" d="M131.7 92.5L130.8 98.4"/>
+<path pathLength="1" class="accent" d="M132 90Q125.7 96.5 121.8 94.1Q123 89.7 132 90"/>
+<path pathLength="1" class="accent fine" d="M129.7 90.9L124.1 93.2"/>
+<path pathLength="1" class="accent" d="M132 90Q123.3 87.8 123.3 83.2Q127.8 82.1 132 90"/>
+<path pathLength="1" class="accent fine" d="M130 88.5L125.3 84.8"/>
+<circle pathLength="1" class="fill-accent" cx="132" cy="90" r="2.4"/>
+<path pathLength="1" d="M39.2 109.8L72.8 104.5L76.8 130.2L43.2 135.5Z"/>
+<path pathLength="1" class="fine" d="M43.8 113.1L69.4 109.1L72.2 126.9L46.6 130.9Z"/>
+<path pathLength="1" class="fine" d="M46.4 129.9L53.4 116.7L60.8 124.6L64.6 116.9L72.1 125.9"/>
+<circle pathLength="1" class="accent fine" cx="65.1" cy="113.8" r="2"/>
+<path pathLength="1" class="accent" d="M46.1 108.7L39.2 109.8L40.3 116.7"/>
+<path pathLength="1" class="accent" d="M65.8 105.6L72.8 104.5L73.9 111.4"/>
+<path pathLength="1" class="accent" d="M69.9 131.3L76.8 130.2L75.7 123.3"/>
+<path pathLength="1" class="accent" d="M50.2 134.4L43.2 135.5L42.1 128.6"/>
+<path pathLength="1" class="accent" d="M100 152Q102 164 100 176"/>
+<path pathLength="1" class="accent" d="M104 152Q106 164 104 176"/>
+<path pathLength="1" class="accent" d="M100 176L102 172L104 176"/>
+<path pathLength="1" class="soft" d="M100 70Q101 66 100 62"/>
+<path pathLength="1" class="fine soft" d="M96 90L95.5 140"/>
+<path pathLength="1" class="fine soft" d="M104 90L104.5 140"/>
+<path pathLength="1" class="fine soft" d="M93.8 91.2L93.3 141.2"/>
+<path pathLength="1" class="fine soft" d="M106.2 91.2L106.7 141.2"/>
+<path pathLength="1" class="fine soft" d="M91.6 92.4L91.1 142.4"/>
+<path pathLength="1" class="fine soft" d="M108.4 92.4L108.9 142.4"/>
+<path pathLength="1" class="fine soft" d="M89.4 93.6L88.9 143.6"/>
+<path pathLength="1" class="fine soft" d="M110.6 93.6L111.1 143.6"/>
+<path pathLength="1" class="fine soft" d="M87.2 94.8L86.7 144.8"/>
+<path pathLength="1" class="fine soft" d="M112.8 94.8L113.3 144.8"/>
+<path pathLength="1" class="fine soft" d="M112 126Q118 124 122 122"/>
+<path pathLength="1" class="fine" d="M142 128Q152 128 164 124"/>
+<path pathLength="1" class="fine" d="M146 134Q156 134 164 130"/>
 </svg>
