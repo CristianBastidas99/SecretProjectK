@@ -698,7 +698,7 @@ body.is-scrub { transition: none; }
 .et-sun .accent { stroke: #8A5A2B; }
 .is-transit .progress { opacity: 0; }
 
-/* Sección 12: glifos y camino */
+/* Última sección: glifos y camino */
 .gp-glyph, .gp-road { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .sec.is-gp .gp-glyph {
   stroke-dashoffset: 0;
@@ -1340,13 +1340,13 @@ circle.lv-pulse { --s: 1.7; }
 }
 
 /* === BLOQUE: baile === */
-/* Sección 11: bailarín de cinco poses. Entrada: solo la pose 1 (los trazos .draw se dibujan y los
+/* Sección de la canción (.sec-song, penúltima): bailarín de cinco poses. Entrada: solo la pose 1 (los trazos .draw se dibujan y los
    rellenos aparecen después). Viva (.is-alive): balanceo lento. Con la canción sonando
    (body.music-on, lo pone animations.js) las poses se alternan con cortes al compás (108 BPM:
    1 tiempo = 0.5556 s; ciclo de 16 tiempos), el cuerpo rebota y el halo late. --dz-t desfasa el
    ciclo con la posición de la canción. Solo opacity y transform de grupos; fuera de pantalla
    se pausa (--lvps). Rellenos: piel/vacío = fondo, traje = acento diluido, pelo = tinta. */
-#s11 .sec-ill { width: clamp(250px, 82vw, 310px); }
+.sec-song .sec-ill { width: clamp(250px, 82vw, 310px); }
 .dz-b, .dz-g, .dz-hair { fill-opacity: 0; transition: fill-opacity 0.8s ease 1.3s, fill 1.2s ease; }
 .sec.is-in .dz-b, .sec.is-in .dz-g, .sec.is-in .dz-hair { fill-opacity: 1; }
 .dz-b { fill: var(--bg); }

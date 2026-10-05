@@ -40,11 +40,12 @@ export function fireEgyptReady() {
   document.dispatchEvent(new CustomEvent('egypt:ready'));
 }
 
-// opts.getActive() -> índice de la sección activa (1..N)
+// opts.getActive() -> índice de la sección activa (1..N); opts.songIndex -> sección tras la transición
 export function initEgypt(root, opts) {
   const block = root.querySelector('.egypt-transition');
   if (!block) return;
-  const sec10 = root.querySelector('#s10');
+  const prevSec = block.previousElementSibling; // sección anterior a la transición
+  const song = (opts && opts.songIndex) || 11;
   const meta = document.querySelector('meta[name="theme-color"]');
 
   // draw: ventana de dibujado; out: ventana de desvanecido (solo opacidad, la pieza sale entera).
@@ -98,23 +99,23 @@ export function initEgypt(root, opts) {
 
     pieces.forEach((pc) => applyPiece(pc, p));
 
-    if (sec10) {
+    if (prevSec) {
       const f = p > 0 ? (1 - smooth(Math.min(1, p / 0.35))).toFixed(3) : '';
       if (f !== lastFade) {
         lastFade = f;
         if (f === '') {
-          delete sec10.dataset.fade;
-          sec10.style.removeProperty('--et-fade');
+          delete prevSec.dataset.fade;
+          prevSec.style.removeProperty('--et-fade');
         } else {
-          sec10.dataset.fade = '1';
-          sec10.style.setProperty('--et-fade', f);
+          prevSec.dataset.fade = '1';
+          prevSec.style.setProperty('--et-fade', f);
         }
       }
     }
 
     const active = opts && opts.getActive ? opts.getActive() : 0;
     const body = document.body;
-    body.classList.toggle('is-transit', p > 0 && (p < 1 || active < 11));
+    body.classList.toggle('is-transit', p > 0 && (p < 1 || active < song));
     if (p > 0 && p < 1) {
       const c = colorAt(p);
       body.classList.add('is-scrub');
@@ -133,8 +134,8 @@ export function initEgypt(root, opts) {
       }
       if (p >= 1) {
         // El tono final lo toma el tema "sand" (mismo color): sin salto.
-        if (active < 11 && body.dataset.theme !== 'dusk') body.dataset.theme = 'sand';
-      } else if (body.dataset.theme === 'sand' && active < 11) {
+        if (active < song && body.dataset.theme !== 'dusk') body.dataset.theme = 'sand';
+      } else if (body.dataset.theme === 'sand' && active < song) {
         const t = opts && opts.getTheme ? opts.getTheme() : '';
         if (t) body.dataset.theme = t;
         else delete body.dataset.theme;
@@ -154,7 +155,7 @@ export function initEgypt(root, opts) {
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule);
   document.addEventListener('section:active', (e) => {
-    if (e.detail && e.detail.index >= 11) {
+    if (e.detail && e.detail.index >= song) {
       fireEgyptStart();
       fireEgyptReady();
     }

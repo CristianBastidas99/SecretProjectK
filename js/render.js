@@ -421,6 +421,7 @@ export async function renderLetter(data, container) {
     sec.id = 's' + pad2(n);
     sec.dataset.theme = s.theme || 'paper';
     sec.dataset.index = String(n); // 1..N
+    if (n === total - 1) sec.classList.add('sec-song'); // penúltima: canción y baile
 
     const top = el('div', 'frame frame-top');
     const bottom = el('div', 'frame frame-bottom');
@@ -460,7 +461,7 @@ export async function renderLetter(data, container) {
 
     sec.append(top, inner, bottom);
     frag.appendChild(sec);
-    if (n === 10 && total > 10) frag.appendChild(makeTransition(jobs));
+    if (n === total - 2 && total > 2) frag.appendChild(makeTransition(jobs));
     else if (n < total) frag.appendChild(makeDivider());
 
     if (s.frame) {

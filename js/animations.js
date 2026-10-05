@@ -1,7 +1,7 @@
 // Revelado por sección, tema activo e indicador de progreso.
 // Hook para fases posteriores: registrar callbacks con `hooks.onActive.push(fn)`;
 // se llaman con (sectionElement) al cambiar la sección activa, y se emite
-// el evento 'section:active' en document. La transición a Egipto (entre 10 y 11)
+// el evento 'section:active' en document. La transición a Egipto (antes de la penúltima sección)
 // se engancha aquí.
 
 import { initEgypt, fireEgyptReady } from './egypt.js';
@@ -51,7 +51,7 @@ function fitStrokes(roots) {
   });
 }
 
-// Baile de la sección 11: body.music-on mientras suena la canción real (src blob:, no el WAV de
+// Baile de la sección de la canción (penúltima): body.music-on mientras suena la canción real (src blob:, no el WAV de
 // silencio del desbloqueo). --dz-t desfasa el ciclo con la posición de la canción (16 tiempos a 108 BPM).
 let danceSync = () => {};
 function initDance() {
@@ -84,7 +84,7 @@ export function initAnimations(root, ending) {
   if (!total) return;
   initDance();
 
-  // Indicador fijo NN / 12
+  // Indicador fijo NN / total
   let progress = document.getElementById('progress');
   if (!progress) {
     progress = document.createElement('div');
@@ -120,8 +120,8 @@ export function initAnimations(root, ending) {
     (entries) => {
       entries.forEach((e) => {
         e.target.classList.toggle('is-vis', e.isIntersecting);
-        // Al volver a ver la sección 11 el baile se reajusta al compás de la canción.
-        if (e.isIntersecting && e.target === sections[10]) danceSync();
+        // Al volver a ver la sección de la canción el baile se reajusta al compás de la canción.
+        if (e.isIntersecting && e.target === sections[total - 2]) danceSync();
       });
     },
     { rootMargin: '10% 0px' }
@@ -243,8 +243,8 @@ export function initAnimations(root, ending) {
     fitT = setTimeout(() => fitStrokes([root, ending]), 150);
   });
 
-  initEgypt(root, { getActive: () => activeIdx, getTheme: () => (active && active.dataset.theme) || '' });
-  initGlyphPath(sections[11]);
+  initEgypt(root, { songIndex: total - 1, getActive: () => activeIdx, getTheme: () => (active && active.dataset.theme) || '' });
+  initGlyphPath(sections[total - 1]);
   if (ending) initEnding(ending);
 
   // Final: del atardecer a la noche. El fondo se interpola con el scroll (solo variables del body);
@@ -391,7 +391,7 @@ export function initAnimations(root, ending) {
   }
 }
 
-// Sección 12: glifos que se dibujan y camino que sale del marco, con la cita ya en pantalla.
+// Última sección: glifos que se dibujan y camino que sale del marco, con la cita ya en pantalla.
 function initGlyphPath(sec) {
   if (!sec) return;
   const frame = sec.querySelector('.frame-bottom');
