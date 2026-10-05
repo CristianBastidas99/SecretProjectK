@@ -37,7 +37,7 @@ function loadSvg(url) {
   if (!cache.has(url)) {
     cache.set(
       url,
-      fetch(url)
+      fetch(url, { cache: 'no-cache' }) // revalida: tras cambiar un SVG no se queda el viejo en caché
         .then((r) => (r.ok ? r.text() : null))
         .then((t) => (t ? parseSvg(t) : null))
         .catch(() => null)
