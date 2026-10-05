@@ -505,7 +505,7 @@ body[data-theme="rose-night"]  { --bg: #232A35;       --fg: #E6DDCB;    --fg-sof
   align-items: center;
   justify-content: center;
   padding: calc(24px + var(--safe-t)) calc(24px + var(--safe-r)) calc(24px + var(--safe-b)) calc(24px + var(--safe-l));
-  /* La línea del saludo se desplaza mientras se escribe: que no ensanche la página (zoom en iOS). */
+  /* El saludo no debe ensanchar la página (zoom en iOS). */
   overflow: hidden;
   overflow: clip;
 }
@@ -540,43 +540,35 @@ body[data-theme="rose-night"]  { --bg: #232A35;       --fg: #E6DDCB;    --fg-sof
   transition: transform 0.9s var(--ease);
 }
 
-.gr-wrongwrap { position: relative; display: inline-block; }
-.gr-wrong { display: inline-block; transition: opacity 0.8s var(--ease) 0.2s; }
-.is-struck .gr-wrong { opacity: 0.4; }
-
-.gr-strike {
-  position: absolute;
-  top: 50%;
-  margin-top: -0.27em;
-  overflow: visible;
-  pointer-events: none;
-  fill: none;
-  stroke: var(--terracotta);
-  stroke-width: var(--sw, 3px);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.gr-strike path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 0.6s cubic-bezier(0.45, 0, 0.25, 1);
-}
-.is-struck .gr-strike path { stroke-dashoffset: 0; }
-
-.gr-right { font-style: italic; font-weight: 500; white-space: nowrap; }
-.gr-ch {
+/* Rodillo de apodos: una ventana de una línea; la pista se desplaza en vertical y el ancho
+   de la ventana sigue al apodo visible (la línea se recentra sola). */
+.gr-reel {
+  position: relative;
   display: inline-block;
-  opacity: 0;
-  filter: blur(5px);
-  transform: translateY(0.05em);
+  height: 1.5em;
+  overflow: hidden;
+  vertical-align: bottom;
+  align-self: center;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
 }
-.is-writing .gr-ch {
-  animation: ink 0.8s var(--ease) both;
-  animation-delay: calc(var(--i) * 0.13s);
+.gr-track { display: block; will-change: transform; }
+.gr-name {
+  display: block;
+  height: 1.5em;
+  line-height: 1.5;
+  font-style: italic;
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: center;
 }
-@keyframes ink {
-  from { opacity: 0; filter: blur(5px); transform: translateY(0.05em); }
-  to   { opacity: 1; filter: blur(0); transform: none; }
+.gr-name > span { display: inline-block; padding: 0 0.04em; }
+.gr-hello { align-self: center; }
+.is-landed .gr-name:last-child > span { animation: gr-land 1.4s var(--ease) both; }
+@keyframes gr-land {
+  0%   { color: inherit; text-shadow: 0 0 0 rgba(205, 170, 112, 0); }
+  35%  { color: var(--terracotta); text-shadow: 0 0 18px rgba(205, 170, 112, 0.75); }
+  100% { color: inherit; text-shadow: 0 0 0 rgba(205, 170, 112, 0); }
 }
 
 .gr-scroll {
@@ -602,14 +594,10 @@ body[data-theme="rose-night"]  { --bg: #232A35;       --fg: #E6DDCB;    --fg-sof
 
 @media (prefers-reduced-motion: reduce) {
   .gr-line { transition: none; }
-  .gr-ch { filter: none; transform: none; }
-  .is-writing .gr-ch { animation: ink-fade 0.6s linear both; animation-delay: calc(var(--i) * 0.12s); }
-  .gr-strike path { transition: none; }
-  .gr-strike { opacity: 0; transition: opacity 0.6s linear; }
-  .is-struck .gr-strike { opacity: 1; }
+  .gr-reel { -webkit-mask-image: none; mask-image: none; }
+  .is-landed .gr-name:last-child > span { animation: none; }
   .is-done .gr-scroll svg { animation: none; }
 }
-@keyframes ink-fade { from { opacity: 0; } to { opacity: 1; } }
 
 /* === BLOQUE: audio === */
 .audio-toggle,
