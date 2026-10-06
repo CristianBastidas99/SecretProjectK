@@ -763,6 +763,104 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
 .end-night.is-bloom .end-text { opacity: 1; }
 .end-night.is-bloom .end-credit { opacity: 0.85; }
 
+/* Disco solar alado con el retrato (viene cifrado en closing.portrait).
+   Todo arranca con .is-bloom: anillos -> alas -> jeroglíficos -> retrato -> texto -> fecha. */
+.end-night.has-portrait { padding-top: clamp(40px, 9svh, 110px); }
+.has-portrait .end-text { font-size: clamp(38px, 10.5vw, 60px); line-height: 1.05; margin-top: 4px; transition-delay: 5.2s; }
+.has-portrait .end-credit { transition-delay: 7.4s; }
+.end-date {
+  margin: 14px 0 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  opacity: 0;
+  transition: opacity 2s ease 6.4s;
+}
+.end-night.is-bloom .end-date { opacity: 0.8; }
+
+.end-portrait { width: min(100%, 460px); margin: 0 auto; }
+.end-portrait > svg { display: block; width: 100%; height: auto; overflow: visible; }
+.end-portrait svg * { stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.end-portrait .disc-bg { fill: var(--bg); }
+.end-portrait .ring { fill: none; stroke: var(--accent); stroke-width: 1.6; }
+.end-portrait .ring.thin { stroke-width: 0.9; }
+.end-portrait .glyph { fill: none; stroke: var(--accent); stroke-width: 0.8; opacity: 0; }
+.end-portrait .wing-edge { fill: none; stroke: var(--accent); stroke-width: 1.3; }
+.end-portrait .covert { fill: var(--bg); stroke: var(--accent); stroke-width: 0.8; }
+.end-portrait .feather { fill: var(--bg); stroke: var(--accent); stroke-width: 0.9; }
+.end-portrait .rachis { fill: none; stroke: var(--accent); stroke-width: 0.6; opacity: 0.6; }
+.end-portrait .barb { fill: none; stroke: var(--accent); stroke-width: 0.4; opacity: 0.4; }
+.end-portrait .glow { opacity: 0; }
+
+/* Retrato (acabado de solo línea) */
+.end-portrait .portrait * { fill: none; }
+.end-portrait .portrait .skin, .end-portrait .portrait .ear, .end-portrait .portrait .hair,
+.end-portrait .portrait .strap { fill: var(--bg); }
+.end-portrait .portrait .line { stroke: var(--fg); stroke-width: 1.2; }
+.end-portrait .portrait .feat { stroke: var(--fg); stroke-width: 1.1; }
+.end-portrait .portrait .feat.b { stroke-width: 1.6; }
+.end-portrait .portrait .feat.s { stroke-width: 0.85; opacity: 0.8; }
+.end-portrait .portrait .feat.lash { stroke-width: 1; }
+.end-portrait .portrait .browf, .end-portrait .portrait .linerf,
+.end-portrait .portrait .nostrilf, .end-portrait .portrait .iris { fill: var(--fg); }
+.end-portrait .portrait .strand { stroke: var(--fg); stroke-width: 0.9; opacity: 0.8; }
+.end-portrait .portrait .strand.fine { stroke-width: 0.7; opacity: 0.55; }
+.end-portrait .portrait .strap { stroke: var(--fg); stroke-width: 0.9; }
+.end-portrait .portrait .petal, .end-portrait .portrait .leaf,
+.end-portrait .portrait .disk { fill: var(--bg); stroke: var(--accent); stroke-width: 0.8; }
+.end-portrait .portrait .lidshade, .end-portrait .portrait .sclera, .end-portrait .portrait .glint,
+.end-portrait .portrait .shadeblob, .end-portrait .portrait .hlblob, .end-portrait .portrait .cheekblob { display: none; }
+
+/* Estado inicial (antes de .is-bloom) */
+.end-portrait .draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.end-portrait .portrait .fillin { opacity: 0; }
+.end-portrait .wing { transform-box: view-box; transform-origin: 300px 150px; transform: scaleX(0); }
+.end-portrait .glyph-ring { transform-box: view-box; transform-origin: 200px 150px; }
+.end-portrait .portrait .breath { transform-box: fill-box; transform-origin: 50% 100%; }
+.end-portrait .portrait .lid { transform-box: fill-box; transform-origin: 50% 40%; }
+.end-portrait .portrait .lock { transform-box: fill-box; transform-origin: 60% 0%; }
+.end-portrait .portrait .sunflower { transform-box: fill-box; transform-origin: center; }
+
+/* Entrada y movimiento continuo */
+.is-bloom .end-portrait .draw { animation: ep-draw 2.4s var(--ease) forwards; }
+.is-bloom .end-portrait .ring.draw { animation-duration: 1.6s; }
+.is-bloom .end-portrait .ring.thin.draw { animation-delay: 0.3s; }
+.is-bloom .end-portrait .glow { animation: ep-fade 3s ease 2s forwards, ep-pulse 6s ease-in-out 5s infinite; }
+.is-bloom .end-portrait .wing { animation: ep-unfold 1.8s var(--ease) 1s forwards, ep-flap 5s ease-in-out 2.8s infinite; }
+.is-bloom .end-portrait .glyph { --o: 0.85; animation: ep-fade 0.8s ease forwards; animation-delay: calc(1.4s + var(--k) * 0.06s); }
+.is-bloom .end-portrait .glyph-ring { animation: ep-spin 90s linear infinite; }
+.is-bloom .end-portrait .portrait .draw { animation-duration: 3s; animation-delay: 2.6s; }
+.is-bloom .end-portrait .portrait .fillin { animation: ep-fade 1.4s ease 4.4s forwards; }
+.is-bloom .end-portrait .portrait .breath { animation: ep-breath 5s ease-in-out 6s infinite; }
+.is-bloom .end-portrait .portrait .lid { animation: ep-blink 4.5s ease-in-out 6.5s infinite; }
+.is-bloom .end-portrait .portrait .lock { animation: ep-sway 6s ease-in-out 6s infinite alternate; }
+.is-bloom .end-portrait .portrait .sunflower { animation: ep-nod 4s ease-in-out infinite alternate; }
+@keyframes ep-draw { to { stroke-dashoffset: 0; } }
+@keyframes ep-fade { to { opacity: var(--o, 1); } }
+@keyframes ep-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+@keyframes ep-unfold { to { transform: scaleX(1); } }
+@keyframes ep-flap { 0%, 100% { transform: rotate(0deg) scaleX(1); } 50% { transform: rotate(-4deg) scaleX(0.97); } }
+@keyframes ep-spin { to { transform: rotate(360deg); } }
+@keyframes ep-breath { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-6px) scale(1.012); } }
+@keyframes ep-blink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(0.12); } }
+@keyframes ep-sway { from { transform: rotate(-1.2deg); } to { transform: rotate(1.2deg); } }
+@keyframes ep-nod { from { transform: rotate(-10deg); } to { transform: rotate(10deg); } }
+/* Fuera de pantalla, el movimiento continuo se pausa */
+.end-night.is-away .end-portrait * { animation-play-state: paused; }
+/* Movimiento reducido: el disco aparece ya dibujado, solo con un fundido */
+@media (prefers-reduced-motion: reduce) {
+  .end-portrait { opacity: 0; transition: opacity 1.6s ease 0.4s; }
+  .is-bloom .end-portrait { opacity: 1; }
+  .end-portrait *, .is-bloom .end-portrait * { animation: none !important; }
+  .end-portrait .draw { stroke-dashoffset: 0; }
+  .end-portrait .wing { transform: none; }
+  .end-portrait .glyph { opacity: 0.85; }
+  .end-portrait .glow, .end-portrait .portrait .fillin { opacity: 1; }
+  .has-portrait .end-text { transition-delay: 1.4s; }
+  .end-date { transition-delay: 2.2s; }
+  .has-portrait .end-credit { transition-delay: 3s; }
+}
+
 /* Rosas y enredaderas */
 .rz { position: absolute; z-index: 1; left: 50%; width: min(100%, 760px); margin-left: calc(min(100%, 760px) / -2); top: 0; bottom: 0; pointer-events: none; }
 .rz-vine { position: absolute; bottom: 0; width: clamp(92px, 30vw, 170px); aspect-ratio: 120 / 740; transform-origin: 50% 100%; animation: rz-sway var(--sd, 9s) ease-in-out var(--so, 0s) infinite alternate; }

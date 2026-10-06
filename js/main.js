@@ -5,7 +5,7 @@ import { renderLetter, renderEnding } from './render.js';
 import { initAnimations } from './animations.js';
 import { playGreeting } from './greeting.js';
 
-export const VERSION = 19;
+export const VERSION = 20;
 
 const OPEN_MS = 950;
 

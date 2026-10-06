@@ -330,6 +330,17 @@ function buildGift(text, notify) {
   return wrap;
 }
 
+// Disco solar alado con el retrato: el SVG viaja dentro de la carta cifrada.
+function buildPortrait(src) {
+  const doc = new DOMParser().parseFromString(src, 'image/svg+xml');
+  const svg = doc.documentElement;
+  if (!svg || svg.nodeName !== 'svg' || doc.querySelector('parsererror')) return null;
+  const box = el('div', 'end-portrait');
+  box.setAttribute('aria-hidden', 'true');
+  box.appendChild(document.importNode(svg, true));
+  return box;
+}
+
 export async function renderEnding(closing, footer) {
   const c = closing || {};
   const jobs = [];
@@ -353,7 +364,13 @@ export async function renderEnding(closing, footer) {
   const gift = typeof c.gift === 'string' && c.gift.trim() ? buildGift(c.gift.trim(), c.notify) : null;
   buildRoses(night, jobs, gift);
   const wrap = el('div', 'end-inner');
+  const portrait = typeof c.portrait === 'string' ? buildPortrait(c.portrait) : null;
+  if (portrait) {
+    night.classList.add('has-portrait');
+    wrap.appendChild(portrait);
+  }
   if (c.end) wrap.appendChild(el('p', 'end-text', c.end));
+  if (c.date) wrap.appendChild(el('p', 'end-date', c.date));
   if (c.credit) {
     const p = el('p', 'end-credit');
     const a = el('a', null, '♪ ' + c.credit);
