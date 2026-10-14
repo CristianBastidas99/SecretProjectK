@@ -1510,7 +1510,6 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
 /* --- gestos y vida por ilustración (v3) --- */
 /* === i03 faro === */
 .sec.is-alive .lv-i03-beam { animation-name: lv-sway; --a: 2.6deg; --t: 11s; transform-box: view-box; transform-origin: 100px 47px; }
-
 .sec.is-in .gx-i03-star { --gt: 0.9s; animation-name: gx-i03-star; }
 .gx-i03-star.k1 { --gk: 0; }
 .gx-i03-star.k2 { --gk: 1; }
@@ -1523,7 +1522,6 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
 .sec.is-in .gx-i03-halo { --gt: 2s; --gk: 9; animation-name: gx-i03-halo; }
 .sec.is-in .gx-i03-core { --gt: 1.4s; --gk: 9; animation-name: gx-i03-core; }
 .sec.is-in .gx-i03-beams { --gt: 2.4s; --gk: 11; animation-name: gx-i03-beams; transform-box: view-box; transform-origin: 100px 47px; }
-
 @keyframes gx-i03-star {
   0% { opacity: 0; transform: scale(0.2); }
   60% { opacity: 1; transform: scale(1.18); }
@@ -1542,10 +1540,8 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
   35% { opacity: 1; }
   100% { opacity: 1; transform: scaleX(1); }
 }
-
 /* i09 — corredor */
 .sec-ill svg .i09-fill { fill: var(--bg); }
-
 /* gesto de entrada: el camino se recorre de cerca a lejos y el corredor avanza hasta su sitio */
 .sec.is-in .gx-i09-path { --gd: 1.5s; --gt: 1.1s; animation-name: gx-i09-path; }
 .gx-i09-k0 { --gk: 0; }
@@ -1554,7 +1550,6 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
 .gx-i09-k3 { --gk: 4.2; }
 .gx-i09-k4 { --gk: 5.6; }
 .sec.is-in .gx-i09-runner { --gd: 1.5s; --gt: 1.8s; --gk: 7; animation-name: gx-i09-runner; }
-
 @keyframes gx-i09-path {
   0% { opacity: 0; transform: translateY(3px); }
   100% { opacity: 1; transform: translateY(0); }
@@ -1563,7 +1558,6 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
   0% { opacity: 0; transform: translate(-14px, 5px); }
   100% { opacity: 1; transform: translate(0, 0); }
 }
-
 /* vida: trote lento, sol que respira */
 .sec.is-alive .lv-i09-bob  { animation-name: lv-i09-bob; --t: 1.7s; }
 .sec.is-alive .lv-i09-armn { animation-name: lv-sway; --t: 1.7s; --a: 6deg; transform-box: view-box; transform-origin: 95.9px 96px; }
@@ -1571,12 +1565,10 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
 .sec.is-alive .lv-i09-legn { animation-name: lv-sway; --t: 1.7s; --a: -2.6deg; transform-box: view-box; transform-origin: 92px 118.7px; }
 .sec.is-alive .lv-i09-legf { animation-name: lv-sway; --t: 1.7s; --a: 2.6deg; transform-box: view-box; transform-origin: 92px 118.7px; }
 .sec.is-alive .lv-breathe.lv-i09-sun { --s: 1.035; --t: 8s; }
-
 @keyframes lv-i09-bob {
   0%, 50%, 100% { transform: translateY(0); }
   25%, 75% { transform: translateY(-0.9px); }
 }
-
 .gx-i02-seal { transform-origin: 50% 100%; --gd: 2.6s; --gt: 1.5s; }
 .gx-i02-flower { --gd: 3.5s; --gt: 1.9s; }
 .sec.is-in .gx-i02-flower { transform-box: view-box; transform-origin: 147px 59px; }
@@ -1594,7 +1586,6 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
   0% { transform: rotate(-6.5deg); }
   100% { transform: rotate(0deg); }
 }
-
 .gx-i07-turn { opacity: 0; }
 .sec.is-in .gx-i07-turn { transform-box: view-box; transform-origin: 100px 112px; animation-name: gx-i07-turn; --gd: 2.4s; --gt: 1.3s; }
 .sec.is-in .gx-i07-turn-b { --gk: 7; }
@@ -1616,14 +1607,12 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
   0%, 100% { transform: rotate(0deg) translateY(0); }
   40%, 56% { transform: rotate(-8deg) translateY(-0.9px); }
 }
-
 /* === retoques-b: i12 (escarabajo, sección 11) === */
 .gx-i12-spark { opacity: 0; }
 .sec.is-in .gx-i12-flame { animation-name: gx-i12-flame; --gd: 2.1s; --gt: 1.3s; transform-origin: 50% 100%; }
 .sec.is-in .gx-i12-spark { animation-name: gx-i12-spark; --gd: 2.1s; --gt: 1.1s; }
 .sec.is-in .gx-i12-wr { animation-name: gx-i12-wr; --gd: 3.2s; --gt: 2.2s; transform-box: view-box; transform-origin: 119px 105px; }
 .sec.is-in .gx-i12-wl { animation-name: gx-i12-wl; --gd: 3.2s; --gt: 2.2s; transform-box: view-box; transform-origin: 81px 105px; }
-
 @keyframes gx-i12-flame {
   0% { transform: scale(0); opacity: 0; }
   35% { transform: scale(0.5, 0.35); opacity: 1; }
@@ -1643,7 +1632,6 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
   from { transform: rotate(-112deg); }
   to { transform: rotate(0deg); }
 }
-
 /* aleteo lento y asimétrico: bajada más viva, subida lenta */
 .sec.is-alive .lv-i12-flapr { animation-name: lv-i12-flapr; --t: 3.6s; --rd: 1.9s; animation-timing-function: ease-in-out; transform-box: view-box; transform-origin: 119px 105px; }
 .sec.is-alive .lv-i12-flapl { animation-name: lv-i12-flapl; --t: 3.6s; --rd: 1.9s; animation-timing-function: ease-in-out; transform-box: view-box; transform-origin: 81px 105px; }
@@ -1659,54 +1647,9 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
   44% { transform: rotate(-6deg); }
   72% { transform: rotate(4.5deg); }
 }
-
 /* === retoques-b: i08 (pulso, sección 07) === */
-.sec.is-in .gx-i08-l { animation-name: gx-i08-trace; --gd: 1.9s; --gt: 1.1s; }
-.sec.is-in .gx-i08-r { animation-name: gx-i08-trace; --gd: 3.7s; --gt: 1.2s; }
-.sec.is-in .gx-i08-heart { animation-name: gx-i08-heart; --gd: 3.0s; --gt: 1.5s; transform-origin: 50% 100%; }
-@keyframes gx-i08-trace {
-  from { clip-path: inset(-4px 100% -4px -4px); }
-  to { clip-path: inset(-4px -4px -4px -4px); }
-}
-@keyframes gx-i08-heart {
-  0% { transform: scale(0.05); opacity: 0; }
-  35% { transform: scale(0.8); opacity: 1; }
-  58% { transform: scale(1.2); }
-  76% { transform: scale(0.96); }
-  100% { transform: scale(1); opacity: 1; }
-}
-
 /* latido: normal cada 3.2 s; a mitad del ciclo se acelera (dos pulsos rápidos) y se calma */
-.sec.is-alive .lv-i08-throb { animation-name: lv-i08-throb; --t: 12.8s; animation-timing-function: ease-out; transform-origin: 50% 100%; }
-.sec.is-alive .lv-i08-race { animation-name: lv-i08-race; --t: 12.8s; animation-timing-function: ease-out; }
-@keyframes lv-i08-throb {
-  0%, 7%, 25%, 32%, 50%, 57%, 61.5%, 65.5%, 69.5%, 75%, 82%, 100% { transform: scale(1); }
-  1.6% { transform: scale(1.14); }
-  3.4% { transform: scale(0.97); }
-  5% { transform: scale(1.07); }
-  26.6% { transform: scale(1.14); }
-  28.4% { transform: scale(0.97); }
-  30% { transform: scale(1.07); }
-  51.6% { transform: scale(1.14); }
-  53.4% { transform: scale(0.97); }
-  55% { transform: scale(1.07); }
-  63% { transform: scale(1.16); }
-  67% { transform: scale(1.16); }
-  71% { transform: scale(1.12); }
-  77% { transform: scale(1.06); }
-}
-@keyframes lv-i08-race {
-  0%, 60%, 80%, 100% { transform: scaleY(1); }
-  62.5% { transform: scaleY(1.7); }
-  64% { transform: scaleY(0.8); }
-  66.5% { transform: scaleY(1.7); }
-  68% { transform: scaleY(0.8); }
-  71% { transform: scaleY(1.45); }
-  74% { transform: scaleY(1.1); }
-}
-
 /* === gestos: i01, i04, i06, i10, i11 (etiqueta gestos) === */
-
 /* ---- i01 (sec 01): puntitos de «escribiendo…» que titilan y se apagan ---- */
 .sec.is-in .gx-i01-d1, .sec.is-in .gx-i01-d2, .sec.is-in .gx-i01-d3 { animation-name: gx-i01-type; --gd: 2.6s; --gt: 4s; animation-timing-function: ease-in-out; }
 .sec.is-in .gx-i01-d2 { --gk: 3; }
@@ -1728,39 +1671,9 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
   60%, 72% { opacity: 0.3; transform: scale(0.8); }
   90%, 100% { opacity: 0; transform: scale(0.8); }
 }
-
 /* ---- i04 (sec 04): la puerta se abre unos grados y la luz se extiende ---- */
-.sec.is-in .gx-i04-door { animation-name: gx-i04-door; --gd: 2.3s; --gt: 2.6s; transform-box: view-box; transform-origin: 172px 100px; }
-.sec.is-in .gx-i04-rays { animation-name: gx-i04-rays; --gd: 2.5s; --gt: 2.4s; }
-.sec.is-in .gx-i04-floor { animation-name: gx-i04-floor; --gd: 2.5s; --gt: 2.8s; transform-box: view-box; transform-origin: 137px 152px; }
-@keyframes gx-i04-door { from { transform: scaleX(1.7); } to { transform: scaleX(1); } }
-@keyframes gx-i04-rays { from { opacity: 0; } to { opacity: 1; } }
-@keyframes gx-i04-floor {
-  from { opacity: 0; transform: scale(0.28, 0.2); }
-  35% { opacity: 1; }
-  to { opacity: 1; transform: scale(1, 1); }
-}
-
 /* ---- i06 (sec 05): la nube se forma burbuja a burbuja desde la cabeza ---- */
-.sec.is-in .gx-i06-b1, .sec.is-in .gx-i06-b2, .sec.is-in .gx-i06-b3 { animation-name: gx-i06-bub; --gt: 0.7s; }
-.sec.is-in .gx-i06-b1 { --gd: 2.2s; }
-.sec.is-in .gx-i06-b2 { --gd: 2.7s; }
-.sec.is-in .gx-i06-b3 { --gd: 3.2s; }
-.sec.is-in .gx-i06-cloud { animation-name: gx-i06-cloud; --gd: 3.7s; --gt: 2.2s; transform-box: view-box; transform-origin: 82px 84px; }
-@keyframes gx-i06-bub { from { opacity: 0; transform: scale(0.2); } to { opacity: 1; transform: scale(1); } }
-@keyframes gx-i06-cloud {
-  from { opacity: 0; transform: scale(0.18); }
-  30% { opacity: 1; }
-  to { opacity: 1; transform: scale(1); }
-}
 /* vida: la silueta se desvanece y vuelve (~12 s) */
-.sec.is-alive .lv-i06-wake { animation-name: lv-i06-wake; animation-duration: 12s; animation-delay: 2s; animation-fill-mode: none; }
-@keyframes lv-i06-wake {
-  0%, 38% { opacity: 1; }
-  54%, 66% { opacity: 0.05; }
-  84%, 100% { opacity: 1; }
-}
-
 /* ---- i10 (sec 09): las agujas giran rápido, decelerando, y se detienen con un destello ---- */
 .sec.is-in .gx-i10-hr, .sec.is-in .gx-i10-mn { transform-box: view-box; transform-origin: 96px 114px; --gd: 2.2s; --gt: 2.8s; animation-timing-function: cubic-bezier(0.12, 0.6, 0.2, 1); }
 .sec.is-in .gx-i10-mn { animation-name: gx-i10-mn; }
@@ -1778,7 +1691,6 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
   35% { opacity: 1; transform: scale(1.15) rotate(20deg); }
   100% { opacity: 0; transform: scale(0.6) rotate(45deg); }
 }
-
 /* ---- i11 (sec 10, canción): al terminar (body.song-done) pose tranquila y destellos desde el disco ---- */
 .dz-fin { opacity: 0; }
 body.song-done:not(.music-on) .sec.is-alive .dz-pose:not(.dz-p1) { opacity: 0; animation: none; }
@@ -1790,9 +1702,15 @@ body.song-done:not(.music-on) .sec.is-alive .dz-fn {
   animation-delay: calc(var(--n, 0) * 0.55s);
   animation-play-state: var(--lvps, running);
 }
-.sec.is-alive .dz-fn1 { --n: 0; }  .sec.is-alive .dz-fn2 { --n: 3; }  .sec.is-alive .dz-fn3 { --n: 6; }
-.sec.is-alive .dz-fn4 { --n: 1; }  .sec.is-alive .dz-fn5 { --n: 4; }  .sec.is-alive .dz-fn6 { --n: 8; }
-.sec.is-alive .dz-fn7 { --n: 2; }  .sec.is-alive .dz-fn8 { --n: 5; }  .sec.is-alive .dz-fn9 { --n: 7; }
+.sec.is-alive .dz-fn1 { --n: 0; }
+.sec.is-alive .dz-fn2 { --n: 3; }
+.sec.is-alive .dz-fn3 { --n: 6; }
+.sec.is-alive .dz-fn4 { --n: 1; }
+.sec.is-alive .dz-fn5 { --n: 4; }
+.sec.is-alive .dz-fn6 { --n: 8; }
+.sec.is-alive .dz-fn7 { --n: 2; }
+.sec.is-alive .dz-fn8 { --n: 5; }
+.sec.is-alive .dz-fn9 { --n: 7; }
 .sec.is-alive .dz-fn10 { --n: 9; }
 .sec.is-alive .dz-fn:nth-child(odd) { --dx: -6px; }
 .sec.is-alive .dz-fn:nth-child(even) { --dx: 6px; }
@@ -1804,4 +1722,180 @@ body.song-done:not(.music-on) .sec.is-alive .dz-fn {
 }
 @media (prefers-reduced-motion: reduce) {
   .dz-fn { animation: none !important; }
+}
+
+/* i04 (sec 04, r04) — mesa junto a la ventana */
+.sec-ill svg .i04n-fill { fill: var(--bg); stroke: none; }
+.sec-ill svg .i04n-bg { fill: var(--bg); }
+
+/* gesto de entrada: la luz entra por la ventana, se extiende sobre la mesa y luego sube el vapor */
+.sec.is-in .gx-i04n-beam { --gd: 2s; --gt: 2s; animation-name: gx-i04n-beam; transform-box: view-box; transform-origin: 96px 90px; }
+.sec.is-in .gx-i04n-patch { --gd: 2.9s; --gt: 2s; animation-name: gx-i04n-patch; transform-box: view-box; transform-origin: 68px 133px; }
+.sec.is-in .gx-i04n-motes { --gd: 3.6s; --gt: 1.6s; animation-name: gx-i04n-fade; }
+.sec.is-in .gx-i04n-steam { --gd: 4s; --gt: 1.8s; animation-name: gx-i04n-steam; }
+
+@keyframes gx-i04n-beam {
+  0% { opacity: 0; transform: scaleY(0.08); }
+  30% { opacity: 1; }
+  100% { opacity: 1; transform: scaleY(1); }
+}
+@keyframes gx-i04n-patch {
+  0% { opacity: 0; transform: scaleY(0.1); }
+  35% { opacity: 1; }
+  100% { opacity: 1; transform: scaleY(1); }
+}
+@keyframes gx-i04n-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes gx-i04n-steam {
+  0% { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* vida continua */
+.sec.is-alive .lv-i04n-steam { animation-name: lv-i04n-steam; --t: 7s; transform-origin: 50% 100%; }
+.lv-i04n-s1 { --w: 0; }
+.lv-i04n-s2 { --w: 1.7; --v: 1; }
+.lv-i04n-s3 { --w: 3.1; --v: -1; }
+.sec.is-alive .lv-i04n-curtain { animation-name: lv-sway; --a: 0.6deg; --t: 13s; transform-origin: 50% 0%; }
+.sec.is-alive .lv-i04n-light { animation-name: lv-i04n-light; --t: 9s; }
+.sec.is-alive .lv-i04n-m1 { animation-name: lv-drift; --dx: 3px; --dy: -4px; --t: 13s; }
+.sec.is-alive .lv-i04n-m2 { animation-name: lv-drift; --dx: -3.5px; --dy: 3px; --t: 16s; --w: 1.3; }
+.sec.is-alive .lv-i04n-m3 { animation-name: lv-drift; --dx: 2.5px; --dy: 4px; --t: 19s; --w: 2.4; }
+
+@keyframes lv-i04n-steam {
+  0%, 6% { opacity: 1; transform: translate(0, 0) scale(1, 1); }
+  55% { opacity: 0.55; transform: translate(1.2px, -5px) scale(1.04, 1.06); }
+  80% { opacity: 0; transform: translate(-1px, -9px) scale(1.1, 1.12); }
+  81% { opacity: 0; transform: translate(0, 3px) scale(0.96, 0.9); }
+  100% { opacity: 1; transform: translate(0, 0) scale(1, 1); }
+}
+@keyframes lv-i04n-light {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.68; }
+}
+
+/* === i06 (sec 05) — él despierto, la luna entra por la ventana (prefijo i06n) === */
+.sec-ill svg .i06n-fill { fill: var(--bg); }
+
+/* gesto de entrada: la nube se desliza, la luna se ilumina y su luz entra hasta tocarlo */
+.sec.is-in .gx-i06n-cloud { --gd: 2.4s; --gt: 2.8s; animation-name: gx-i06n-cloud; animation-timing-function: cubic-bezier(.45, .05, .3, 1); }
+.sec.is-in .gx-i06n-moon { --gd: 2.6s; --gt: 2.6s; animation-name: gx-i06n-moon; }
+.sec.is-in .gx-i06n-rays { --gd: 4.6s; --gt: 2.6s; animation-name: gx-i06n-rays; transform-box: view-box; transform-origin: 150px 40px; }
+.sec.is-in .gx-i06n-touch { --gd: 6.4s; --gt: 2s; animation-name: gx-i06n-fade; }
+.sec.is-in .gx-i06n-patch { --gd: 6s; --gt: 2.4s; animation-name: gx-i06n-fade; }
+
+@keyframes gx-i06n-cloud {
+  0% { opacity: 1; transform: translate(22px, -3px); }
+  100% { opacity: 1; transform: translate(0, 0); }
+}
+@keyframes gx-i06n-moon {
+  0% { opacity: 0.1; }
+  100% { opacity: 1; }
+}
+@keyframes gx-i06n-rays {
+  0% { opacity: 0; transform: scaleX(0.04); }
+  30% { opacity: 1; }
+  100% { opacity: 1; transform: scaleX(1); }
+}
+@keyframes gx-i06n-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* vida continua */
+.sec.is-alive .lv-i06n-moon { --s: 1.03; --t: 6.5s; }
+.sec.is-alive .lv-i06n-t1 { --lo: 1; --t: 4.2s; --w: 0.4; }
+.sec.is-alive .lv-i06n-t2 { --t: 5.1s; --w: 1.9; }
+.sec.is-alive .lv-i06n-t3 { --t: 4.7s; --w: 3; }
+.sec.is-alive .lv-i06n-t4 { --t: 6s; --w: 2.2; }
+.sec.is-alive .lv-i06n-wisp { --dx: -3px; --dy: 0.4px; --t: 14s; }
+.sec.is-alive .lv-i06n-curt { animation-name: lv-sway; --a: 1.3deg; --t: 9s; transform-origin: 50% 0%; }
+.sec.is-alive .lv-i06n-shaft { animation-name: lv-i06n-shaft; --t: 8s; }
+.sec.is-alive .lv-i06n-breath { animation-name: lv-i06n-breath; animation-duration: 5.6s; transform-box: view-box; transform-origin: 86px 126px; }
+.sec.is-alive .lv-i06n-lift { animation-name: lv-i06n-lift; animation-duration: 5.6s; }
+.sec.is-alive .lv-i06n-sec { animation-name: lv-i06n-sec; animation-duration: 60s; animation-timing-function: steps(60, end); transform-box: view-box; transform-origin: 159px 120.4px; }
+
+@keyframes lv-i06n-shaft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
+@keyframes lv-i06n-breath {
+  0%, 100% { transform: rotate(0deg); }
+  45% { transform: rotate(-0.9deg); }
+}
+@keyframes lv-i06n-lift {
+  0%, 100% { transform: translateY(0); }
+  45% { transform: translateY(-0.5px); }
+}
+@keyframes lv-i06n-sec {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* i08 — sonriendo como un bobo (r08) */
+.sec-ill svg .i08n-fill { fill: var(--bg); }
+
+/* gesto de entrada: burbujas suben, la molécula se arma enlace a enlace y el corazón late una vez */
+.sec.is-in .gx-i08n-bub,
+.sec.is-in .gx-i08n-b,
+.sec.is-in .gx-i08n-heart,
+.sec.is-in .gx-i08n-blush { --gd: 1.6s; }
+.sec.is-in .gx-i08n-bub { --gt: 0.9s; animation-name: gx-i08n-bub; }
+.gx-i08n-bub.q0 { --gk: 0; }
+.gx-i08n-bub.q1 { --gk: 3; }
+.gx-i08n-bub.q2 { --gk: 6; }
+.sec.is-in .gx-i08n-blush { --gt: 1.4s; --gk: 6; animation-name: gx-i08n-fade; }
+.sec.is-in .gx-i08n-b { --gt: 0.7s; animation-name: gx-i08n-bond; }
+.gx-i08n-b.k9 { --gk: 9; }
+.gx-i08n-b.k10 { --gk: 10; }
+.gx-i08n-b.k11 { --gk: 11; }
+.gx-i08n-b.k12 { --gk: 12; }
+.gx-i08n-b.k13 { --gk: 13; }
+.gx-i08n-b.k14 { --gk: 14; }
+.gx-i08n-b.k15 { --gk: 15; }
+.gx-i08n-b.k16 { --gk: 16; }
+.gx-i08n-b.k17 { --gk: 17; }
+.gx-i08n-b.k18 { --gk: 18; }
+.gx-i08n-b.k19 { --gk: 19; }
+.gx-i08n-b.k20 { --gk: 20; }
+.gx-i08n-b.k21 { --gk: 21; }
+.gx-i08n-b.k22 { --gk: 22; }
+.sec.is-in .gx-i08n-heart { --gt: 1.8s; --gk: 24; animation-name: gx-i08n-heart; }
+
+@keyframes gx-i08n-bub {
+  0% { opacity: 0; transform: translate(-5px, 7px) scale(0.2); }
+  65% { opacity: 1; transform: translate(0.4px, -0.6px) scale(1.12); }
+  100% { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+@keyframes gx-i08n-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes gx-i08n-bond {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes gx-i08n-heart {
+  0% { opacity: 0; transform: scale(0.2); }
+  22%, 44% { opacity: 1; transform: scale(1); }
+  56% { opacity: 1; transform: scale(1.42); }
+  72% { opacity: 1; transform: scale(0.94); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* vida continua: molécula emocionada, rubor que respira, pulso que se acelera a ratos */
+.sec.is-alive .lv-i08n-vib { animation-name: lv-i08n-vib; --t: 4.6s; }
+.sec.is-alive .lv-i08n-blush { animation-name: lv-pulse; --lo: 0.75; --s: 1.04; --t: 5.4s; }
+.lv-i08n-w0 { --w: 0; }
+.lv-i08n-w1 { --w: 1.6; --v: 1; }
+.lv-i08n-w2 { --w: 3.1; --v: 2; }
+
+@keyframes lv-i08n-vib {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  18% { transform: translate(0.7px, -1.3px) rotate(1.2deg); }
+  38% { transform: translate(-0.6px, -0.5px) rotate(-1deg); }
+  58% { transform: translate(0.5px, -1.5px) rotate(0.8deg); }
+  80% { transform: translate(-0.7px, -0.7px) rotate(-0.6deg); }
 }
