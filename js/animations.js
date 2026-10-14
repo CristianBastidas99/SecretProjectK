@@ -62,6 +62,8 @@ function initDance() {
   // Cada llamada reinicia las animaciones del baile con el desfase de la canción (retardo negativo).
   const sync = () => {
     const live = !a.paused && !a.ended && String(a.src).startsWith('blob:');
+    // body.song-done: la canción real llegó al final (gesto de cierre del bailarín).
+    body.classList.toggle('song-done', a.ended && String(a.src).startsWith('blob:'));
     if (live) {
       body.style.setProperty('--dz-t', (-(a.currentTime % CYCLE)).toFixed(3) + 's');
       if (body.classList.contains('music-on')) {
