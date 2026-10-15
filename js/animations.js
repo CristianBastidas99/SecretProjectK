@@ -118,6 +118,20 @@ export function initAnimations(root, ending) {
     });
     sec.classList.add('is-alive');
   };
+
+  // Toque en la ilustración de una sección viva: .is-tap durante 2 s (cada SVG define su reacción con tp-*).
+  if (!calm) {
+    root.addEventListener('click', (e) => {
+      const ill = e.target.closest('.sec-ill');
+      const sec = ill && ill.closest('.sec');
+      if (!sec || !sec.classList.contains('is-alive')) return;
+      sec.classList.remove('is-tap');
+      void sec.offsetWidth;
+      sec.classList.add('is-tap');
+      clearTimeout(sec.tapTimer);
+      sec.tapTimer = setTimeout(() => sec.classList.remove('is-tap'), 2000);
+    });
+  }
   const visIO = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {

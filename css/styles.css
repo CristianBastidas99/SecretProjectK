@@ -1507,6 +1507,23 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
   [class*="gx-"] { animation: none !important; }
 }
 
+/* === BLOQUE: toque === */
+/* Reacción al toque: animations.js pone .is-tap en la sección 2 s al tocar su ilustración (solo si ya está viva).
+   Clases tp-* en <g> propios (sin gx-/lv- en el mismo elemento); el último keyframe = reposo. */
+.sec.is-alive .sec-ill { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.sec.is-tap [class*="tp-"] {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation-duration: var(--tt, 1.4s);
+  animation-delay: calc(var(--tk, 0) * 0.1s);
+  animation-timing-function: var(--ease);
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+}
+@media (prefers-reduced-motion: reduce) {
+  [class*="tp-"] { animation: none !important; }
+}
+
 /* --- gestos y vida por ilustración (v3) --- */
 /* === i03 faro === */
 .sec.is-alive .lv-i03-beam { animation-name: lv-sway; --a: 2.6deg; --t: 11s; transform-box: view-box; transform-origin: 100px 47px; }
@@ -1898,4 +1915,616 @@ body.song-done:not(.music-on) .sec.is-alive .dz-fn {
   38% { transform: translate(-0.6px, -0.5px) rotate(-1deg); }
   58% { transform: translate(0.5px, -1.5px) rotate(0.8deg); }
   80% { transform: translate(-0.7px, -0.7px) rotate(-0.6deg); }
+}
+
+/* --- momentos ocasionales, intensidad y toque (v3b) --- */
+/* === m1: vida v3b (i02, i07, i10) === */
+
+/* ---------- i02 (sec 02): sobre y flor ---------- */
+/* intensidad: el sobre respira (1.012 -> 1.028) y la flor se mece (2.5deg -> 4.2deg) */
+.sec.is-alive g.lv-breathe.lv-i02-env { --s: 1.028; --t: 6.5s; }
+.sec.is-alive g.lv-sway.lv-i02-stem { --a: 4.2deg; --t: 7s; }
+/* momento: cada 18 s un pétalo se desprende y cae girando; se desvanece y vuelve a brotar */
+.sec.is-alive path.lv-i02-pet { animation-name: lv-i02-pet; --t: 18s; }
+@keyframes lv-i02-pet {
+  0%, 28% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  36% { opacity: 1; transform: translate(3px, 7px) rotate(45deg); }
+  44% { opacity: 0.8; transform: translate(-3px, 19px) rotate(130deg); }
+  51% { opacity: 0; transform: translate(3px, 33px) rotate(220deg); }
+  52%, 62% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+  72%, 100% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+}
+/* momento (desfasado): un destello cruza el sello de lacre */
+.lv-i02-glint { opacity: 0; stroke: var(--accent); stroke-width: 1.7; }
+.lv-i02-spark { opacity: 0; }
+.sec.is-alive path.lv-i02-glint { animation-name: lv-i02-glint; --t: 18s; }
+.sec.is-alive path.lv-i02-spark { animation-name: lv-i02-spark; --t: 18s; }
+@keyframes lv-i02-glint {
+  0%, 74% { opacity: 0; transform: translateX(-4px); }
+  78% { opacity: 0.6; }
+  88% { opacity: 0.6; transform: translateX(24px); }
+  92%, 100% { opacity: 0; transform: translateX(28px); }
+}
+@keyframes lv-i02-spark {
+  0%, 84% { opacity: 0; transform: scale(0.2); }
+  89% { opacity: 1; transform: scale(1.15); }
+  95%, 100% { opacity: 0; transform: scale(0.5) rotate(40deg); }
+}
+/* toque: la flor se sacude, suelta un pétalo extra y el sello late una vez */
+.sec.is-tap g.tp-i02-shake { animation-name: tp-i02-shake; --tt: 1.6s; transform-box: view-box; transform-origin: 147px 59px; }
+@keyframes tp-i02-shake {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(-5deg); }
+  35% { transform: rotate(4deg); }
+  55% { transform: rotate(-3deg); }
+  78% { transform: rotate(1.6deg); }
+}
+.tp-i02-petal { opacity: 0; }
+.sec.is-tap g.tp-i02-petal { animation-name: tp-i02-petal; --tt: 1.7s; --tk: 3; }
+@keyframes tp-i02-petal {
+  0% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+  8% { opacity: 1; }
+  40% { opacity: 1; transform: translate(-7px, 14px) rotate(-70deg); }
+  80% { opacity: 0.5; transform: translate(-1px, 30px) rotate(-170deg); }
+  100% { opacity: 0; transform: translate(2px, 38px) rotate(-220deg); }
+}
+.sec.is-tap g.tp-i02-beat { animation-name: tp-i02-beat; --tt: 1.2s; --tk: 1; transform-box: view-box; transform-origin: 101px 113px; }
+@keyframes tp-i02-beat {
+  0%, 100% { transform: scale(1); }
+  22% { transform: scale(1.1); }
+  42% { transform: scale(0.98); }
+  58% { transform: scale(1.04); }
+  80% { transform: scale(1); }
+}
+
+/* ---------- i07 (sec 06): álbum de viaje ---------- */
+/* intensidad: la flor prensada (2.2deg -> 4.6deg) y la página levantada se notan más */
+.sec.is-alive g.lv-sway.lv-i07-flower { --a: 4.6deg; --t: 6.5s; }
+.sec.is-alive g.lv-i07-page { animation-name: lv-i07-page-up; --t: 7s; }
+@keyframes lv-i07-page-up {
+  0%, 100% { transform: rotate(0deg) translateY(0) scale(1); }
+  38%, 58% { transform: rotate(-17deg) translateY(-1.8px) scale(1.05); }
+}
+/* momento: cada 20 s la ruta del mapa se recorre hasta el pin y el pin salta */
+.lv-i07-route { opacity: 0; stroke: var(--accent); stroke-width: 2.3; stroke-dasharray: 5px 40px; stroke-dashoffset: 5px; }
+.sec.is-alive path.lv-i07-route { animation-name: lv-i07-route; --t: 20s; animation-timing-function: linear; }
+@keyframes lv-i07-route {
+  0%, 36% { opacity: 0; stroke-dashoffset: 5px; }
+  38% { opacity: 1; }
+  56% { opacity: 1; stroke-dashoffset: -19px; }
+  60%, 100% { opacity: 0; stroke-dashoffset: -19px; }
+}
+.sec.is-alive g.lv-i07-pin { animation-name: lv-i07-pin; --t: 20s; transform-box: view-box; transform-origin: 59.7px 84.9px; }
+@keyframes lv-i07-pin {
+  0%, 56% { transform: translateY(0) scaleY(1); }
+  60% { transform: translateY(-4.2px) scaleY(1.08); }
+  64% { transform: translateY(0) scaleY(0.94); }
+  67% { transform: translateY(-1.6px) scaleY(1); }
+  70%, 100% { transform: translateY(0) scaleY(1); }
+}
+/* momento (desfasado): el tiquete se mueve como con brisa */
+.sec.is-alive g.lv-i07-tkt { animation-name: lv-i07-tkt; --t: 20s; transform-box: view-box; transform-origin: 150px 66px; }
+@keyframes lv-i07-tkt {
+  0%, 8% { transform: rotate(0deg) translate(0, 0); }
+  12% { transform: rotate(4deg) translate(0.8px, -1px); }
+  17% { transform: rotate(-2.6deg) translate(-0.5px, 0); }
+  22% { transform: rotate(3deg) translate(0.5px, -0.6px); }
+  27% { transform: rotate(-1deg) translate(0, 0); }
+  32%, 100% { transform: rotate(0deg) translate(0, 0); }
+}
+/* toque: el tiquete sale un poco más y vuelve; el pin salta */
+.sec.is-tap g.tp-i07-out { animation-name: tp-i07-out; --tt: 1.6s; transform-box: view-box; transform-origin: 150px 66px; }
+@keyframes tp-i07-out {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  32%, 58% { transform: translate(1px, -7px) rotate(1.6deg); }
+}
+.sec.is-tap g.tp-i07-pin { animation-name: tp-i07-pin; --tt: 1.2s; --tk: 2; transform-box: view-box; transform-origin: 59.7px 84.9px; }
+@keyframes tp-i07-pin {
+  0%, 100% { transform: translateY(0); }
+  24% { transform: translateY(-6px); }
+  48% { transform: translateY(0); }
+  66% { transform: translateY(-2.5px); }
+  84% { transform: translateY(0); }
+}
+
+/* ---------- i10 (sec 09): instantes ---------- */
+/* intensidad: las fotos flotan más (1.6px/2deg -> 3px/3deg) y la cadena se mece */
+.sec.is-alive g.lv-shard.lv-i10-photo { animation-name: lv-i10-float; --t: 9s; --px: -2.4px; --py: 3px; --pr: -2.6deg; }
+.sec.is-alive g.lv-shard.lv-i10-photo-b { --px: 3px; --py: -3.5px; --pr: 3deg; }
+@keyframes lv-i10-float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(var(--px, 3px), var(--py, -3.5px)) rotate(var(--pr, 3deg)); }
+}
+.sec.is-alive g.lv-sway.lv-i10-chain { --a: 1.7deg; --t: 7s; transform-box: view-box; transform-origin: 85px 30px; }
+/* momento: cada ~16 s una de las fotos (alternando) destella como un flash */
+.lv-i10-a-f, .lv-i10-b-f, .lv-i10-a-r, .lv-i10-b-r { opacity: 0; }
+.lv-i10-a-r, .lv-i10-b-r { stroke-width: 1.6; }
+.sec.is-alive path.lv-i10-a-f, .sec.is-alive path.lv-i10-b-f { animation-name: lv-i10-fl; --t: 32s; }
+.sec.is-alive path.lv-i10-a-r, .sec.is-alive path.lv-i10-b-r { animation-name: lv-i10-ray; --t: 32s; }
+.sec.is-alive path.lv-i10-b-f, .sec.is-alive path.lv-i10-b-r { --rd: 16s; }
+@keyframes lv-i10-fl {
+  0%, 14% { opacity: 0; }
+  15.5% { opacity: 0.34; }
+  21%, 100% { opacity: 0; }
+}
+@keyframes lv-i10-ray {
+  0%, 14% { opacity: 0; transform: scale(0.5); }
+  16% { opacity: 1; transform: scale(1); }
+  22%, 100% { opacity: 0; transform: scale(1.35); }
+}
+/* toque: el flash de una foto y las agujas dan un respingo */
+.tp-i10-flash { opacity: 0; }
+.tp-i10-flash path:first-child { fill-opacity: 0.4; }
+.tp-i10-flash path + path { stroke-width: 1.6; }
+.sec.is-tap g.tp-i10-flash { animation-name: tp-i10-flash; --tt: 1.4s; }
+@keyframes tp-i10-flash {
+  0% { opacity: 0; }
+  9% { opacity: 1; }
+  30% { opacity: 0.15; }
+  40% { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+.sec.is-tap g.tp-i10-hands { animation-name: tp-i10-hands; --tt: 1.2s; transform-box: view-box; transform-origin: 96px 114px; }
+@keyframes tp-i10-hands {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(16deg); }
+  55% { transform: rotate(-5deg); }
+  78% { transform: rotate(2deg); }
+}
+
+/* ===== m2 — más vida: i04, i06, i08 (se integra tras las reglas existentes de cada una) ===== */
+
+/* ---------- i04 (sec 04) ---------- */
+.lv-i04n-shadow, .tp-i04n-wisp { opacity: 0; }
+
+/* momento A: el pájaro salta, ladea la cabeza y, de tarde en tarde, se va volando y vuelve */
+.sec.is-alive .lv-i04n-bird { animation-name: lv-i04n-bird; --t: 20s; --w: 2; transform-box: view-box; transform-origin: 123px 38px; }
+.sec.is-alive .lv-i04n-head { animation-name: lv-i04n-head; --t: 20s; --w: 5; transform-box: view-box; transform-origin: 119px 30px; }
+.sec.is-alive .lv-i04n-fly { animation-name: lv-i04n-fly; --t: 38s; --w: 9; }
+@keyframes lv-i04n-bird {
+  0%, 34%, 100% { transform: translateY(0) rotate(0deg); }
+  36.5% { transform: translateY(-2.8px) rotate(-3deg); }
+  39% { transform: translateY(0) rotate(0deg); }
+  41.5% { transform: translateY(-2.2px) rotate(2.5deg); }
+  44% { transform: translateY(0) rotate(0deg); }
+}
+@keyframes lv-i04n-head {
+  0%, 60%, 100% { transform: translate(0, 0) rotate(0deg); }
+  65%, 72% { transform: translate(-1px, 0.8px) rotate(-16deg); }
+  77% { transform: translate(0.7px, -0.4px) rotate(9deg); }
+  82% { transform: translate(0, 0) rotate(0deg); }
+}
+@keyframes lv-i04n-fly {
+  0%, 52%, 100% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  56% { opacity: 0.6; transform: translate(-9px, -7px) rotate(-6deg); }
+  59%, 66% { opacity: 0; transform: translate(-16px, -11px) rotate(-9deg); }
+  72% { opacity: 0.8; transform: translate(-6px, -4px) rotate(-3deg); }
+  78% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+}
+
+/* momento B (desfasado): la sombra de una nube cruza los tejados y la luz de la mesa baja y vuelve */
+.sec.is-alive .lv-i04n-shadow { animation-name: lv-i04n-shadow; --t: 26s; --w: 6; }
+.sec.is-alive .lv-i04n-dim { animation-name: lv-i04n-dim; --t: 26s; --w: 6; }
+@keyframes lv-i04n-shadow {
+  0%, 48%, 100% { opacity: 0; transform: translateX(0); }
+  56% { opacity: 1; transform: translateX(14px); }
+  78% { opacity: 1; transform: translateX(46px); }
+  86% { opacity: 0; transform: translateX(58px); }
+  87% { opacity: 0; transform: translateX(0); }
+}
+@keyframes lv-i04n-dim {
+  0%, 50%, 100% { opacity: 1; }
+  62%, 74% { opacity: 0.25; }
+  88% { opacity: 1; }
+}
+
+/* intensidad: vapor y cortina bien visibles */
+.sec.is-alive .lv-i04n-steam { animation-name: lv-i04n-steam2; }
+.sec.is-alive .lv-i04n-curtain { --a: 2deg; --t: 11s; }
+.sec.is-alive .lv-i04n-light { animation-name: lv-i04n-light2; }
+@keyframes lv-i04n-steam2 {
+  0%, 6% { opacity: 1; transform: translate(0, 0) scale(1, 1); }
+  30% { opacity: 0.9; transform: translate(2px, -3.5px) scale(1.04, 1.06); }
+  55% { opacity: 0.55; transform: translate(-1.8px, -7px) scale(1.07, 1.1); }
+  80% { opacity: 0; transform: translate(1.5px, -11px) scale(1.14, 1.18); }
+  81% { opacity: 0; transform: translate(0, 3px) scale(0.96, 0.9); }
+  100% { opacity: 1; transform: translate(0, 0) scale(1, 1); }
+}
+@keyframes lv-i04n-light2 {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+/* toque: una voluta extra y la cuchara tintinea (el celular NO se mueve) */
+.sec.is-tap .tp-i04n-wisp { --tt: 1.7s; animation-name: tp-i04n-wisp; }
+.sec.is-tap .tp-i04n-spoon { --tt: 1.2s; animation-name: tp-i04n-spoon; transform-box: view-box; transform-origin: 72px 162px; }
+@keyframes tp-i04n-wisp {
+  0% { opacity: 0; transform: translateY(2px) scale(0.9, 0.8); }
+  30% { opacity: 1; }
+  70% { opacity: 0.5; transform: translateY(-6px) scale(1.06, 1.1); }
+  100% { opacity: 0; transform: translateY(-11px) scale(1.12, 1.2); }
+}
+@keyframes tp-i04n-spoon {
+  0%, 100% { transform: rotate(0deg); }
+  12% { transform: rotate(3.2deg); }
+  26% { transform: rotate(-2.8deg); }
+  40% { transform: rotate(2.2deg); }
+  54% { transform: rotate(-1.6deg); }
+  70% { transform: rotate(0.9deg); }
+  85% { transform: rotate(-0.4deg); }
+}
+
+/* ---------- i06 (sec 05) ---------- */
+.lv-i06n-shoot, .lv-i06n-eyec, .tp-i06n-halo, .tp-i06n-halo2 { opacity: 0; }
+
+/* momento A: estrella fugaz por el cielo de la ventana (trazo con estela, sin pathLength) */
+.sec.is-alive .lv-i06n-shoot { animation-name: lv-i06n-shoot; --t: 22s; --w: 3; }
+@keyframes lv-i06n-shoot {
+  0%, 39%, 100% { opacity: 0; transform: translate(0, 0); }
+  41% { opacity: 1; transform: translate(-5px, 1.9px); }
+  46% { opacity: 0.9; transform: translate(-24px, 9.2px); }
+  49% { opacity: 0; transform: translate(-36px, 13.7px); }
+  50% { opacity: 0; transform: translate(0, 0); }
+}
+
+/* momento B (desfasado): parpadea, dos versiones del ojo */
+.sec.is-alive .lv-i06n-eyeo { animation-name: lv-i06n-eyeo; --t: 9s; --w: 2; }
+.sec.is-alive .lv-i06n-eyec { animation-name: lv-i06n-eyec; --t: 9s; --w: 2; }
+@keyframes lv-i06n-eyeo {
+  0%, 90%, 100% { opacity: 1; }
+  91.5%, 95.5% { opacity: 0; }
+  97% { opacity: 1; }
+}
+@keyframes lv-i06n-eyec {
+  0%, 90%, 100% { opacity: 0; }
+  91.5%, 95.5% { opacity: 1; }
+  97% { opacity: 0; }
+}
+
+/* intensidad: respiración algo más marcada (giro -0.9 a -1.8 grados, subida 0.5 a 1.1 px) */
+.sec.is-alive .lv-i06n-breath { animation-name: lv-i06n-breath2; }
+.sec.is-alive .lv-i06n-lift { animation-name: lv-i06n-lift2; }
+@keyframes lv-i06n-breath2 {
+  0%, 100% { transform: rotate(0deg); }
+  45% { transform: rotate(-1.8deg); }
+}
+@keyframes lv-i06n-lift2 {
+  0%, 100% { transform: translateY(0); }
+  45% { transform: translateY(-1.1px); }
+}
+
+/* toque: el despertador vibra como un susurro de alarma y la luna brilla más */
+.sec.is-tap .tp-i06n-alarm { --tt: 1.2s; animation-name: tp-i06n-alarm; transform-box: view-box; transform-origin: 159px 130px; }
+.sec.is-tap .tp-i06n-moon { --tt: 1.8s; animation-name: tp-i06n-moon; }
+.sec.is-tap .tp-i06n-halo { --tt: 1.8s; animation-name: tp-i06n-halo; }
+.sec.is-tap .tp-i06n-halo2 { --tt: 1.8s; --tk: 3; animation-name: tp-i06n-halo; }
+@keyframes tp-i06n-alarm {
+  0%, 100% { transform: rotate(0deg); }
+  10% { transform: rotate(3.5deg); }
+  20% { transform: rotate(-3.5deg); }
+  30% { transform: rotate(3deg); }
+  40% { transform: rotate(-3deg); }
+  50% { transform: rotate(2deg); }
+  60% { transform: rotate(-2deg); }
+  72% { transform: rotate(1deg); }
+  84% { transform: rotate(-0.5deg); }
+}
+@keyframes tp-i06n-moon {
+  0%, 100% { transform: scale(1); }
+  35%, 55% { transform: scale(1.09); }
+}
+@keyframes tp-i06n-halo {
+  0% { opacity: 0; transform: scale(0.92); }
+  35% { opacity: 0.55; }
+  100% { opacity: 0; transform: scale(1.16); }
+}
+
+/* ---------- i08 (sec 07) ---------- */
+.lv-i08n-mini, .lv-i08n-flush, .tp-i08n-h1, .tp-i08n-h2, .tp-i08n-h3 { opacity: 0; }
+
+/* momento: cada 16 s (5 latidos de 3.2 s) sale un corazoncito junto al corazón y el rubor se intensifica con el latido */
+.sec.is-alive .lv-i08n-mini { animation-name: lv-i08n-mini; --t: 16s; }
+.sec.is-alive .lv-i08n-flush { animation-name: lv-i08n-flush; --t: 16s; }
+@keyframes lv-i08n-mini {
+  0%, 58%, 100% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+  61% { opacity: 1; transform: translate(0, -1px) scale(1); }
+  72% { opacity: 0.9; transform: translate(-1.2px, -6px) scale(1.05); }
+  82% { opacity: 0.55; transform: translate(1px, -11px) scale(1.1); }
+  90% { opacity: 0; transform: translate(-0.5px, -16px) scale(1.15); }
+}
+@keyframes lv-i08n-flush {
+  0%, 59%, 100% { opacity: 0; }
+  63% { opacity: 0.42; }
+  78% { opacity: 0; }
+}
+
+/* intensidad: molécula y burbujas se notan */
+.sec.is-alive .lv-i08n-vib { animation-name: lv-i08n-vib2; --t: 4.2s; }
+.sec.is-alive .lv-i08n-w0 { --fx: 1.6px; --fy: -4px; --fr: 2deg; }
+.sec.is-alive .lv-i08n-w1 { --fx: -1.8px; --fy: -4.4px; --fr: -2.4deg; }
+.sec.is-alive .lv-i08n-w2 { --fx: 1.4px; --fy: -3.6px; --fr: 1.8deg; }
+@keyframes lv-i08n-vib2 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  18% { transform: translate(1.4px, -2.4px) rotate(2.2deg); }
+  38% { transform: translate(-1.2px, -1px) rotate(-2deg); }
+  58% { transform: translate(1px, -2.8px) rotate(1.6deg); }
+  80% { transform: translate(-1.3px, -1.4px) rotate(-1.4deg); }
+}
+
+/* toque: brotan 3 corazoncitos y la sonrisa se ensancha un instante (origen en la comisura) */
+.sec.is-tap .tp-i08n-h1 { --tt: 1.7s; --tk: 0; animation-name: tp-i08n-heart; }
+.sec.is-tap .tp-i08n-h2 { --tt: 1.7s; --tk: 2; animation-name: tp-i08n-heart; }
+.sec.is-tap .tp-i08n-h3 { --tt: 1.7s; --tk: 4; animation-name: tp-i08n-heart; }
+.sec.is-tap .tp-i08n-smile { --tt: 1.4s; animation-name: tp-i08n-smile; transform-box: view-box; transform-origin: 129.7px 146.8px; }
+@keyframes tp-i08n-heart {
+  0% { opacity: 0; transform: translateY(3px) scale(0.3); }
+  22% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-15px) scale(1.12); }
+}
+@keyframes tp-i08n-smile {
+  0%, 100% { transform: scale(1, 1); }
+  28%, 58% { transform: scale(1.1, 1.16); }
+}
+
+/* ===== m3 — más vida: i03 (faro), i09 (corredor), i12 (escarabajo) ===== */
+/* Va DESPUÉS de las reglas existentes de i03, i09 e i12 (misma especificidad: gana el orden). */
+
+/* ---------- i03 faro (sec 03) ---------- */
+.lv-i03-flash, .tp-i03-glare, .lv-i03-crest, .lv-i03-hi, .lv-i03-lo { opacity: 0; }
+/* intensidad: haz más amplio, olas con más recorrido, halo que respira */
+.sec.is-alive .lv-i03-beam { --a: 4.5deg; --t: 9s; }
+.sec.is-alive .lv-wave.lv-i03-wa { --wx: -9px; --t: 8s; }
+.sec.is-alive .lv-wave.lv-i03-wb { --wx: -8px; --t: 10s; }
+.sec.is-alive .lv-wave.lv-sm.lv-i03-ws { --wx: -4.5px; --t: 7s; }
+.sec.is-alive .lv-pulse.lv-i03-halo { --s: 1.07; --t: 4.2s; }
+/* momento B: el haz cruza el frente (cada ciclo de 9 s, a mitad) y la linterna destella */
+.sec.is-alive .lv-i03-flash { animation-name: lv-i03-flash; --t: 9s; }
+@keyframes lv-i03-flash {
+  0%, 44% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 0.85; transform: scale(1.25); }
+  58%, 100% { opacity: 0; transform: scale(0.8); }
+}
+/* momento A: cada ~18 s una ola rompe contra las rocas (izquierda) y, 9 s después, en las de la derecha */
+.lv-i03-sl { --rd: 2s; --sd: 1; }
+.lv-i03-sr { --rd: 11s; --sd: -1; }
+.sec.is-alive .lv-i03-crest { animation-name: lv-i03-crest; --t: 18s; }
+.sec.is-alive .lv-i03-hi { animation-name: lv-i03-hi; --t: 18s; }
+.sec.is-alive .lv-i03-lo { animation-name: lv-i03-lo; --t: 18s; }
+@keyframes lv-i03-crest {
+  0%, 1% { opacity: 0; transform: translate(calc(var(--sd) * -4px), 2px); }
+  3% { opacity: 0.9; transform: translate(0, 0); }
+  7% { opacity: 0.6; transform: translate(calc(var(--sd) * 2px), -1px); }
+  9%, 100% { opacity: 0; transform: translate(calc(var(--sd) * 3px), 0); }
+}
+@keyframes lv-i03-hi {
+  0%, 2% { opacity: 0; transform: translate(0, 2px); animation-timing-function: ease-out; }
+  2.4% { opacity: 1; transform: translate(0, 0); animation-timing-function: ease-out; }
+  5.2% { opacity: 1; transform: translate(calc(var(--sd) * -2px), -9px); animation-timing-function: ease-in; }
+  8.6% { opacity: 1; transform: translate(calc(var(--sd) * -4.5px), 3px); }
+  9.6%, 100% { opacity: 0; transform: translate(calc(var(--sd) * -5px), 4px); }
+}
+@keyframes lv-i03-lo {
+  0%, 2.6% { opacity: 0; transform: translate(0, 2px); animation-timing-function: ease-out; }
+  3% { opacity: 1; transform: translate(0, 0); animation-timing-function: ease-out; }
+  4.8% { opacity: 1; transform: translate(calc(var(--sd) * 2px), -5px); animation-timing-function: ease-in; }
+  7.4% { opacity: 1; transform: translate(calc(var(--sd) * 4px), 3px); }
+  8.4%, 100% { opacity: 0; transform: translate(calc(var(--sd) * 4.5px), 4px); }
+}
+/* toque: la linterna destella fuerte, el halo se expande y vuelve, las estrellas titilan */
+.sec.is-tap .tp-i03-glare { animation-name: tp-i03-glare; --tt: 1.4s; }
+.sec.is-tap .tp-i03-halo { animation-name: tp-i03-halo; --tt: 1.5s; transform-box: view-box; transform-origin: 100px 47px; }
+.sec.is-tap .tp-i03-stars { animation-name: tp-i03-stars; --tt: 1.6s; }
+@keyframes tp-i03-glare {
+  0% { opacity: 0; transform: scale(0.4); }
+  18% { opacity: 1; transform: scale(1.3); }
+  100% { opacity: 0; transform: scale(1.7); }
+}
+@keyframes tp-i03-halo {
+  0% { transform: scale(1); }
+  28% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+@keyframes tp-i03-stars {
+  0%, 100% { opacity: 1; }
+  14% { opacity: 0.15; }
+  30% { opacity: 1; }
+  46% { opacity: 0.2; }
+  62% { opacity: 1; }
+  78% { opacity: 0.4; }
+}
+
+/* ---------- i09 corredor (sec 08) ---------- */
+.lv-i09-line, .lv-i09-dust, .tp-i09-puff { opacity: 0; }
+/* intensidad: trote que se lee a 220 px (bob ~2.3 px; brazos ±14°, piernas ±9°) */
+.sec.is-alive .lv-i09-bob  { animation-name: lv-i09-bob2; }
+.sec.is-alive .lv-i09-armn { --a: 14deg; }
+.sec.is-alive .lv-i09-armf { --a: -14deg; }
+.sec.is-alive .lv-i09-legn { --a: -9deg; }
+.sec.is-alive .lv-i09-legf { --a: 9deg; }
+@keyframes lv-i09-bob2 {
+  0%, 50%, 100% { transform: translateY(0); }
+  25%, 75% { transform: translateY(-2.3px); }
+}
+/* toque: el corredor acelera ~1.5 s (ciclo 1.7 s -> 1.0 s, más amplitud) */
+.sec.is-alive.is-tap .lv-i09-bob, .sec.is-alive.is-tap .lv-i09-armn, .sec.is-alive.is-tap .lv-i09-armf,
+.sec.is-alive.is-tap .lv-i09-legn, .sec.is-alive.is-tap .lv-i09-legf { --t: 1s; }
+.sec.is-alive.is-tap .lv-i09-armn { --a: 17deg; }
+.sec.is-alive.is-tap .lv-i09-armf { --a: -17deg; }
+.sec.is-alive.is-tap .lv-i09-legn { --a: -11deg; }
+.sec.is-alive.is-tap .lv-i09-legf { --a: 11deg; }
+.sec.is-tap .tp-i09-puff { animation-name: tp-i09-puff; --tt: 1.5s; }
+.sec.is-tap .tp-i09-p2 { --tk: 3; }
+@keyframes tp-i09-puff {
+  0% { opacity: 0; transform: scale(0.4); }
+  22% { opacity: 0.9; transform: scale(1.4); }
+  100% { opacity: 0; transform: translate(-5px, -3px) scale(2.9); }
+}
+/* momento A: cada ~3 pisadas (5.1 s por pie, alternados) un poco de polvo bajo los tenis */
+.sec.is-alive .lv-i09-dust { animation-name: lv-i09-dust; --t: 5.1s; }
+.sec.is-alive .lv-i09-d2 { --rd: 2.55s; }
+@keyframes lv-i09-dust {
+  0%, 1% { opacity: 0; transform: translate(0, 0) scale(0.4); }
+  3% { opacity: 0.9; transform: translate(0, 0) scale(0.9); }
+  10% { opacity: 0.6; transform: translate(-2px, -2px) scale(1.9); }
+  15%, 100% { opacity: 0; transform: translate(-3.5px, -3px) scale(2.5); }
+}
+/* momento B: las marcas del centro del camino avanzan hacia el corredor (copia con dash que se desplaza) */
+.lv-i09-line { stroke-width: 1.9; stroke-dasharray: 2.4 6.6; }
+.sec.is-alive .lv-i09-line { animation-name: lv-i09-line; --t: 16s; animation-timing-function: linear; }
+@keyframes lv-i09-line {
+  0% { opacity: 0; stroke-dashoffset: 0; }
+  8% { opacity: 0.75; }
+  42% { opacity: 0.75; }
+  50%, 100% { opacity: 0; stroke-dashoffset: 36; }
+}
+
+/* ---------- i12 escarabajo (sec 11) ---------- */
+.lv-i12-shine, .tp-i12-glints { opacity: 0; }
+/* intensidad: aleteo ~11° y llama más viva */
+.sec.is-alive .lv-i12-flapr { animation-name: lv-i12-flapr2; --t: 3.4s; }
+.sec.is-alive .lv-i12-flapl { animation-name: lv-i12-flapl2; --t: 3.4s; }
+@keyframes lv-i12-flapr2 {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(11deg); }
+  44% { transform: rotate(8.5deg); }
+  72% { transform: rotate(-6deg); }
+}
+@keyframes lv-i12-flapl2 {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-11deg); }
+  44% { transform: rotate(-8.5deg); }
+  72% { transform: rotate(6deg); }
+}
+.sec.is-alive .lv-flicker.lv-i12-fl { animation-name: lv-i12-fl; animation-duration: 2.6s; }
+@keyframes lv-i12-fl {
+  0%, 100% { opacity: 1; transform: scale(1, 1); }
+  20% { opacity: 0.78; transform: scale(0.92, 0.86); }
+  45% { opacity: 1; transform: scale(0.93, 1.12); }
+  70% { opacity: 0.82; transform: scale(1.06, 0.92); }
+}
+/* momento: cada ~16 s un brillo cruza la esmeralda en diagonal */
+.sec.is-alive .lv-i12-shine { animation-name: lv-i12-shine; --t: 16s; --rd: 2s; }
+@keyframes lv-i12-shine {
+  0%, 62% { opacity: 0; transform: translate(0, 0); }
+  68% { opacity: 0.95; }
+  86% { opacity: 0.95; transform: translate(9px, -10px); }
+  92%, 100% { opacity: 0; transform: translate(10px, -11px); }
+}
+/* con la canción: aleteo al compás (1 ciclo = 2 tiempos = 1.1111 s) y estela que titila a cada tiempo (0.5556 s) */
+body.music-on .sec.is-alive .lv-i12-flapr { animation-name: lv-i12-beatr; animation-duration: 1.1111s; animation-delay: var(--dz-t, 0s); }
+body.music-on .sec.is-alive .lv-i12-flapl { animation-name: lv-i12-beatl; animation-duration: 1.1111s; animation-delay: var(--dz-t, 0s); }
+body.music-on .sec.is-alive .lv-i12-trail { animation-name: lv-i12-trail; animation-duration: 0.5556s; animation-delay: var(--dz-t, 0s); animation-timing-function: ease-out; }
+body.music-on .sec.is-alive .lv-flicker.lv-i12-fl { animation-duration: 1.1111s; animation-delay: var(--dz-t, 0s); }
+@keyframes lv-i12-beatr {
+  0%, 100% { transform: rotate(9deg); }
+  55% { transform: rotate(-4deg); }
+}
+@keyframes lv-i12-beatl {
+  0%, 100% { transform: rotate(-9deg); }
+  55% { transform: rotate(4deg); }
+}
+@keyframes lv-i12-trail {
+  0% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+/* toque: dos aleteos fuertes y rápidos; la estela suelta destellos */
+.sec.is-tap .tp-i12-wr { animation-name: tp-i12-wr; --tt: 1.2s; transform-box: view-box; transform-origin: 119px 105px; animation-timing-function: ease-in-out; }
+.sec.is-tap .tp-i12-wl { animation-name: tp-i12-wl; --tt: 1.2s; transform-box: view-box; transform-origin: 81px 105px; animation-timing-function: ease-in-out; }
+.sec.is-tap .tp-i12-glints { animation-name: tp-i12-glints; --tt: 1.6s; --tk: 2; }
+@keyframes tp-i12-wr {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(-9deg); }
+  32% { transform: rotate(17deg); }
+  50% { transform: rotate(-9deg); }
+  68% { transform: rotate(17deg); }
+  85% { transform: rotate(-3deg); }
+}
+@keyframes tp-i12-wl {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(9deg); }
+  32% { transform: rotate(-17deg); }
+  50% { transform: rotate(9deg); }
+  68% { transform: rotate(-17deg); }
+  85% { transform: rotate(3deg); }
+}
+@keyframes tp-i12-glints {
+  0% { opacity: 0; transform: translate(2px, -2px) scale(0.5); }
+  25% { opacity: 1; transform: translate(0, 0) scale(1.1); }
+  100% { opacity: 0; transform: translate(-5px, 4px) scale(1.2); }
+}
+
+/* ===== m4: vida v3b — i01 (sec 01) e i11 (sec 10) ===== */
+
+/* ---- i01: intensidad ---- */
+/* calendarios: balanceo de 2.5deg -> 4.5deg; arena: el flujo corre mas rapido */
+.sec.is-alive .lv-i01-cal { --a: 4.5deg; --t: 6.5s; }
+.sec.is-alive .lv-flow { animation-duration: 0.65s; }
+
+/* ---- i01: momento (cada ~20 s se desprende la hoja de uno de los calendarios) ---- */
+.lv-i01-leaf { opacity: 0; fill: var(--bg); }
+.sec.is-alive .lv-i01-leaf {
+  animation-name: lv-i01-leaf; animation-duration: 60s; animation-fill-mode: none;
+  animation-timing-function: ease-in-out;
+}
+.sec.is-alive .lv-i01-lf1 { animation-delay: 14s; --lx: 6px; --lr: 125deg; }
+.sec.is-alive .lv-i01-lf2 { animation-delay: 34s; --lx: -8px; --lr: -140deg; }
+.sec.is-alive .lv-i01-lf3 { animation-delay: 54s; --lx: 9px; --lr: 110deg; }
+@keyframes lv-i01-leaf {
+  0% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+  0.6% { opacity: 0.9; transform: translate(0, 0) rotate(0deg); }
+  2.5% { opacity: 0.85; transform: translate(calc(var(--lx, 6px) * -0.6), 9px) rotate(calc(var(--lr, 120deg) * 0.2)); }
+  5% { opacity: 0.55; transform: translate(var(--lx, 6px), 28px) rotate(calc(var(--lr, 120deg) * 0.6)); }
+  7.6%, 100% { opacity: 0; transform: translate(calc(var(--lx, 6px) * -0.4), 48px) rotate(var(--lr, 120deg)); }
+}
+
+/* ---- i01: toque (el reloj se inclina 8deg desde su base, la arena cae rapido, aparecen los puntitos) ---- */
+.sec.is-tap .tp-i01-glass { animation-name: tp-i01-glass; --tt: 1.7s; transform-box: view-box; transform-origin: 100px 176px; }
+@keyframes tp-i01-glass {
+  0% { transform: rotate(0deg); }
+  30%, 55% { transform: rotate(8deg); }
+  100% { transform: rotate(0deg); }
+}
+.sec.is-alive.is-tap .lv-flow { animation-duration: 0.28s; }
+.tp-i01-dots { opacity: 0; }
+.sec.is-tap .tp-i01-dots { animation-name: tp-i01-dots; --tt: 1.7s; --tk: 3; }
+@keyframes tp-i01-dots {
+  0% { opacity: 0; transform: scale(0.7); }
+  15%, 40%, 65% { opacity: 1; transform: scale(1); }
+  28%, 52% { opacity: 0.3; transform: scale(0.85); }
+  100% { opacity: 0; transform: scale(0.85); }
+}
+
+/* ---- i11: momento (sin musica): los jeroglificos de las columnas brillan de abajo arriba cada ~22 s ---- */
+.lv-i11-gl { opacity: 0; stroke-width: 1.9; }
+body:not(.music-on) .sec.is-alive .lv-i11-gl {
+  animation-name: lv-i11-gl; animation-duration: 22s; animation-fill-mode: none;
+  animation-timing-function: ease-in-out;
+  animation-delay: calc(var(--k, 0) * 0.42s + 4s);
+}
+.sec.is-alive .lv-i11-g1 { --k: 1; }
+.sec.is-alive .lv-i11-g2 { --k: 2; }
+.sec.is-alive .lv-i11-g3 { --k: 3; }
+.sec.is-alive .lv-i11-g4 { --k: 4; }
+.sec.is-alive .lv-i11-g5 { --k: 5; }
+.sec.is-alive .lv-i11-g6 { --k: 6; }
+@keyframes lv-i11-gl {
+  0%, 40% { opacity: 0; }
+  44% { opacity: 0.95; }
+  50% { opacity: 0.4; }
+  56%, 100% { opacity: 0; }
+}
+
+/* ---- i11: toque (sin musica): mini-paso a la pose 2 y luego la 3 (con cortes), y el disco solar late una vez ---- */
+/* la especificidad iguala a la de song-done para que la animacion gane tambien ahi */
+body:not(.music-on) .sec.is-alive.is-tap .dz-pose.dz-pose.dz-pose { animation-duration: 1.3s; animation-delay: 0s; animation-timing-function: linear; animation-iteration-count: 1; animation-fill-mode: both; animation-play-state: running; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-pose.dz-p1 { animation-name: tp-i11-p1; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-pose.dz-p2 { animation-name: tp-i11-p2; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-pose.dz-p3 { animation-name: tp-i11-p3; }
+@keyframes tp-i11-p1 { 0%, 6% { opacity: 1; } 6.1%, 89.9% { opacity: 0; } 90%, 100% { opacity: 1; } }
+@keyframes tp-i11-p2 { 0%, 6% { opacity: 0; } 6.1%, 47.9% { opacity: 1; } 48%, 100% { opacity: 0; } }
+@keyframes tp-i11-p3 { 0%, 47.9% { opacity: 0; } 48%, 89.9% { opacity: 1; } 90%, 100% { opacity: 0; } }
+body:not(.music-on) .sec.is-tap .tp-i11-sun { animation-name: tp-i11-sun; --tt: 1.4s; }
+@keyframes tp-i11-sun {
+  0%, 100% { transform: scale(1); }
+  35% { transform: scale(1.06); }
 }
