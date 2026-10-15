@@ -1,4 +1,4 @@
-// Anillo que enseña que los dibujos se pueden tocar. Estado solo en memoria.
+// Mano que enseña que los dibujos se pueden tocar. Estado solo en memoria.
 const MAX_SHOWN = 3;
 const NS = 'http://www.w3.org/2000/svg';
 
@@ -15,21 +15,19 @@ export function initTapHint(root) {
     el.className = 'th-hint';
     el.setAttribute('aria-hidden', 'true');
     el.innerHTML =
-      '<svg viewBox="0 0 60 60" xmlns="' + NS + '" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">' +
-      '<circle class="th-ring" cx="30" cy="30" r="18" stroke-width="1.2"/>' +
-      '<circle class="th-ring th-ring2" cx="30" cy="30" r="18" stroke-width="1.2"/>' +
-      '<g class="th-spark" stroke-width="1.1">' +
-      '<path d="M30 21 C30.8 27 33 29.2 39 30 C33 30.8 30.8 33 30 39 C29.2 33 27 30.8 21 30 C27 29.2 29.2 27 30 21Z"/>' +
-      '<path d="M41 19.5 C43.5 17 46 16.5 48 17" stroke-width=".9"/>' +
-      '<path d="M44 24 C46.5 22.5 48.5 22.5 50.5 23.5" stroke-width=".9"/>' +
-      '</g></svg>';
+      '<svg class="th-rip" viewBox="-30 -30 60 60" xmlns="' + NS + '" fill="none" stroke="currentColor" stroke-width="2">' +
+      '<circle class="th-ring" r="22"/><circle class="th-ring th-ring2" r="22"/></svg>' +
+      '<svg class="th-hand" viewBox="0 0 42 48" xmlns="' + NS + '" stroke-linejoin="round">' +
+      '<path d="M10 8 A4 4 0 0 1 18 8 V19 Q18 16.5 21.5 16.5 Q25 16.5 25 19 Q25.5 17.5 28.5 17.5 Q32 17.5 32 21 Q32.5 20.5 34.5 21.5 Q37.5 23 37.5 26.5 V34 Q37.5 44.5 28 44.5 H19 Q11.5 44.5 8.5 38 L5 31.5 Q3.8 28.5 6.8 27.6 Q9.2 27.2 10 30 Z"/>' +
+      '</svg>' +
+      '<span class="th-label">toca</span>';
     return el;
   };
 
   const hide = (h) => {
     if (!h) return;
     h.el.classList.remove('is-on');
-    setTimeout(() => h.el.remove(), 900);
+    setTimeout(() => h.el.remove(), 450);
   };
 
   const stop = () => {

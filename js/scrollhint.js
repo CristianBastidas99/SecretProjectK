@@ -18,10 +18,13 @@ export function initScrollHint(root) {
   svg.setAttribute('focusable', 'false');
   svg.setAttribute('aria-hidden', 'true');
   const path = document.createElementNS(SVG_NS, 'path');
-  path.setAttribute('d', 'M12 4 C12.3 9 11.7 14 12 19 M6 13.5 C8.5 15.5 10.5 17.5 12 19.5 C13.5 17.5 15.5 15.5 18 13.5');
+  path.setAttribute('d', 'M6.5 9.5 C8.6 11.8 10.4 13.7 12 15.3 C13.6 13.7 15.4 11.8 17.5 9.5');
   svg.appendChild(path);
   btn.appendChild(svg);
-  document.body.appendChild(btn);
+  const fade = document.createElement('div');
+  fade.className = 'sh-fade';
+  fade.setAttribute('aria-hidden', 'true');
+  document.body.append(fade, btn);
 
   let timer = 0;
   let shown = false;
@@ -64,6 +67,7 @@ export function initScrollHint(root) {
     btn.hidden = false;
     void btn.offsetWidth;
     shown = true;
+    fade.classList.add('is-on');
     btn.classList.add('is-on');
     btn.tabIndex = 0;
   }
@@ -71,6 +75,7 @@ export function initScrollHint(root) {
   function hide() {
     if (!shown) return;
     shown = false;
+    fade.classList.remove('is-on');
     btn.classList.remove('is-on');
     btn.tabIndex = -1;
     clearTimeout(hideTimer);

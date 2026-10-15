@@ -2531,70 +2531,150 @@ body:not(.music-on) .sec.is-tap .tp-i11-sun { animation-name: tp-i11-sun; --tt: 
 
 /* === BLOQUE: pistas === */
 /* === BLOQUE: pista «sigue bajando» (sh-) === */
+.sh-fade {
+  position: fixed;
+  z-index: 29;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(90px + var(--safe-b, env(safe-area-inset-bottom, 0px)));
+  background: linear-gradient(to bottom, transparent, var(--bg, #F1E7D6));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s var(--ease, ease);
+}
+.sh-fade.is-on { opacity: 0.9; transition-duration: 2.4s; }
+
 .sh-arrow {
   position: fixed;
   z-index: 30;
   left: 50%;
-  margin-left: -22px;
-  bottom: calc(6px + var(--safe-b, env(safe-area-inset-bottom, 0px)));
-  width: 44px;
-  height: 44px;
+  margin-left: -23px;
+  bottom: calc(14px + var(--safe-b, env(safe-area-inset-bottom, 0px)));
+  box-sizing: border-box;
+  width: 46px;
+  height: 46px;
   padding: 10px;
-  background: none;
   border: 0;
-  color: var(--accent, var(--fg));
+  border-radius: 50%;
+  background: var(--accent, var(--fg));
+  color: var(--bg, #F1E7D6);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--fg, #2b2620) 28%, transparent);
   opacity: 0;
   pointer-events: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: opacity 2.4s var(--ease, ease);
+  transition: opacity 0.45s var(--ease, ease);
 }
 .sh-arrow[hidden] { display: none; }
-.sh-arrow.is-on { opacity: 0.55; pointer-events: auto; }
-.sh-arrow:not(.is-on) { transition-duration: 0.45s; }
+.sh-arrow.is-on { opacity: 1; pointer-events: auto; transition-duration: 2.4s; }
 .sh-arrow svg {
   display: block;
   width: 100%;
   height: 100%;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.3;
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+.sh-arrow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--accent, var(--fg));
+  opacity: 0;
+  pointer-events: none;
+}
 .sh-arrow.is-on svg { animation: sh-bob 2.6s ease-in-out infinite; }
-.sh-arrow:focus-visible { outline: 1px solid currentColor; outline-offset: -4px; border-radius: 50%; }
-@keyframes sh-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+.sh-arrow.is-on::before { animation: sh-pulse 2.4s ease-out infinite; }
+.sh-arrow:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+@keyframes sh-bob { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+@keyframes sh-pulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.75); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .sh-arrow.is-on svg { animation: none; }
+  .sh-arrow.is-on svg, .sh-arrow.is-on::before { animation: none; }
 }
 
-/* t1: anillo «toca los dibujos» (th-) y línea de portada */
+/* t1: mano «toca» sobre las ilustraciones (th-) y línea de portada */
 .sec-ill { position: relative; }
 .th-hint {
   position: absolute;
-  right: -6px;
-  bottom: -14px;
-  width: 52px;
-  height: 52px;
-  color: var(--accent);
+  inset: 0;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.9s ease;
-  z-index: 2;
+  transition: opacity 0.2s ease;
+  z-index: 3;
+  --th-x: 72%;
+  --th-y: 54%;
 }
-.th-hint.is-on { opacity: 0.85; }
-.th-hint svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.th-hint .th-ring {
+.th-hint.is-on { opacity: 1; transition-duration: 0.6s; }
+.th-hint * { pointer-events: none; }
+/* ondas: centradas en el punto donde toca la yema */
+.sec-ill .th-hint svg.th-rip {
+  position: absolute;
+  left: var(--th-x);
+  top: var(--th-y);
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  max-width: none;
+  stroke-width: 2;
+  color: var(--accent);
+  overflow: visible;
+}
+.th-ring {
   transform-box: fill-box;
   transform-origin: center;
-  animation: th-pulse 2.4s ease-out infinite;
+  opacity: 0;
+  animation: th-wave 2.2s cubic-bezier(.3,.6,.4,1) infinite;
 }
-.th-hint .th-ring2 { animation-delay: 1.2s; }
-.th-hint .th-spark { color: var(--fg); opacity: 0.8; }
-@keyframes th-pulse {
-  0%   { transform: scale(0.55); opacity: 0.9; }
-  100% { transform: scale(1.25); opacity: 0; }
+.th-ring2 { animation-delay: 0.22s; }
+/* mano: la yema del índice (14,4 de 42x48) cae sobre el punto */
+.sec-ill .th-hint svg.th-hand {
+  position: absolute;
+  left: var(--th-x);
+  top: var(--th-y);
+  width: 40px;
+  height: 45.7px;
+  max-width: none;
+  margin: -3.8px 0 0 -13.3px;
+  fill: var(--fg);
+  stroke: var(--bg);
+  stroke-width: 1.3;
+  overflow: visible;
+  transform-origin: 33% 8%;
+  filter: drop-shadow(0 2px 3px color-mix(in srgb, var(--fg) 35%, transparent));
+  animation: th-tap 2.2s cubic-bezier(.4,0,.2,1) infinite;
+}
+.th-label {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -12px);
+  padding: 3px 10px 2px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-indent: 0.14em;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px color-mix(in srgb, var(--fg) 28%, transparent);
+}
+@keyframes th-tap {
+  0%, 30%  { transform: translateY(-4px) scale(1); }
+  45%      { transform: translateY(6px) scale(0.92); }
+  58%      { transform: translateY(6px) scale(0.92); }
+  80%, 100% { transform: translateY(-4px) scale(1); }
+}
+@keyframes th-wave {
+  0%, 40% { transform: scale(0.15); opacity: 0; }
+  45%     { transform: scale(0.3); opacity: 0.95; }
+  85%     { transform: scale(1); opacity: 0; }
+  100%    { transform: scale(1); opacity: 0; }
 }
 .cover-hint-tap { display: block; margin-top: 4px; }
 @media (prefers-reduced-motion: reduce) {
