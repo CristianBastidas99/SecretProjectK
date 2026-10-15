@@ -4,8 +4,9 @@ import * as audio from './audio.js';
 import { renderLetter, renderEnding } from './render.js';
 import { initAnimations } from './animations.js';
 import { playGreeting } from './greeting.js';
+import { initHints } from './hints.js';
 
-export const VERSION = 24;
+export const VERSION = 25;
 
 const OPEN_MS = 950;
 
@@ -105,6 +106,7 @@ form.addEventListener('submit', async (e) => {
   window.scrollTo(0, 0);
   if (typeof audio.initAudio === 'function') audio.initAudio(carta.closing);
   initAnimations(letter, ending);
+  initHints(letter);
   playGreeting(carta.greeting, greeting).catch(() => {});
 
   // Canción en segundo plano.

@@ -2528,3 +2528,76 @@ body:not(.music-on) .sec.is-tap .tp-i11-sun { animation-name: tp-i11-sun; --tt: 
   0%, 100% { transform: scale(1); }
   35% { transform: scale(1.06); }
 }
+
+/* === BLOQUE: pistas === */
+/* === BLOQUE: pista «sigue bajando» (sh-) === */
+.sh-arrow {
+  position: fixed;
+  z-index: 30;
+  left: 50%;
+  margin-left: -22px;
+  bottom: calc(6px + var(--safe-b, env(safe-area-inset-bottom, 0px)));
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  background: none;
+  border: 0;
+  color: var(--accent, var(--fg));
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 2.4s var(--ease, ease);
+}
+.sh-arrow[hidden] { display: none; }
+.sh-arrow.is-on { opacity: 0.55; pointer-events: auto; }
+.sh-arrow:not(.is-on) { transition-duration: 0.45s; }
+.sh-arrow svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sh-arrow.is-on svg { animation: sh-bob 2.6s ease-in-out infinite; }
+.sh-arrow:focus-visible { outline: 1px solid currentColor; outline-offset: -4px; border-radius: 50%; }
+@keyframes sh-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) {
+  .sh-arrow.is-on svg { animation: none; }
+}
+
+/* t1: anillo «toca los dibujos» (th-) y línea de portada */
+.sec-ill { position: relative; }
+.th-hint {
+  position: absolute;
+  right: -6px;
+  bottom: -14px;
+  width: 52px;
+  height: 52px;
+  color: var(--accent);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  z-index: 2;
+}
+.th-hint.is-on { opacity: 0.85; }
+.th-hint svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.th-hint .th-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: th-pulse 2.4s ease-out infinite;
+}
+.th-hint .th-ring2 { animation-delay: 1.2s; }
+.th-hint .th-spark { color: var(--fg); opacity: 0.8; }
+@keyframes th-pulse {
+  0%   { transform: scale(0.55); opacity: 0.9; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
+.cover-hint-tap { display: block; margin-top: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  .th-hint { display: none; }
+  .cover-hint-tap { display: none; }
+}
