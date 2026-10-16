@@ -6,7 +6,7 @@ import { initAnimations } from './animations.js';
 import { playGreeting } from './greeting.js';
 import { initHints } from './hints.js';
 
-export const VERSION = 28;
+export const VERSION = 29;
 
 const OPEN_MS = 950;
 
@@ -27,6 +27,23 @@ let carta = null;
 let busy = false;
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Aviso al autor cuando alguien abre la carta (misma config cifrada que el regalo).
+// Con #yo en la URL no avisa, para las pruebas propias.
+function notifyOpen(closing) {
+  const n = closing && closing.notify;
+  const o = n && n.open;
+  if (!o || typeof n.url !== 'string' || !n.url || typeof n.topic !== 'string' || !n.topic) return;
+  if (location.hash === '#yo') return;
+  const ua = navigator.userAgent || '';
+  const device = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : /Android/.test(ua) ? 'Android' : 'computador';
+  const when = new Date().toLocaleString('es', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  fetch(n.url, {
+    method: 'POST',
+    keepalive: true,
+    body: JSON.stringify({ topic: n.topic, title: o.title || '', message: (o.message || '') + ' · ' + device + ' · ' + when, tags: ['love_letter'] })
+  }).catch(() => {});
+}
 
 function showNote(text) {
   note.textContent = text || '';
@@ -73,6 +90,8 @@ form.addEventListener('submit', async (e) => {
     showNote(MESSAGES[code] || MESSAGES.NETWORK);
     return;
   }
+
+  notifyOpen(carta.closing);
 
   // Ambiente suave desde aquí (el elemento ya se desbloqueó en el gesto).
   if (typeof audio.startAmbient === 'function') audio.startAmbient(VERSION);
