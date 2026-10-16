@@ -172,8 +172,10 @@ function rzSvg(src, symbols) {
 }
 
 // Rosas que caen y se amontonan desde abajo: filas [fondo %, cuántas]; las de abajo caen primero.
-const PILE_ROWS = [[1, 6], [8, 6], [15, 6], [22, 6], [29, 5], [36, 5], [43, 4], [50, 3]];
+const PILE_ROWS = [[1, 6], [8, 6], [15, 6], [22, 6], [29, 5], [36, 5], [43, 5], [50, 4], [57, 5], [64, 4], [71, 5], [78, 4], [85, 5], [92, 4], [99, 4]];
 const PILE_KINDS = ['r01', 'r02', 'r11', 'r02', 'r01', 'r11', 'r03'];
+// Arriba, rosas más livianas (menos trazos) para no cargar el celular.
+const PILE_KINDS_UP = ['r02', 'r03', 'r02', 'r11'];
 
 function rand(seed) {
   let a = seed;
@@ -192,7 +194,9 @@ function buildPile(pile, map) {
   PILE_ROWS.forEach(([b, n], row) => {
     const up = row / last;
     for (let j = 0; j < n; j++) {
-      const src = map[PILE_KINDS[k % PILE_KINDS.length]];
+      const kinds = b > 55 ? PILE_KINDS_UP : PILE_KINDS;
+      const kind = kinds[k % kinds.length];
+      const src = map[kind];
       k += 1;
       if (!src) continue;
       const x = ((j + 0.5 + (r() - 0.5) * 0.7) / n) * 100;
@@ -200,16 +204,16 @@ function buildPile(pile, map) {
       const d = el('span', 'rz-drop');
       d.style.left = x.toFixed(1) + '%';
       d.style.bottom = (b + (r() - 0.5) * 4).toFixed(1) + '%';
-      d.style.setProperty('--w', (0.27 - up * 0.1 + r() * 0.05).toFixed(3));
+      d.style.setProperty('--w', ((0.27 - up * 0.1 + r() * 0.05) * (kind === 'r03' ? 0.7 : 1)).toFixed(3));
       d.style.setProperty('--up', (100 - b).toFixed(0));
       d.style.setProperty('--dd', (3.4 + r() * 1.4).toFixed(2) + 's');
-      d.style.setProperty('--do', (1.2 + row * 2 + j * 0.45 + r() * 0.8).toFixed(2) + 's');
+      d.style.setProperty('--do', (1.2 + row * 1.5 + j * 0.35 + r() * 0.7).toFixed(2) + 's');
       d.style.setProperty('--dx', ((r() - 0.5) * 60).toFixed(0) + 'px');
       d.style.setProperty('--r0', ((r() - 0.5) * 160).toFixed(0) + 'deg');
       d.style.setProperty('--rot', ((r() - 0.5) * 50).toFixed(0) + 'deg');
       d.style.setProperty('--sd', (6 + r() * 4).toFixed(1) + 's');
       // Más tenues cuanto más arriba y más al centro, para no tapar el texto.
-      d.style.setProperty('--o', (0.95 - up * (0.35 + mid * 0.4)).toFixed(2));
+      d.style.setProperty('--o', (0.95 - up * (0.45 + mid * 0.3)).toFixed(2));
       const inner = el('span', 'rz-drop-in');
       inner.appendChild(baseSvg(src));
       d.appendChild(inner);
