@@ -6,7 +6,7 @@ import { initAnimations } from './animations.js';
 import { playGreeting } from './greeting.js';
 import { initHints } from './hints.js';
 
-export const VERSION = 27;
+export const VERSION = 28;
 
 const OPEN_MS = 950;
 
