@@ -5,8 +5,9 @@ import { renderLetter, renderEnding } from './render.js';
 import { initAnimations } from './animations.js';
 import { playGreeting } from './greeting.js';
 import { initHints } from './hints.js';
+import { buildKeepsake } from './keepsake.js?v=2';
 
-export const VERSION = 29;
+export const VERSION = 30;
 
 const OPEN_MS = 950;
 
@@ -118,6 +119,11 @@ form.addEventListener('submit', async (e) => {
     loader.hidden = true;
   }
   cover.hidden = true;
+
+  // Botón para guardar la carta en PDF, bajo el crédito de la canción.
+  const keep = buildKeepsake(carta);
+  const endInner = ending.querySelector('.end-inner');
+  if (keep && endInner) endInner.appendChild(keep);
 
   greeting.hidden = false;
   letter.hidden = false;

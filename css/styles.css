@@ -777,6 +777,39 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
 }
 .end-night.is-bloom .end-date { opacity: 0.8; }
 
+/* Guardar la carta (PDF): aparece después del crédito */
+.keep { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 26px auto 0; opacity: 0; transition: opacity 2s ease 4.6s; }
+.has-portrait .keep { transition-delay: 8.2s; }
+.end-night.is-bloom .keep { opacity: 1; }
+.keep-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin: 0;
+  padding: 8px 20px;
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+.keep-btn:hover { background: rgba(205, 170, 112, 0.12); }
+.keep-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.keep-btn:disabled { cursor: default; }
+.keep.is-busy .keep-btn { animation: reply-wait 1.4s ease-in-out infinite; }
+.keep.is-ready .keep-btn { background: rgba(205, 170, 112, 0.16); animation: reply-glow 1.8s ease-out both; }
+.keep-hint { font-family: var(--font-sans); font-size: 12px; line-height: 1.35; color: var(--fg-soft); text-wrap: balance; }
+.keep-hint:empty { display: none; }
+.ks-bake, .ks-bake * { animation: none !important; transition: none !important; }
+
 .end-portrait { width: min(100%, 460px); margin: 0 auto; }
 .end-portrait > svg { display: block; width: 100%; height: auto; overflow: visible; }
 .end-portrait svg * { stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
