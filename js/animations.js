@@ -40,7 +40,7 @@ const STROKE_PX = 1.35;
 function fitStrokes(roots) {
   const svgs = [];
   roots.forEach((r) => {
-    if (r) r.querySelectorAll('.frame svg, .sec-ill svg, .et-piece svg, .end-scene svg, .rz > .rz-vine > svg, .rz > .rz-bed > svg').forEach((n) => svgs.push(n));
+    if (r) r.querySelectorAll('.frame svg, .sec-ill svg, .et-piece svg, .end-scene svg, .rz-drop-in > svg, .rz > .rz-bed > svg').forEach((n) => svgs.push(n));
   });
   const widths = svgs.map((n) => n.getBoundingClientRect().width); // todas las lecturas primero
   svgs.forEach((n, i) => {

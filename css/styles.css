@@ -808,6 +808,11 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
 .keep.is-ready .keep-btn { background: rgba(205, 170, 112, 0.16); animation: reply-glow 1.8s ease-out both; }
 .keep-hint { font-family: var(--font-sans); font-size: 12px; line-height: 1.35; color: var(--fg-soft); text-wrap: balance; }
 .keep-hint:empty { display: none; }
+/* Halo del color de la noche: el texto pequeño se lee sobre las rosas */
+.end-date, .end-credit, .keep-hint { text-shadow: 0 0 3px var(--bg), 0 0 8px var(--bg), 0 0 14px var(--bg); }
+.end-night .keep-btn { background-color: rgba(35, 42, 53, 0.82); }
+.end-night .keep-btn:hover { background-color: rgba(52, 53, 56, 0.9); }
+.end-night .keep.is-ready .keep-btn { background-color: rgba(58, 56, 55, 0.9); }
 .ks-bake, .ks-bake * { animation: none !important; transition: none !important; }
 
 .end-portrait { width: min(100%, 460px); margin: 0 auto; }
@@ -895,9 +900,7 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
 
 /* Rosas y enredaderas */
 .rz { position: absolute; z-index: 1; left: 50%; width: min(100%, 760px); margin-left: calc(min(100%, 760px) / -2); top: 0; bottom: 0; pointer-events: none; }
-.rz-vine { position: absolute; bottom: 0; width: clamp(92px, 30vw, 170px); aspect-ratio: 120 / 740; transform-origin: 50% 100%; animation: rz-sway var(--sd, 9s) ease-in-out var(--so, 0s) infinite alternate; }
-.rz-vine-l { left: 0; --sd: 9s; --so: -2s; }
-.rz-vine-r { right: 0; --sd: 11s; --so: -5s; }
+.rz-pile { position: absolute; inset: 0; overflow: hidden; }
 .rz-bed { position: absolute; left: 50%; bottom: 0; width: var(--bw); margin-left: calc(var(--bw) / -2); aspect-ratio: 400 / 230; }
 .rz svg { display: block; width: 100%; height: 100%; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .rz svg * { stroke-width: calc(var(--lw, 1.25) * 0.9 / var(--s, 1)); }
@@ -932,12 +935,23 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
 .end-night.is-bloom .rz .lay { transform: none; opacity: 1; }
 .end-night.is-bloom .rz .sep { opacity: 1; }
 
-/* Brisa */
-.end-night.is-bloom .rz-vine { will-change: transform; }
-
-@keyframes rz-sway {
-  from { transform: rotate(-0.7deg); }
-  to { transform: rotate(0.9deg); }
+/* Rosas que caen y se amontonan detrás del texto (las de abajo primero) */
+.rz-drop { position: absolute; width: calc(var(--bw) * var(--w, 0.22)); aspect-ratio: 1; margin: 0 0 calc(var(--bw) * var(--w, 0.22) / -2) calc(var(--bw) * var(--w, 0.22) / -2); opacity: 0; }
+.rz-drop-in { display: block; width: 100%; height: 100%; opacity: var(--o, 0.9); transform: rotate(var(--rot, 0deg)); }
+.rz-drop .lay, .rz-drop .sep { transform: none; opacity: 1; transition: none; }
+.end-night.is-bloom .rz-drop { animation: rz-drop var(--dd, 4s) cubic-bezier(0.4, 0, 0.7, 1) var(--do, 0s) both; }
+.end-night.is-bloom .rz-drop-in { animation: rz-rest var(--sd, 8s) ease-in-out calc(var(--do, 0s) + var(--dd, 4s)) infinite alternate; }
+.end-night.is-away .rz-drop-in { animation-play-state: paused; }
+@keyframes rz-drop {
+  0% { opacity: 0; transform: translate3d(var(--dx, 0px), calc(var(--up, 100) * -1.15svh - 110%), 0) rotate(var(--r0, 0deg)); }
+  8% { opacity: 1; }
+  55% { transform: translate3d(calc(var(--dx, 0px) * -0.5), calc(var(--up, 100) * -0.5svh - 40%), 0) rotate(calc(var(--r0, 0deg) * 0.4)); }
+  90% { transform: translate3d(0, 3px, 0) rotate(0deg); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes rz-rest {
+  from { transform: rotate(calc(var(--rot, 0deg) - 2deg)); }
+  to { transform: rotate(calc(var(--rot, 0deg) + 2deg)); }
 }
 
 /* Pétalos que caen */
@@ -1149,7 +1163,8 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
   .end-text, .end-credit, .gift { transition-duration: 0.6s; transition-delay: 0s; }
   .rz .draw { stroke-dashoffset: 0; transition: none; }
   .rz-pop, .rz .lay, .rz .sep { opacity: 1; transform: none; transition: none; }
-  .rz-vine, .gift-bob, .rz-petal { animation: none; will-change: auto; }
+  .gift-bob, .rz-petal, .end-night.is-bloom .rz-petal, .end-night.is-bloom .rz-drop, .end-night.is-bloom .rz-drop-in { animation: none; will-change: auto; }
+  .rz-drop { opacity: 1; }
   .rz-petal { opacity: 0.6; top: var(--y, 20%); }
   .rz-petal:nth-child(1) { --y: 18%; }
   .rz-petal:nth-child(2) { --y: 40%; }

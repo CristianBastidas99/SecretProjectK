@@ -171,15 +171,61 @@ function rzSvg(src, symbols) {
   return svg;
 }
 
+// Rosas que caen y se amontonan desde abajo: filas [fondo %, cuántas]; las de abajo caen primero.
+const PILE_ROWS = [[1, 6], [8, 6], [15, 6], [22, 6], [29, 5], [36, 5], [43, 4], [50, 3]];
+const PILE_KINDS = ['r01', 'r02', 'r11', 'r02', 'r01', 'r11', 'r03'];
+
+function rand(seed) {
+  let a = seed;
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function buildPile(pile, map) {
+  const r = rand(1710);
+  const last = PILE_ROWS.length - 1;
+  let k = 0;
+  PILE_ROWS.forEach(([b, n], row) => {
+    const up = row / last;
+    for (let j = 0; j < n; j++) {
+      const src = map[PILE_KINDS[k % PILE_KINDS.length]];
+      k += 1;
+      if (!src) continue;
+      const x = ((j + 0.5 + (r() - 0.5) * 0.7) / n) * 100;
+      const mid = 1 - Math.min(1, Math.abs(x - 50) / 30);
+      const d = el('span', 'rz-drop');
+      d.style.left = x.toFixed(1) + '%';
+      d.style.bottom = (b + (r() - 0.5) * 4).toFixed(1) + '%';
+      d.style.setProperty('--w', (0.27 - up * 0.1 + r() * 0.05).toFixed(3));
+      d.style.setProperty('--up', (100 - b).toFixed(0));
+      d.style.setProperty('--dd', (3.4 + r() * 1.4).toFixed(2) + 's');
+      d.style.setProperty('--do', (1.2 + row * 2 + j * 0.45 + r() * 0.8).toFixed(2) + 's');
+      d.style.setProperty('--dx', ((r() - 0.5) * 60).toFixed(0) + 'px');
+      d.style.setProperty('--r0', ((r() - 0.5) * 160).toFixed(0) + 'deg');
+      d.style.setProperty('--rot', ((r() - 0.5) * 50).toFixed(0) + 'deg');
+      d.style.setProperty('--sd', (6 + r() * 4).toFixed(1) + 's');
+      // Más tenues cuanto más arriba y más al centro, para no tapar el texto.
+      d.style.setProperty('--o', (0.95 - up * (0.35 + mid * 0.4)).toFixed(2));
+      const inner = el('span', 'rz-drop-in');
+      inner.appendChild(baseSvg(src));
+      d.appendChild(inner);
+      pile.appendChild(d);
+    }
+  });
+}
+
 function buildRoses(night, jobs, gift) {
-  const names = ['r06', 'r07', 'r08', 'r09', 'r10'].concat(ROSE_SLOTS);
+  const names = ['r08', 'r09', 'r10'].concat(ROSE_SLOTS);
   const art = el('div', 'rz');
   art.setAttribute('aria-hidden', 'true');
-  const vl = el('div', 'rz-vine rz-vine-l');
-  const vr = el('div', 'rz-vine rz-vine-r');
+  const pile = el('div', 'rz-pile');
   const bed = el('div', 'rz-bed');
   const fall = el('div', 'rz-fall');
-  art.append(vl, vr, bed, fall);
+  art.append(pile, bed, fall);
   night.appendChild(art);
 
   jobs.push(
@@ -192,9 +238,8 @@ function buildRoses(night, jobs, gift) {
       ROSE_SLOTS.forEach((n) => {
         symbols[n] = map[n];
       });
-      if (map.r06) vl.appendChild(rzSvg(map.r06, symbols));
-      if (map.r07) vr.appendChild(rzSvg(map.r07, symbols));
       if (map.r08) bed.appendChild(rzSvg(map.r08, symbols));
+      buildPile(pile, map);
       // Pétalos que caen muy despacio.
       if (map.r09) {
         const spec = [
@@ -359,7 +404,7 @@ export async function renderEnding(closing, footer) {
   );
   dusk.appendChild(scene);
 
-  // Noche: rosas, enredaderas, texto y sobre.
+  // Noche: rosas, texto y sobre.
   const night = el('div', 'end-night');
   const gift = typeof c.gift === 'string' && c.gift.trim() ? buildGift(c.gift.trim(), c.notify) : null;
   buildRoses(night, jobs, gift);
