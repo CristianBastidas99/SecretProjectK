@@ -2213,7 +2213,8 @@ body:not(.music-on) .sec.is-tap .tp-i11-sun { animation-name: tp-i11-sun; --tt: 
 
 /* ===================== v4c — i07 (sec 06, paper-warm) ===================== */
 .sec-ill svg .i07v-fill { fill: var(--bg); stroke: none; }
-.tp-i07v-spark, .tp-i07v-dot, .lv-i07v-glint { opacity: 0; }
+.tp-i07v-fire, .tp-i07v-smoke, .tp-i07v-dot, .lv-i07v-glint { opacity: 0; }
+.sec-ill svg .i07v-flame { fill-opacity: 0.22; }
 
 /* gesto de entrada: lo que cierra el frasco aparece al final (tapa, moño, estrellitas, luciérnagas) */
 .sec.is-in .gx-i07v-sparks { --gt: 1.4s; --gk: 10; animation-name: gx-i07v-fade; }
@@ -2279,9 +2280,11 @@ body:not(.music-on) .sec.is-tap .tp-i11-sun { animation-name: tp-i11-sun; --tt: 
   84%, 100% { opacity: 0; transform: translateY(24px); }
 }
 
-/* toque: la tapa se levanta, se escapa un destello y chispitas */
+/* toque: la tapa se levanta, se escapa un fueguito que arde un rato y se apaga en humo, y chispitas */
 .sec.is-tap .tp-i07v-lid { animation-name: tp-i07v-lid; --tt: 1.7s; transform-box: view-box; transform-origin: 136px 52px; }
-.sec.is-tap .tp-i07v-spark { animation-name: tp-i07v-spark; --tt: 1.7s; --tk: 2; transform-box: view-box; transform-origin: 100px 24px; }
+.sec.is-tap .tp-i07v-fire { animation-name: tp-i07v-fire; --tt: 1.75s; --tk: 2; transform-box: view-box; transform-origin: 100px 37px; }
+.sec.is-tap .tp-i07v-flk { animation-name: tp-i07v-flk; --tt: 1.1s; --tk: 6; transform-box: view-box; transform-origin: 100px 37px; animation-timing-function: linear; }
+.sec.is-tap .tp-i07v-smoke { animation-name: tp-i07v-smoke; --tt: 0.75s; --tk: 12; transform-box: view-box; transform-origin: 100px 30px; }
 .sec.is-tap .tp-i07v-dot { animation-name: tp-i07v-dot; --tt: 1.5s; }
 .tp-i07v-dot.d1 { --bx: -26px; --by: -22px; --tk: 2; }
 .tp-i07v-dot.d2 { --bx: 26px; --by: -26px; --tk: 3; }
@@ -2294,11 +2297,25 @@ body:not(.music-on) .sec.is-tap .tp-i11-sun { animation-name: tp-i11-sun; --tt: 
   62% { transform: translate(1px, -5px) rotate(-8deg); }
   100% { transform: translate(0, 0) rotate(0deg); }
 }
-@keyframes tp-i07v-spark {
-  0% { opacity: 0; transform: translateY(22px) scale(0.3) rotate(0deg); }
-  25% { opacity: 1; transform: translateY(10px) scale(1) rotate(20deg); }
-  62% { opacity: 1; transform: translateY(-6px) scale(1.15) rotate(45deg); }
-  100% { opacity: 0; transform: translateY(-14px) scale(0.7) rotate(70deg); }
+@keyframes tp-i07v-fire {
+  0% { opacity: 0; transform: translateY(20px) scale(0.3); }
+  22% { opacity: 1; transform: translateY(-5px) scale(1.28); }
+  34% { opacity: 1; transform: translateY(-8px) scale(1.2); }
+  74% { opacity: 1; transform: translateY(-9px) scale(1.2); }
+  90% { opacity: 0; transform: translateY(-10px) scale(0.25); }
+  100% { opacity: 0; transform: translateY(0) scale(1); }
+}
+@keyframes tp-i07v-flk {
+  0%, 100% { transform: scale(1, 1) skewX(0deg); }
+  20% { transform: scale(0.92, 1.08) skewX(-3deg); }
+  40% { transform: scale(1.06, 0.95) skewX(2deg); }
+  60% { transform: scale(0.94, 1.07) skewX(-2deg); }
+  80% { transform: scale(1.04, 0.97) skewX(3deg); }
+}
+@keyframes tp-i07v-smoke {
+  0% { opacity: 0; transform: translateY(-6px) scaleY(0.6); }
+  30% { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(-20px) scaleY(1.1); }
 }
 @keyframes tp-i07v-dot {
   0% { opacity: 0; transform: translate(0, 6px) scale(0.5); }
