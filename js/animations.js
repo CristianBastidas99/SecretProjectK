@@ -60,10 +60,18 @@ function initDance() {
   const body = document.body;
   const CYCLE = (16 * 60) / 108;
   // Cada llamada reinicia las animaciones del baile con el desfase de la canción (retardo negativo).
+  let backT = 0;
   const sync = () => {
     const live = !a.paused && !a.ended && String(a.src).startsWith('blob:');
-    // body.song-done: la canción real llegó al final (gesto de cierre del bailarín).
+    // body.song-done: la canción real llegó al final (el bailarín se va en arena).
+    const wasDone = body.classList.contains('song-done');
     body.classList.toggle('song-done', a.ended && String(a.src).startsWith('blob:'));
+    // body.dz-back: vuelve a sonar después del final; la arena regresa y él se rearma.
+    if (live && wasDone) {
+      body.classList.add('dz-back');
+      clearTimeout(backT);
+      backT = setTimeout(() => body.classList.remove('dz-back'), 2600);
+    }
     if (live) {
       body.style.setProperty('--dz-t', (-(a.currentTime % CYCLE)).toFixed(3) + 's');
       if (body.classList.contains('music-on')) {

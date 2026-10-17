@@ -2,7 +2,7 @@
 import { decryptCarta, decryptSong } from './crypto.js';
 import * as audio from './audio.js';
 import { renderLetter, renderEnding } from './render.js?v=3';
-import { initAnimations } from './animations.js?v=2';
+import { initAnimations } from './animations.js?v=3';
 import { playGreeting } from './greeting.js';
 import { initHints } from './hints.js';
 import { buildKeepsake } from './keepsake.js?v=2';

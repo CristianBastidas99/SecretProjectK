@@ -1504,39 +1504,69 @@ circle.lv-pulse { --s: 1.7; }
 }
 
 /* === BLOQUE: baile === */
-/* Sección de la canción (.sec-song, penúltima): bailarín de cinco poses. Entrada: solo la pose 1 (los trazos .draw se dibujan y los
-   rellenos aparecen después). Viva (.is-alive): balanceo lento. Con la canción sonando
-   (body.music-on, lo pone animations.js) las poses se alternan con cortes al compás (108 BPM:
-   1 tiempo = 0.5556 s; ciclo de 16 tiempos), el cuerpo rebota y el halo late. --dz-t desfasa el
-   ciclo con la posición de la canción. Solo opacity y transform de grupos; fuera de pantalla
-   se pausa (--lvps). Rellenos: piel/vacío = fondo, traje = acento diluido, pelo = tinta. */
+/* Sección de la canción (.sec-song, penúltima): bailarín articulado de «Remember the Time» (i11, generado por
+   private/work_dz/gen_i11.py). Cada articulación es un grupo .dz-j que rota sobre su pivote; la pose de reposo
+   (tut A) va en atributos estáticos y las animaciones son deltas. Entrada: la capa encapuchada se dibuja y se
+   deshace en arena (.dz-sand) mientras aparece él (.dz-show) y los bailarines del faraón (.dz-troupe).
+   Con la canción (body.music-on) baila la coreografía de 16 tiempos (108 BPM: 8.8889 s), sincronizada con
+   --dz-t. Al terminar (body.song-done) gira y se va en arena; si vuelve a sonar (body.dz-back) se rearma.
+   Solo transform y opacity; fuera de pantalla se pausa (--lvps). */
 .sec-song .sec-ill { width: clamp(250px, 82vw, 310px); }
-.dz-b, .dz-g, .dz-hair { fill-opacity: 0; transition: fill-opacity 0.8s ease 1.3s, fill 1.2s ease; }
-.sec.is-in .dz-b, .sec.is-in .dz-g, .sec.is-in .dz-hair { fill-opacity: 1; }
+.dz-b, .dz-g, .dz-hair, .dz-w { fill-opacity: 0; transition: fill-opacity 0.8s ease 1.3s, fill 1.2s ease; }
+.sec.is-in .dz-b, .sec.is-in .dz-g, .sec.is-in .dz-hair, .sec.is-in .dz-w { fill-opacity: 1; }
+.ks-bake .dz-b, .ks-bake .dz-g, .ks-bake .dz-hair, .ks-bake .dz-w { fill-opacity: 1; } /* PDF */
 .dz-b { fill: var(--bg); }
 .dz-g { fill: color-mix(in srgb, var(--accent) 17%, var(--bg)); }
 .dz-hair { fill: var(--fg); }
-.dz-gh { stroke: none; }
+.dz-w { fill: #F4ECDC; }
 .dz-hl { stroke: var(--bg); }
-.dz-pose { opacity: 0; }
-.dz-pose.dz-p1 { opacity: 1; }
-.dz-dancer, .dz-halo { transform-box: view-box; }
+.dz-s { fill: var(--fg); stroke: none; }
+.dz-sd { fill: #F6E3AE; stroke: none; }
+.dz-troupe { opacity: 0.17; }
+.dz-j, .dz-dancer, .dz-halo, .dz-show, .dz-sash, .dz-troupe { transform-box: view-box; }
 .dz-dancer { transform-origin: 100px 184px; }
 .dz-halo { transform-origin: 100px 96px; }
+.dz-show { transform-origin: 100px 120px; }
+.dz-troupe { transform-origin: 100px 184px; }
+.dz-sash { transform-origin: 100px 124.6px; }
+.dz-cloak { opacity: 0; }
+.dz-sand path { opacity: 0; transform-box: fill-box; transform-origin: center; }
 
+/* Entrada: la capa se dibuja, se deshace en arena y aparece él */
+.sec.is-in .dz-cloak { animation: dz-cloak 3.4s ease both; }
+.sec.is-in .dz-show { animation: dz-appear 1.2s ease 2.4s backwards; }
+.sec.is-in .dz-troupe { animation: dz-appear 1.6s ease 3s backwards; }
+.sec.is-in .dz-sand path { animation: dz-sand-a 1.9s ease-out both; animation-delay: calc(2.1s + var(--k, 0) * 0.03s); }
+
+/* Vida sin música: balanceo lento y la banda que se mece */
 .sec.is-alive .dz-dancer { animation: dz-idle 7s ease-in-out infinite; }
 .sec.is-alive .dz-halo { animation: dz-breathe 6.5s ease-in-out infinite; }
+.sec.is-alive .dz-sash { animation: dz-sash 3.2s ease-in-out infinite alternate; }
 
+/* Con la canción: coreografía, rebote y halo al compás */
 body.music-on .sec.is-alive .dz-dancer { animation: dz-bob 1.1111s ease-in-out var(--dz-t, 0s) infinite; }
 body.music-on .sec.is-alive .dz-halo { animation: dz-beat 0.5556s ease-out var(--dz-t, 0s) infinite; }
-body.music-on .sec.is-alive .dz-pose { animation-duration: 8.8889s; animation-timing-function: linear; animation-delay: var(--dz-t, 0s); animation-iteration-count: infinite; }
-body.music-on .sec.is-alive .dz-p1 { animation-name: dz-p1; }
-body.music-on .sec.is-alive .dz-p2 { animation-name: dz-p2; }
-body.music-on .sec.is-alive .dz-p3 { animation-name: dz-p3; }
-body.music-on .sec.is-alive .dz-p4 { animation-name: dz-p4; }
-body.music-on .sec.is-alive .dz-p5 { animation-name: dz-p5; }
-.sec.is-alive .dz-dancer, .sec.is-alive .dz-halo, .sec.is-alive .dz-pose,
-body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, body.music-on .sec.is-alive .dz-pose { animation-play-state: var(--lvps, running); }
+body.music-on .sec.is-alive .dz-sash { animation: dz-sash 0.5556s ease-in-out var(--dz-t, 0s) infinite alternate; }
+body.music-on .sec.is-alive .dz-j {
+  animation-duration: 8.8889s; animation-delay: var(--dz-t, 0s); animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.5, 0, 0.3, 1);
+}
+/* Toque sin música: tut, tut y giro */
+body:not(.music-on) .sec.is-alive.is-tap .dz-j {
+  animation-duration: 1.8s; animation-delay: 0s; animation-iteration-count: 1; animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.5, 0, 0.3, 1);
+}
+.sec.is-alive .dz-dancer, .sec.is-alive .dz-halo, .sec.is-alive .dz-sash, body.music-on .sec.is-alive .dz-j,
+body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, body.music-on .sec.is-alive .dz-sash { animation-play-state: var(--lvps, running); }
+
+/* Final de la canción: gira y se va en arena; queda el halo */
+body.song-done:not(.music-on) .sec.is-in .dz-show { animation: dz-vanish 2.6s ease both; }
+body.song-done:not(.music-on) .sec.is-in .dz-troupe { animation: dz-out 1.6s ease both; }
+body.song-done:not(.music-on) .sec.is-in .dz-sand path { animation: dz-sand-b 2s ease-out both; animation-delay: calc(0.7s + var(--k, 0) * 0.03s); }
+/* Vuelve a sonar después del final: la arena regresa y se rearma */
+body.dz-back .sec.is-in .dz-show { animation: dz-appear 1.2s ease 0.9s backwards; }
+body.dz-back .sec.is-in .dz-troupe { animation: dz-appear 1.4s ease 1.2s backwards; }
+body.dz-back .sec.is-in .dz-sand path { animation: dz-sand-in 1.3s ease-in both; animation-delay: calc(var(--k, 0) * 0.02s); }
 
 @keyframes dz-idle {
   0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -1547,24 +1577,566 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
   50% { transform: scale(1.018); }
 }
 @keyframes dz-bob {
-  0%, 100% { transform: translateY(2.4px) rotate(0.8deg); }
-  22% { transform: translateY(-1.8px) rotate(0.2deg); }
-  50% { transform: translateY(2.4px) rotate(-0.8deg); }
-  72% { transform: translateY(-1.8px) rotate(-0.2deg); }
+  0%, 100% { transform: translateY(2px); }
+  22% { transform: translateY(-1.4px); }
+  50% { transform: translateY(2px); }
+  72% { transform: translateY(-1.4px); }
 }
 @keyframes dz-beat {
   0% { transform: scale(1.04); }
   45%, 100% { transform: scale(1); }
 }
-@keyframes dz-p1 { 0% { opacity: 1; } 12.45% { opacity: 1; } 12.5% { opacity: 0; } 93.7% { opacity: 0; } 93.75% { opacity: 1; } 100% { opacity: 1; } }
-@keyframes dz-p2 { 0% { opacity: 0; } 12.45% { opacity: 0; } 12.5% { opacity: 1; } 18.7% { opacity: 1; } 18.75% { opacity: 0; } 43.7% { opacity: 0; } 43.75% { opacity: 1; } 56.2% { opacity: 1; } 56.25% { opacity: 0; } 81.2% { opacity: 0; } 81.25% { opacity: 1; } 87.45% { opacity: 1; } 87.5% { opacity: 0; } 100% { opacity: 0; } }
-@keyframes dz-p3 { 0% { opacity: 0; } 18.7% { opacity: 0; } 18.75% { opacity: 1; } 24.95% { opacity: 1; } 25% { opacity: 0; } 56.2% { opacity: 0; } 56.25% { opacity: 1; } 68.7% { opacity: 1; } 68.75% { opacity: 0; } 87.45% { opacity: 0; } 87.5% { opacity: 1; } 93.7% { opacity: 1; } 93.75% { opacity: 0; } 100% { opacity: 0; } }
-@keyframes dz-p4 { 0% { opacity: 0; } 37.45% { opacity: 0; } 37.5% { opacity: 1; } 43.7% { opacity: 1; } 43.75% { opacity: 0; } 68.7% { opacity: 0; } 68.75% { opacity: 1; } 74.95% { opacity: 1; } 75% { opacity: 0; } 100% { opacity: 0; } }
-@keyframes dz-p5 { 0% { opacity: 0; } 24.95% { opacity: 0; } 25% { opacity: 1; } 37.45% { opacity: 1; } 37.5% { opacity: 0; } 74.95% { opacity: 0; } 75% { opacity: 1; } 81.2% { opacity: 1; } 81.25% { opacity: 0; } 100% { opacity: 0; } }
+@keyframes dz-sash { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+@keyframes dz-cloak {
+  0%, 64% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateX(5px); }
+}
+@keyframes dz-appear { from { opacity: 0; } }
+@keyframes dz-out { to { opacity: 0; } }
+@keyframes dz-vanish {
+  0% { opacity: 1; transform: scaleX(1); }
+  12% { transform: scaleX(0.04); }
+  24% { transform: scaleX(-1); }
+  36% { opacity: 1; transform: scaleX(0.04); }
+  48% { transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1) translateX(6px); }
+}
+@keyframes dz-sand-a {
+  0% { opacity: 0; transform: none; }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--sx, 30px), var(--sy, -20px)) rotate(160deg); }
+}
+@keyframes dz-sand-b {
+  0% { opacity: 0; transform: none; }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--sx, 30px), var(--sy, -20px)) rotate(160deg); }
+}
+@keyframes dz-sand-in {
+  0% { opacity: 0; transform: translate(var(--sx, 30px), var(--sy, -20px)) rotate(160deg); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: none; }
+}
+/* dz2:inicio (generado) */
+/* Generado por private/work_dz/gen_i11.py: coreografía de 16 tiempos (8.8889 s) y toque. */
+@keyframes dz2-root {
+  0% { transform: translate(0px, 0px) scaleX(1); }
+  10.938% { transform: translate(0px, 0px) scaleX(1); }
+  12.5% { transform: translate(0px, 0px) scaleX(1); }
+  23.438% { transform: translate(0px, 0px) scaleX(1); }
+  25% { transform: translate(0px, 2px) scaleX(1); }
+  29.688% { transform: translate(0px, 2px) scaleX(1); }
+  31.25% { transform: translate(0px, 0px) scaleX(1); }
+  35% { transform: translate(0px, 0px) scaleX(1); }
+  37.5% { transform: translate(6px, 0px) scaleX(1); }
+  41.25% { transform: translate(6px, 0px) scaleX(1); }
+  43.75% { transform: translate(11px, 0px) scaleX(1); }
+  48.438% { transform: translate(11px, 0px) scaleX(1); }
+  50% { transform: translate(4px, -2px) scaleX(1); }
+  54.375% { transform: translate(4px, -2px) scaleX(1); }
+  56.25% { transform: translate(0px, 14px) scaleX(1); }
+  60.625% { transform: translate(0px, 14px) scaleX(1); }
+  62.5% { transform: translate(-4px, 2px) scaleX(1); }
+  66.875% { transform: translate(-4px, 2px) scaleX(1); }
+  68.75% { transform: translate(4px, 2px) scaleX(1); }
+  73.125% { transform: translate(4px, 2px) scaleX(1); }
+  75% { transform: translate(0px, 0px) scaleX(1); animation-timing-function: linear; }
+  76.562% { transform: translate(0px, 0px) scaleX(0.04); animation-timing-function: linear; }
+  78.125% { transform: translate(0px, 0px) scaleX(-1); animation-timing-function: linear; }
+  79.688% { transform: translate(0px, 0px) scaleX(-0.04); animation-timing-function: linear; }
+  81.25% { transform: translate(0px, 0px) scaleX(1); }
+  83.125% { transform: translate(0px, -4px) scaleX(1); }
+  97.5% { transform: translate(0px, -4px) scaleX(1); }
+  100% { transform: translate(0px, 0px) scaleX(1); }
+}
+@keyframes dz2t-root {
+  0% { transform: translate(0px, 0px) scaleX(1); }
+  10% { transform: translate(0px, 0px) scaleX(1); }
+  27.778% { transform: translate(0px, 0px) scaleX(1); }
+  37.778% { transform: translate(0px, 2px) scaleX(1); }
+  52.778% { transform: translate(0px, 2px) scaleX(1); }
+  61.111% { transform: translate(0px, 0px) scaleX(1); animation-timing-function: linear; }
+  67.778% { transform: translate(0px, 0px) scaleX(0.04); animation-timing-function: linear; }
+  73.889% { transform: translate(0px, 0px) scaleX(-1); animation-timing-function: linear; }
+  80% { transform: translate(0px, 0px) scaleX(-0.04); animation-timing-function: linear; }
+  86.111% { transform: translate(0px, 0px) scaleX(1); }
+  100% { transform: translate(0px, 0px) scaleX(1); }
+}
+@keyframes dz2-torso {
+  0% { transform: rotate(0deg); }
+  10.938% { transform: rotate(0deg); }
+  12.5% { transform: rotate(0deg); }
+  23.438% { transform: rotate(0deg); }
+  25% { transform: rotate(0deg); }
+  29.688% { transform: rotate(0deg); }
+  31.25% { transform: rotate(0deg); }
+  35% { transform: rotate(0deg); }
+  37.5% { transform: rotate(-3deg); }
+  41.25% { transform: rotate(-3deg); }
+  43.75% { transform: rotate(-3deg); }
+  48.438% { transform: rotate(-3deg); }
+  50% { transform: rotate(6deg); }
+  54.375% { transform: rotate(6deg); }
+  56.25% { transform: rotate(0deg); }
+  60.625% { transform: rotate(0deg); }
+  62.5% { transform: rotate(-7deg); }
+  66.875% { transform: rotate(-7deg); }
+  68.75% { transform: rotate(7deg); }
+  73.125% { transform: rotate(7deg); }
+  75% { transform: rotate(0deg); }
+  81.25% { transform: rotate(0deg); }
+  83.125% { transform: rotate(-4deg); }
+  97.5% { transform: rotate(-4deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2t-torso {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(0deg); }
+  27.778% { transform: rotate(0deg); }
+  37.778% { transform: rotate(0deg); }
+  52.778% { transform: rotate(0deg); }
+  61.111% { transform: rotate(0deg); }
+  86.111% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2-head {
+  0% { transform: translate(0px, 0px) rotate(0deg); }
+  10.938% { transform: translate(0px, 0px) rotate(0deg); }
+  12.5% { transform: translate(-4px, 0px) rotate(0deg); }
+  23.438% { transform: translate(-4px, 0px) rotate(0deg); }
+  25% { transform: translate(-2px, 0px) rotate(0deg); }
+  29.688% { transform: translate(-2px, 0px) rotate(0deg); }
+  31.25% { transform: translate(-2px, 0px) rotate(4deg); }
+  35% { transform: translate(-2px, 0px) rotate(4deg); }
+  37.5% { transform: translate(1px, 0px) rotate(0deg); }
+  41.25% { transform: translate(1px, 0px) rotate(0deg); }
+  43.75% { transform: translate(1px, 0px) rotate(0deg); }
+  48.438% { transform: translate(1px, 0px) rotate(0deg); }
+  50% { transform: translate(-2px, 0px) rotate(-8deg); }
+  54.375% { transform: translate(-2px, 0px) rotate(-8deg); }
+  56.25% { transform: translate(-2px, 0px) rotate(0deg); }
+  60.625% { transform: translate(-2px, 0px) rotate(0deg); }
+  62.5% { transform: translate(-3px, 0px) rotate(14deg); }
+  66.875% { transform: translate(-3px, 0px) rotate(14deg); }
+  68.75% { transform: translate(-1px, 0px) rotate(-14deg); }
+  73.125% { transform: translate(-1px, 0px) rotate(-14deg); }
+  75% { transform: translate(-2px, 0px) rotate(0deg); }
+  81.25% { transform: translate(-2px, 0px) rotate(0deg); }
+  83.125% { transform: translate(-2px, 0px) rotate(-10deg); }
+  97.5% { transform: translate(-2px, 0px) rotate(-10deg); }
+  100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+@keyframes dz2t-head {
+  0% { transform: translate(0px, 0px) rotate(0deg); }
+  10% { transform: translate(-4px, 0px) rotate(0deg); }
+  27.778% { transform: translate(-4px, 0px) rotate(0deg); }
+  37.778% { transform: translate(-2px, 0px) rotate(0deg); }
+  52.778% { transform: translate(-2px, 0px) rotate(0deg); }
+  61.111% { transform: translate(-2px, 0px) rotate(0deg); }
+  86.111% { transform: translate(-2px, 0px) rotate(0deg); }
+  100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+@keyframes dz2-shL {
+  0% { transform: rotate(0deg); }
+  10.938% { transform: rotate(0deg); }
+  12.5% { transform: rotate(75deg); }
+  23.438% { transform: rotate(75deg); }
+  25% { transform: rotate(75deg); }
+  29.688% { transform: rotate(75deg); }
+  31.25% { transform: rotate(11deg); }
+  35% { transform: rotate(11deg); }
+  37.5% { transform: rotate(-50deg); }
+  41.25% { transform: rotate(-50deg); }
+  43.75% { transform: rotate(-50deg); }
+  48.438% { transform: rotate(-50deg); }
+  50% { transform: rotate(120deg); }
+  54.375% { transform: rotate(120deg); }
+  56.25% { transform: rotate(27deg); }
+  60.625% { transform: rotate(27deg); }
+  62.5% { transform: rotate(15deg); }
+  66.875% { transform: rotate(15deg); }
+  68.75% { transform: rotate(145deg); }
+  73.125% { transform: rotate(145deg); }
+  75% { transform: rotate(0deg); }
+  81.25% { transform: rotate(0deg); }
+  83.125% { transform: rotate(30deg); }
+  97.5% { transform: rotate(30deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2t-shL {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(75deg); }
+  27.778% { transform: rotate(75deg); }
+  37.778% { transform: rotate(75deg); }
+  52.778% { transform: rotate(75deg); }
+  61.111% { transform: rotate(0deg); }
+  86.111% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2-elL {
+  0% { transform: rotate(0deg); }
+  10.938% { transform: rotate(0deg); }
+  12.5% { transform: rotate(195deg); }
+  23.438% { transform: rotate(195deg); }
+  25% { transform: rotate(195deg); }
+  29.688% { transform: rotate(195deg); }
+  31.25% { transform: rotate(-37deg); }
+  35% { transform: rotate(-37deg); }
+  37.5% { transform: rotate(50deg); }
+  41.25% { transform: rotate(50deg); }
+  43.75% { transform: rotate(50deg); }
+  48.438% { transform: rotate(50deg); }
+  50% { transform: rotate(125deg); }
+  54.375% { transform: rotate(125deg); }
+  56.25% { transform: rotate(43deg); }
+  60.625% { transform: rotate(43deg); }
+  62.5% { transform: rotate(75deg); }
+  66.875% { transform: rotate(75deg); }
+  68.75% { transform: rotate(115deg); }
+  73.125% { transform: rotate(115deg); }
+  75% { transform: rotate(-45deg); }
+  81.25% { transform: rotate(-45deg); }
+  83.125% { transform: rotate(115deg); }
+  97.5% { transform: rotate(115deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2t-elL {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(195deg); }
+  27.778% { transform: rotate(195deg); }
+  37.778% { transform: rotate(195deg); }
+  52.778% { transform: rotate(195deg); }
+  61.111% { transform: rotate(-45deg); }
+  86.111% { transform: rotate(-45deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2-wrL {
+  0% { transform: rotate(0deg); }
+  10.938% { transform: rotate(0deg); }
+  12.5% { transform: rotate(90deg); }
+  23.438% { transform: rotate(90deg); }
+  25% { transform: rotate(90deg); }
+  29.688% { transform: rotate(90deg); }
+  31.25% { transform: rotate(0deg); }
+  35% { transform: rotate(0deg); }
+  37.5% { transform: rotate(-90deg); }
+  41.25% { transform: rotate(-90deg); }
+  43.75% { transform: rotate(-90deg); }
+  48.438% { transform: rotate(-90deg); }
+  50% { transform: rotate(0deg); }
+  54.375% { transform: rotate(0deg); }
+  56.25% { transform: rotate(0deg); }
+  60.625% { transform: rotate(0deg); }
+  62.5% { transform: rotate(0deg); }
+  66.875% { transform: rotate(0deg); }
+  68.75% { transform: rotate(0deg); }
+  73.125% { transform: rotate(0deg); }
+  75% { transform: rotate(0deg); }
+  81.25% { transform: rotate(0deg); }
+  83.125% { transform: rotate(0deg); }
+  97.5% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2t-wrL {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(90deg); }
+  27.778% { transform: rotate(90deg); }
+  37.778% { transform: rotate(90deg); }
+  52.778% { transform: rotate(90deg); }
+  61.111% { transform: rotate(0deg); }
+  86.111% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2-shR {
+  0% { transform: rotate(0deg); }
+  10.938% { transform: rotate(0deg); }
+  12.5% { transform: rotate(75deg); }
+  23.438% { transform: rotate(75deg); }
+  25% { transform: rotate(0deg); }
+  29.688% { transform: rotate(0deg); }
+  31.25% { transform: rotate(64deg); }
+  35% { transform: rotate(64deg); }
+  37.5% { transform: rotate(0deg); }
+  41.25% { transform: rotate(0deg); }
+  43.75% { transform: rotate(0deg); }
+  48.438% { transform: rotate(0deg); }
+  50% { transform: rotate(-10deg); }
+  54.375% { transform: rotate(-10deg); }
+  56.25% { transform: rotate(48deg); }
+  60.625% { transform: rotate(48deg); }
+  62.5% { transform: rotate(-70deg); }
+  66.875% { transform: rotate(-70deg); }
+  68.75% { transform: rotate(60deg); }
+  73.125% { transform: rotate(60deg); }
+  75% { transform: rotate(75deg); }
+  81.25% { transform: rotate(75deg); }
+  83.125% { transform: rotate(-86deg); }
+  97.5% { transform: rotate(-86deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2t-shR {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(75deg); }
+  27.778% { transform: rotate(75deg); }
+  37.778% { transform: rotate(0deg); }
+  52.778% { transform: rotate(0deg); }
+  61.111% { transform: rotate(75deg); }
+  86.111% { transform: rotate(75deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2-elR {
+  0% { transform: rotate(0deg); }
+  10.938% { transform: rotate(0deg); }
+  12.5% { transform: rotate(195deg); }
+  23.438% { transform: rotate(195deg); }
+  25% { transform: rotate(0deg); }
+  29.688% { transform: rotate(0deg); }
+  31.25% { transform: rotate(232deg); }
+  35% { transform: rotate(232deg); }
+  37.5% { transform: rotate(90deg); }
+  41.25% { transform: rotate(90deg); }
+  43.75% { transform: rotate(90deg); }
+  48.438% { transform: rotate(90deg); }
+  50% { transform: rotate(80deg); }
+  54.375% { transform: rotate(80deg); }
+  56.25% { transform: rotate(152deg); }
+  60.625% { transform: rotate(152deg); }
+  62.5% { transform: rotate(80deg); }
+  66.875% { transform: rotate(80deg); }
+  68.75% { transform: rotate(120deg); }
+  73.125% { transform: rotate(120deg); }
+  75% { transform: rotate(240deg); }
+  81.25% { transform: rotate(240deg); }
+  83.125% { transform: rotate(90deg); }
+  97.5% { transform: rotate(90deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2t-elR {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(195deg); }
+  27.778% { transform: rotate(195deg); }
+  37.778% { transform: rotate(0deg); }
+  52.778% { transform: rotate(0deg); }
+  61.111% { transform: rotate(240deg); }
+  86.111% { transform: rotate(240deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2-wrR {
+  0% { transform: rotate(0deg); }
+  10.938% { transform: rotate(0deg); }
+  12.5% { transform: rotate(90deg); }
+  23.438% { transform: rotate(90deg); }
+  25% { transform: rotate(0deg); }
+  29.688% { transform: rotate(0deg); }
+  31.25% { transform: rotate(90deg); }
+  35% { transform: rotate(90deg); }
+  37.5% { transform: rotate(0deg); }
+  41.25% { transform: rotate(0deg); }
+  43.75% { transform: rotate(0deg); }
+  48.438% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+  54.375% { transform: rotate(90deg); }
+  56.25% { transform: rotate(90deg); }
+  60.625% { transform: rotate(90deg); }
+  62.5% { transform: rotate(90deg); }
+  66.875% { transform: rotate(90deg); }
+  68.75% { transform: rotate(90deg); }
+  73.125% { transform: rotate(90deg); }
+  75% { transform: rotate(90deg); }
+  81.25% { transform: rotate(90deg); }
+  83.125% { transform: rotate(90deg); }
+  97.5% { transform: rotate(90deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2t-wrR {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(90deg); }
+  27.778% { transform: rotate(90deg); }
+  37.778% { transform: rotate(0deg); }
+  52.778% { transform: rotate(0deg); }
+  61.111% { transform: rotate(90deg); }
+  86.111% { transform: rotate(90deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2-hipL {
+  0% { transform: rotate(0deg); }
+  10.938% { transform: rotate(0deg); }
+  12.5% { transform: rotate(0deg); }
+  23.438% { transform: rotate(0deg); }
+  25% { transform: rotate(3deg); }
+  29.688% { transform: rotate(3deg); }
+  31.25% { transform: rotate(0deg); }
+  35% { transform: rotate(0deg); }
+  37.5% { transform: rotate(9deg); }
+  41.25% { transform: rotate(9deg); }
+  43.75% { transform: rotate(-15deg); }
+  48.438% { transform: rotate(-15deg); }
+  50% { transform: rotate(0deg); }
+  54.375% { transform: rotate(0deg); }
+  56.25% { transform: rotate(51deg); }
+  60.625% { transform: rotate(51deg); }
+  62.5% { transform: rotate(4deg); }
+  66.875% { transform: rotate(4deg); }
+  68.75% { transform: rotate(-2deg); }
+  73.125% { transform: rotate(-2deg); }
+  75% { transform: rotate(-4deg); }
+  81.25% { transform: rotate(-4deg); }
+  83.125% { transform: rotate(-2deg); }
+  97.5% { transform: rotate(-2deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2t-hipL {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(0deg); }
+  27.778% { transform: rotate(0deg); }
+  37.778% { transform: rotate(3deg); }
+  52.778% { transform: rotate(3deg); }
+  61.111% { transform: rotate(-4deg); }
+  86.111% { transform: rotate(-4deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2-knL {
+  0% { transform: rotate(0deg); }
+  10.938% { transform: rotate(0deg); }
+  12.5% { transform: rotate(0deg); }
+  23.438% { transform: rotate(0deg); }
+  25% { transform: rotate(-9deg); }
+  29.688% { transform: rotate(-9deg); }
+  31.25% { transform: rotate(0deg); }
+  35% { transform: rotate(0deg); }
+  37.5% { transform: rotate(-12deg); }
+  41.25% { transform: rotate(-12deg); }
+  43.75% { transform: rotate(9deg); }
+  48.438% { transform: rotate(9deg); }
+  50% { transform: rotate(0deg); }
+  54.375% { transform: rotate(0deg); }
+  56.25% { transform: rotate(-62deg); }
+  60.625% { transform: rotate(-62deg); }
+  62.5% { transform: rotate(-6deg); }
+  66.875% { transform: rotate(-6deg); }
+  68.75% { transform: rotate(0deg); }
+  73.125% { transform: rotate(0deg); }
+  75% { transform: rotate(0deg); }
+  81.25% { transform: rotate(0deg); }
+  83.125% { transform: rotate(0deg); }
+  97.5% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2t-knL {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(0deg); }
+  27.778% { transform: rotate(0deg); }
+  37.778% { transform: rotate(-9deg); }
+  52.778% { transform: rotate(-9deg); }
+  61.111% { transform: rotate(0deg); }
+  86.111% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2-hipR {
+  0% { transform: rotate(0deg); }
+  10.938% { transform: rotate(0deg); }
+  12.5% { transform: rotate(0deg); }
+  23.438% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  29.688% { transform: rotate(-3deg); }
+  31.25% { transform: rotate(0deg); }
+  35% { transform: rotate(0deg); }
+  37.5% { transform: rotate(-11deg); }
+  41.25% { transform: rotate(-11deg); }
+  43.75% { transform: rotate(17deg); }
+  48.438% { transform: rotate(17deg); }
+  50% { transform: rotate(-78deg); }
+  54.375% { transform: rotate(-78deg); }
+  56.25% { transform: rotate(-51deg); }
+  60.625% { transform: rotate(-51deg); }
+  62.5% { transform: rotate(2deg); }
+  66.875% { transform: rotate(2deg); }
+  68.75% { transform: rotate(-4deg); }
+  73.125% { transform: rotate(-4deg); }
+  75% { transform: rotate(4deg); }
+  81.25% { transform: rotate(4deg); }
+  83.125% { transform: rotate(-14deg); }
+  97.5% { transform: rotate(-14deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2t-hipR {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(0deg); }
+  27.778% { transform: rotate(0deg); }
+  37.778% { transform: rotate(-3deg); }
+  52.778% { transform: rotate(-3deg); }
+  61.111% { transform: rotate(4deg); }
+  86.111% { transform: rotate(4deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2-knR {
+  0% { transform: rotate(0deg); }
+  10.938% { transform: rotate(0deg); }
+  12.5% { transform: rotate(0deg); }
+  23.438% { transform: rotate(0deg); }
+  25% { transform: rotate(9deg); }
+  29.688% { transform: rotate(9deg); }
+  31.25% { transform: rotate(0deg); }
+  35% { transform: rotate(0deg); }
+  37.5% { transform: rotate(7deg); }
+  41.25% { transform: rotate(7deg); }
+  43.75% { transform: rotate(-11deg); }
+  48.438% { transform: rotate(-11deg); }
+  50% { transform: rotate(12deg); }
+  54.375% { transform: rotate(12deg); }
+  56.25% { transform: rotate(62deg); }
+  60.625% { transform: rotate(62deg); }
+  62.5% { transform: rotate(0deg); }
+  66.875% { transform: rotate(0deg); }
+  68.75% { transform: rotate(6deg); }
+  73.125% { transform: rotate(6deg); }
+  75% { transform: rotate(0deg); }
+  81.25% { transform: rotate(0deg); }
+  83.125% { transform: rotate(45deg); }
+  97.5% { transform: rotate(45deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes dz2t-knR {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(0deg); }
+  27.778% { transform: rotate(0deg); }
+  37.778% { transform: rotate(9deg); }
+  52.778% { transform: rotate(9deg); }
+  61.111% { transform: rotate(0deg); }
+  86.111% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+body.music-on .sec.is-alive .dz-root { animation-name: dz2-root; }
+body.music-on .sec.is-alive .dz-torso { animation-name: dz2-torso; }
+body.music-on .sec.is-alive .dz-head { animation-name: dz2-head; }
+body.music-on .sec.is-alive .dz-shL { animation-name: dz2-shL; }
+body.music-on .sec.is-alive .dz-elL { animation-name: dz2-elL; }
+body.music-on .sec.is-alive .dz-wrL { animation-name: dz2-wrL; }
+body.music-on .sec.is-alive .dz-shR { animation-name: dz2-shR; }
+body.music-on .sec.is-alive .dz-elR { animation-name: dz2-elR; }
+body.music-on .sec.is-alive .dz-wrR { animation-name: dz2-wrR; }
+body.music-on .sec.is-alive .dz-hipL { animation-name: dz2-hipL; }
+body.music-on .sec.is-alive .dz-knL { animation-name: dz2-knL; }
+body.music-on .sec.is-alive .dz-hipR { animation-name: dz2-hipR; }
+body.music-on .sec.is-alive .dz-knR { animation-name: dz2-knR; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-root { animation-name: dz2t-root; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-torso { animation-name: dz2t-torso; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-head { animation-name: dz2t-head; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-shL { animation-name: dz2t-shL; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-elL { animation-name: dz2t-elL; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-wrL { animation-name: dz2t-wrL; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-shR { animation-name: dz2t-shR; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-elR { animation-name: dz2t-elR; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-wrR { animation-name: dz2t-wrR; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-hipL { animation-name: dz2t-hipL; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-knL { animation-name: dz2t-knL; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-hipR { animation-name: dz2t-hipR; }
+body:not(.music-on) .sec.is-alive.is-tap .dz-knR { animation-name: dz2t-knR; }
+/* dz2:fin */
 
 @media (prefers-reduced-motion: reduce) {
-  .dz-dancer, .dz-halo, .dz-pose { animation: none !important; }
-  .dz-b, .dz-g, .dz-hair { fill-opacity: 1; transition: none; }
+  .dz-j, .dz-dancer, .dz-halo, .dz-show, .dz-sash, .dz-troupe, .dz-cloak, .dz-sand path { animation: none !important; }
+  .dz-cloak, .dz-sand { display: none; }
+  .dz-b, .dz-g, .dz-hair, .dz-w { fill-opacity: 1; transition: none; }
 }
 
 /* === BLOQUE: gestos === */
@@ -1664,39 +2236,6 @@ body.music-on .sec.is-alive .dz-dancer, body.music-on .sec.is-alive .dz-halo, bo
   35% { opacity: 1; transform: scale(1.15) rotate(20deg); }
   100% { opacity: 0; transform: scale(0.6) rotate(45deg); }
 }
-/* ---- i11 (sec 10, canción): al terminar (body.song-done) pose tranquila y destellos desde el disco ---- */
-.dz-fin { opacity: 0; }
-body.song-done:not(.music-on) .sec.is-alive .dz-pose:not(.dz-p1) { opacity: 0; animation: none; }
-body.song-done:not(.music-on) .sec.is-alive .dz-p1 { opacity: 1; animation: none; }
-body.song-done:not(.music-on) .sec.is-alive .dz-fin { opacity: 1; }
-body.song-done:not(.music-on) .sec.is-alive .dz-fn {
-  transform-box: fill-box; transform-origin: 50% 50%;
-  animation: dz-fin-rise 5.5s ease-out infinite backwards;
-  animation-delay: calc(var(--n, 0) * 0.55s);
-  animation-play-state: var(--lvps, running);
-}
-.sec.is-alive .dz-fn1 { --n: 0; }
-.sec.is-alive .dz-fn2 { --n: 3; }
-.sec.is-alive .dz-fn3 { --n: 6; }
-.sec.is-alive .dz-fn4 { --n: 1; }
-.sec.is-alive .dz-fn5 { --n: 4; }
-.sec.is-alive .dz-fn6 { --n: 8; }
-.sec.is-alive .dz-fn7 { --n: 2; }
-.sec.is-alive .dz-fn8 { --n: 5; }
-.sec.is-alive .dz-fn9 { --n: 7; }
-.sec.is-alive .dz-fn10 { --n: 9; }
-.sec.is-alive .dz-fn:nth-child(odd) { --dx: -6px; }
-.sec.is-alive .dz-fn:nth-child(even) { --dx: 6px; }
-@keyframes dz-fin-rise {
-  0% { opacity: 0; transform: translate(0, 18px) scale(0.4); }
-  18% { opacity: 1; }
-  70% { opacity: 0.8; }
-  100% { opacity: 0; transform: translate(var(--dx, 0), -40px) scale(1.1) rotate(35deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .dz-fn { animation: none !important; }
-}
-
 /* vida continua: molécula emocionada, rubor que respira, pulso que se acelera a ratos */
 
 /* --- momentos ocasionales, intensidad y toque (v3b) --- */
@@ -1886,15 +2425,7 @@ body:not(.music-on) .sec.is-alive .lv-i11-gl {
   56%, 100% { opacity: 0; }
 }
 
-/* ---- i11: toque (sin musica): mini-paso a la pose 2 y luego la 3 (con cortes), y el disco solar late una vez ---- */
-/* la especificidad iguala a la de song-done para que la animacion gane tambien ahi */
-body:not(.music-on) .sec.is-alive.is-tap .dz-pose.dz-pose.dz-pose { animation-duration: 1.3s; animation-delay: 0s; animation-timing-function: linear; animation-iteration-count: 1; animation-fill-mode: both; animation-play-state: running; }
-body:not(.music-on) .sec.is-alive.is-tap .dz-pose.dz-p1 { animation-name: tp-i11-p1; }
-body:not(.music-on) .sec.is-alive.is-tap .dz-pose.dz-p2 { animation-name: tp-i11-p2; }
-body:not(.music-on) .sec.is-alive.is-tap .dz-pose.dz-p3 { animation-name: tp-i11-p3; }
-@keyframes tp-i11-p1 { 0%, 6% { opacity: 1; } 6.1%, 89.9% { opacity: 0; } 90%, 100% { opacity: 1; } }
-@keyframes tp-i11-p2 { 0%, 6% { opacity: 0; } 6.1%, 47.9% { opacity: 1; } 48%, 100% { opacity: 0; } }
-@keyframes tp-i11-p3 { 0%, 47.9% { opacity: 0; } 48%, 89.9% { opacity: 1; } 90%, 100% { opacity: 0; } }
+/* ---- i11: toque (sin musica): el disco solar late una vez (el paso de baile va en el bloque del baile) ---- */
 body:not(.music-on) .sec.is-tap .tp-i11-sun { animation-name: tp-i11-sun; --tt: 1.4s; }
 @keyframes tp-i11-sun {
   0%, 100% { transform: scale(1); }
