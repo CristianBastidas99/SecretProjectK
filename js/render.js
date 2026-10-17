@@ -552,11 +552,25 @@ function buildDanceSave(d) {
   tab.type = 'button';
   tab.setAttribute('aria-label', d.label);
   tab.setAttribute('aria-expanded', 'false');
-  tab.appendChild(glyph(['M15 5 L8 12 L15 19']));
+  // Ojo de Horus (ceja, ojo, pupila, lágrima y espiral) y una flechita que invita a jalar
+  tab.append(
+    glyph([
+      'M3.5 7.2 C8 4.6 15 4.4 20.5 6.6',
+      'M3 11 C7 7.4 15 7.2 20 10.6 C15 13.6 7 13.8 3 11 Z',
+      'M11.6 8.6 C13.4 8.6 13.4 12.2 11.6 12.2 C9.8 12.2 9.8 8.6 11.6 8.6 Z',
+      'M10 13.2 L9.2 18 C8.8 19.8 6.8 20.2 5.8 19',
+      'M13.2 13.2 C14.2 16 16.6 17.8 19 17.2 C20.2 16.8 19.8 15.6 18.6 16',
+    ]),
+    glyph(['M14 7 L9 12 L14 17'])
+  );
   const btn = el('button', 'dzs-btn');
   btn.type = 'button';
   btn.tabIndex = -1;
-  btn.append(glyph(['M12 4 L12 15', 'M7.5 11 L12 15.5 L16.5 11', 'M5 19.5 L19 19.5']), el('span', 'dzs-label', d.label));
+  // Ankh y el texto, entre dos frisos de jeroglíficos (CSS)
+  btn.append(
+    glyph(['M12 3.5 C9.4 3.5 8.6 7.6 12 10 C15.4 7.6 14.6 3.5 12 3.5 Z', 'M6.5 10.5 L17.5 10.5', 'M12 10 L12 21']),
+    el('span', 'dzs-label', d.label)
+  );
   wrap.append(tab, btn);
 
   // El cajón se recoge solo a los 8 s o al tocar fuera.
