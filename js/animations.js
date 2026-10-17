@@ -84,6 +84,15 @@ function initDance() {
     }
   };
   danceSync = sync;
+  // Reiniciar la canción repite la aparición: la capa vuelve y se deshace en arena (body.dz-again).
+  let againT = 0;
+  document.addEventListener('song:restart', () => {
+    body.classList.remove('dz-again');
+    void body.offsetWidth;
+    body.classList.add('dz-again');
+    clearTimeout(againT);
+    againT = setTimeout(() => body.classList.remove('dz-again'), 4200);
+  });
   ['playing', 'pause', 'ended', 'seeked', 'emptied'].forEach((ev) => a.addEventListener(ev, sync));
   sync();
 }
@@ -93,6 +102,17 @@ export function initAnimations(root, ending) {
   const total = sections.length;
   if (!total) return;
   initDance();
+  // Aparición del bailarín (capa -> arena): solo la primera vez que la sección de la canción entra.
+  const songSec = root.querySelector('.sec-song');
+  if (songSec && typeof MutationObserver === 'function') {
+    const mo = new MutationObserver(() => {
+      if (!songSec.classList.contains('is-in')) return;
+      mo.disconnect();
+      songSec.classList.add('dz-intro');
+      setTimeout(() => songSec.classList.remove('dz-intro'), 5200);
+    });
+    mo.observe(songSec, { attributes: true, attributeFilter: ['class'] });
+  }
 
   // Indicador fijo NN / total
   let progress = document.getElementById('progress');

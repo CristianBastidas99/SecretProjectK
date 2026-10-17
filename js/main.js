@@ -1,8 +1,8 @@
 // Orquestación: portada -> descifrado -> saludo.
 import { decryptCarta, decryptSong } from './crypto.js';
-import * as audio from './audio.js';
+import * as audio from './audio.js?v=2';
 import { renderLetter, renderEnding } from './render.js?v=3';
-import { initAnimations } from './animations.js?v=3';
+import { initAnimations } from './animations.js?v=5';
 import { playGreeting } from './greeting.js';
 import { initHints } from './hints.js';
 import { buildKeepsake } from './keepsake.js?v=2';

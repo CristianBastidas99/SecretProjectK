@@ -21,7 +21,7 @@ let egyptFired = false;   // ya ocurrió egypt:ready
 let autoDone = false;     // ya se intentó el arranque automático de la canción
 let userPaused = false;   // el usuario pausó a mano
 let phase = 'none';       // none | ambient | outro | song
-let ui = null;            // { toggle, fallback, iconPlay, iconPause }
+let ui = null;            // { toggle, restart, fallback, iconPlay, iconPause }
 let wired = false;
 
 // Debe llamarse de forma síncrona dentro del gesto del usuario.
@@ -80,6 +80,8 @@ function setToggle(playing) {
 function showToggle() {
   if (!ui) return;
   ui.toggle.classList.add('is-visible');
+  // Reiniciar solo tiene sentido con la canción real.
+  ui.restart.classList.toggle('is-visible', phase === 'song');
   ui.fallback.classList.remove('is-visible');
   ui.fallback.setAttribute('tabindex', '-1');
 }
@@ -205,6 +207,14 @@ export function initAudio(closing) {
   toggle.appendChild(iconPause);
   toggle.appendChild(iconPlay);
 
+  // Reiniciar la canción desde el principio (y con ella la aparición del bailarín).
+  const restart = document.createElement('button');
+  restart.type = 'button';
+  restart.className = 'audio-restart';
+  restart.setAttribute('aria-label', 'Reiniciar la canción');
+  restart.setAttribute('tabindex', '-1');
+  restart.appendChild(svgIcon(['M6.2 9.4 A6.6 6.6 0 1 1 5.6 14.2', 'M5.4 5.4 L6.2 9.6 L10.4 8.8']));
+
   const fallback = document.createElement('button');
   fallback.type = 'button';
   fallback.className = 'audio-fallback';
@@ -213,8 +223,9 @@ export function initAudio(closing) {
   fallback.textContent = '♪' + (title ? ' ' + title : '');
 
   document.body.appendChild(toggle);
+  document.body.appendChild(restart);
   document.body.appendChild(fallback);
-  ui = { toggle, fallback, iconPlay, iconPause };
+  ui = { toggle, restart, fallback, iconPlay, iconPause };
   setToggle(false);
   wire(a);
 
@@ -234,6 +245,14 @@ export function initAudio(closing) {
       userPaused = true;
       a.pause();
     }
+  });
+
+  restart.addEventListener('click', () => {
+    if (phase !== 'song') return;
+    userPaused = false;
+    try { a.currentTime = 0; } catch (e) { /* ignorar */ }
+    playSong();
+    document.dispatchEvent(new CustomEvent('song:restart'));
   });
 
   fallback.addEventListener('click', () => {

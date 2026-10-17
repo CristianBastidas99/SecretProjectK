@@ -600,6 +600,7 @@ body[data-theme="rose-night"]  { --bg: #232A35;       --fg: #E6DDCB;    --fg-sof
 
 /* === BLOQUE: audio === */
 .audio-toggle,
+.audio-restart,
 .audio-fallback {
   position: fixed;
   z-index: 50;
@@ -616,12 +617,14 @@ body[data-theme="rose-night"]  { --bg: #232A35;       --fg: #E6DDCB;    --fg-sof
   transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), visibility 0s linear 0.8s, color 0.8s var(--ease);
 }
 .audio-toggle.is-visible,
+.audio-restart.is-visible,
 .audio-fallback.is-visible {
   opacity: 1;
   visibility: visible;
   transition-delay: 0s;
 }
-.audio-toggle {
+.audio-toggle,
+.audio-restart {
   left: calc(env(safe-area-inset-left, 0px) + 10px);
   bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
   width: 44px;
@@ -631,9 +634,10 @@ body[data-theme="rose-night"]  { --bg: #232A35;       --fg: #E6DDCB;    --fg-sof
   justify-content: center;
   transform: translateY(8px);
 }
-.audio-toggle.is-visible { opacity: 0.55; transform: none; }
-.audio-toggle.is-visible:hover,
-.audio-toggle.is-visible:focus-visible { opacity: 0.95; }
+.audio-restart { left: calc(env(safe-area-inset-left, 0px) + 52px); }
+.audio-toggle.is-visible, .audio-restart.is-visible { opacity: 0.55; transform: none; }
+.audio-toggle.is-visible:hover, .audio-restart.is-visible:hover,
+.audio-toggle.is-visible:focus-visible, .audio-restart.is-visible:focus-visible { opacity: 0.95; }
 .audio-fallback {
   left: 50%;
   bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
@@ -654,9 +658,11 @@ body[data-theme="rose-night"]  { --bg: #232A35;       --fg: #E6DDCB;    --fg-sof
 .audio-fallback.is-visible:hover,
 .audio-fallback.is-visible:focus-visible { color: var(--accent); border-color: var(--accent); }
 .audio-toggle:focus-visible,
+.audio-restart:focus-visible,
 .audio-fallback:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) {
   .audio-toggle,
+  .audio-restart,
   .audio-fallback { transition-duration: 0.01s; transform: none; }
   .audio-fallback { transform: translateX(-50%); }
 }
@@ -1532,11 +1538,12 @@ circle.lv-pulse { --s: 1.7; }
 .dz-cloak { opacity: 0; }
 .dz-sand path { opacity: 0; transform-box: fill-box; transform-origin: center; }
 
-/* Entrada: la capa se dibuja, se deshace en arena y aparece él */
-.sec.is-in .dz-cloak { animation: dz-cloak 3.4s ease both; }
-.sec.is-in .dz-show { animation: dz-appear 1.2s ease 2.4s backwards; }
-.sec.is-in .dz-troupe { animation: dz-appear 1.6s ease 3s backwards; }
-.sec.is-in .dz-sand path { animation: dz-sand-a 1.9s ease-out both; animation-delay: calc(2.1s + var(--k, 0) * 0.03s); }
+/* Entrada (una vez: animations.js pone .dz-intro unos segundos al primer is-in): la capa se dibuja,
+   se deshace en arena y aparece él. Sin .dz-intro todo queda en reposo (sin animaciones que se repitan). */
+.sec.dz-intro .dz-cloak { animation: dz-cloak 3.4s ease both; }
+.sec.dz-intro .dz-show { animation: dz-appear 1.2s ease 2.4s backwards; }
+.sec.dz-intro .dz-troupe { animation: dz-appear-t 1.6s ease 3s backwards; }
+.sec.dz-intro .dz-sand path { animation: dz-sand-a 1.9s ease-out both; animation-delay: calc(2.1s + var(--k, 0) * 0.03s); }
 
 /* Vida sin música: balanceo lento y la banda que se mece */
 .sec.is-alive .dz-dancer { animation: dz-idle 7s ease-in-out infinite; }
@@ -1565,8 +1572,13 @@ body.song-done:not(.music-on) .sec.is-in .dz-troupe { animation: dz-out 1.6s eas
 body.song-done:not(.music-on) .sec.is-in .dz-sand path { animation: dz-sand-b 2s ease-out both; animation-delay: calc(0.7s + var(--k, 0) * 0.03s); }
 /* Vuelve a sonar después del final: la arena regresa y se rearma */
 body.dz-back .sec.is-in .dz-show { animation: dz-appear 1.2s ease 0.9s backwards; }
-body.dz-back .sec.is-in .dz-troupe { animation: dz-appear 1.4s ease 1.2s backwards; }
+body.dz-back .sec.is-in .dz-troupe { animation: dz-appear-t 1.4s ease 1.2s backwards; }
 body.dz-back .sec.is-in .dz-sand path { animation: dz-sand-in 1.3s ease-in both; animation-delay: calc(var(--k, 0) * 0.02s); }
+/* Reiniciar la canción (botón junto a pausa): la capa vuelve, él se esconde y la capa se deshace otra vez */
+body.dz-again .sec.is-in .dz-cloak { animation: dz-cloak-b 3.4s ease both; }
+body.dz-again .sec.is-in .dz-show { animation: dz-hide-b 3.6s ease both; }
+body.dz-again .sec.is-in .dz-troupe { animation: dz-hide-t 3.6s ease both; }
+body.dz-again .sec.is-in .dz-sand path { animation: dz-sand-c 1.9s ease-out both; animation-delay: calc(1.9s + var(--k, 0) * 0.03s); }
 
 @keyframes dz-idle {
   0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -1592,6 +1604,7 @@ body.dz-back .sec.is-in .dz-sand path { animation: dz-sand-in 1.3s ease-in both;
   100% { opacity: 0; transform: translateX(5px); }
 }
 @keyframes dz-appear { from { opacity: 0; } }
+@keyframes dz-appear-t { from { opacity: 0; } to { opacity: 0.17; } }
 @keyframes dz-out { to { opacity: 0; } }
 @keyframes dz-vanish {
   0% { opacity: 1; transform: scaleX(1); }
@@ -1607,6 +1620,26 @@ body.dz-back .sec.is-in .dz-sand path { animation: dz-sand-in 1.3s ease-in both;
   100% { opacity: 0; transform: translate(var(--sx, 30px), var(--sy, -20px)) rotate(160deg); }
 }
 @keyframes dz-sand-b {
+  0% { opacity: 0; transform: none; }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--sx, 30px), var(--sy, -20px)) rotate(160deg); }
+}
+@keyframes dz-cloak-b {
+  0% { opacity: 0; transform: none; }
+  14%, 58% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateX(5px); }
+}
+@keyframes dz-hide-b {
+  0% { opacity: 1; }
+  12%, 62% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes dz-hide-t {
+  0% { opacity: 0.17; }
+  12%, 62% { opacity: 0; }
+  100% { opacity: 0.17; }
+}
+@keyframes dz-sand-c {
   0% { opacity: 0; transform: none; }
   12% { opacity: 1; }
   100% { opacity: 0; transform: translate(var(--sx, 30px), var(--sy, -20px)) rotate(160deg); }
