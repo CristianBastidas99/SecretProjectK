@@ -339,6 +339,33 @@ async function endPage(ctx, closing) {
   }
 }
 
+// Reverso del disco (si closing.portrait trae la cara de atrás): solo el disco volteado y la fecha.
+async function backPage(ctx, closing) {
+  if (typeof closing.portrait !== 'string' || closing.portrait.indexOf('face-b') < 0) return false;
+  const doc = new DOMParser().parseFromString(closing.portrait, 'image/svg+xml');
+  const root = doc.documentElement;
+  if (!root || root.nodeName !== 'svg' || doc.querySelector('parsererror')) return false;
+  const theme = THEMES['rose-night'];
+  ctx.fillStyle = theme.bg;
+  ctx.fillRect(0, 0, W, H);
+  const svg = document.importNode(root, true);
+  const vb = viewBoxOf(svg);
+  bake(svg, '<div class="end-night"><div class="end-portrait is-back" data-slot></div></div>', theme, vb.w);
+  const pw = 1100;
+  const ph = Math.round((pw * vb.h) / vb.w);
+  const y = Math.round((H - ph) / 2) - 90;
+  const img = await svgImage(revealPortrait(svg, closing.portrait), pw, ph);
+  if (!img) return false;
+  ctx.drawImage(img, (W - pw) / 2, y, pw, ph);
+  if (closing.date) {
+    ctx.fillStyle = theme.soft;
+    ctx.font = `400 32px ${MONO}`;
+    ctx.textAlign = 'center';
+    spaced(ctx, closing.date, W / 2, y + ph + 110, 10);
+  }
+  return true;
+}
+
 // Las clases se quitaron al hornear; se recupera el estado final por clase leyendo el SVG original.
 function revealPortrait(svg, src) {
   const orig = new DOMParser().parseFromString(src, 'image/svg+xml').documentElement;
@@ -429,6 +456,7 @@ export async function makeKeepsakePdf(carta, cfg) {
   }
   await endPage(ctx, closing);
   pages.push(await jpeg(canvas));
+  if (await backPage(ctx, closing)) pages.push(await jpeg(canvas));
   return makePdf(pages);
 }
 

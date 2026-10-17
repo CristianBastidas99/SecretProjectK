@@ -390,6 +390,48 @@ function buildPortrait(src) {
   return box;
 }
 
+// Disco con dos caras (.face-a / .face-b): al tocarlo gira como una moneda. Devuelve el botón «toca para voltear».
+function initFlip(box) {
+  if (!box.querySelector('.face-b') || !box.querySelector('.coin')) return null;
+  box.classList.add('can-flip');
+  const hint = el('button', 'flip-hint');
+  hint.type = 'button';
+  hint.setAttribute('aria-label', 'Voltear el disco');
+  const icon = document.createElementNS(SVG_NS, 'svg');
+  icon.setAttribute('viewBox', '0 0 24 24');
+  icon.setAttribute('fill', 'none');
+  icon.setAttribute('stroke', 'currentColor');
+  icon.setAttribute('stroke-width', '1.4');
+  icon.setAttribute('stroke-linecap', 'round');
+  icon.setAttribute('stroke-linejoin', 'round');
+  icon.setAttribute('aria-hidden', 'true');
+  ['M6.2 9.4 A6.6 6.6 0 1 1 5.6 14.2', 'M5.4 5.4 L6.2 9.6 L10.4 8.8'].forEach((d) => {
+    const p = document.createElementNS(SVG_NS, 'path');
+    p.setAttribute('d', d);
+    icon.appendChild(p);
+  });
+  hint.append(icon, document.createTextNode('toca para voltear'));
+  let busy = false;
+  const flip = () => {
+    if (busy) return;
+    busy = true;
+    box.classList.add('was-flipped', 'flip-out');
+    hint.classList.add('is-done');
+    setTimeout(() => {
+      box.classList.toggle('is-back');
+      box.classList.remove('flip-out');
+      box.classList.add('flip-in');
+      setTimeout(() => {
+        box.classList.remove('flip-in');
+        busy = false;
+      }, 520);
+    }, 330);
+  };
+  box.addEventListener('click', flip);
+  hint.addEventListener('click', flip);
+  return hint;
+}
+
 export async function renderEnding(closing, footer) {
   const c = closing || {};
   const jobs = [];
@@ -417,6 +459,8 @@ export async function renderEnding(closing, footer) {
   if (portrait) {
     night.classList.add('has-portrait');
     wrap.appendChild(portrait);
+    const hint = initFlip(portrait);
+    if (hint) wrap.appendChild(hint);
   }
   if (c.end) wrap.appendChild(el('p', 'end-text', c.end));
   if (c.date) wrap.appendChild(el('p', 'end-date', c.date));
