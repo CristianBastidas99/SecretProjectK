@@ -525,9 +525,68 @@ function el(tag, cls, text) {
   return n;
 }
 
+// Guardar el baile: botón bajo el bailarín que abre el GIF en grande (en iPhone se guarda en Fotos manteniéndolo
+// presionado; en computador, con «Descargar»). El GIF solo se pide al abrir la ventana.
+const DANCE_GIF = 'data/d1.gif?v=1';
+
+function buildDanceSave(d) {
+  const wrap = el('div', 'dzs');
+  const btn = el('button', 'keep-btn dzs-btn', d.label);
+  btn.type = 'button';
+  wrap.appendChild(btn);
+  let ov = null;
+  const close = () => {
+    if (!ov) return;
+    ov.classList.remove('is-open');
+    document.removeEventListener('keydown', onKey);
+    btn.focus();
+  };
+  const onKey = (e) => {
+    if (e.key === 'Escape') close();
+  };
+  const open = () => {
+    if (!ov) {
+      ov = el('div', 'dzs-ov');
+      ov.setAttribute('role', 'dialog');
+      ov.setAttribute('aria-modal', 'true');
+      ov.setAttribute('aria-label', d.label);
+      const card = el('div', 'dzs-card is-loading');
+      const img = el('img', 'dzs-img');
+      img.alt = d.label;
+      img.decoding = 'async';
+      img.addEventListener('load', () => card.classList.remove('is-loading'));
+      img.src = DANCE_GIF;
+      const acts = el('div', 'dzs-acts');
+      if (d.download) {
+        const dl = el('a', 'keep-btn dzs-dl', d.download);
+        dl.href = DANCE_GIF;
+        dl.setAttribute('download', d.file || 'baile.gif');
+        acts.appendChild(dl);
+      }
+      const x = el('button', 'keep-btn dzs-x', d.close || '×');
+      x.type = 'button';
+      x.addEventListener('click', close);
+      acts.appendChild(x);
+      card.append(img, el('p', 'dzs-hint', d.hint || ''), acts);
+      ov.appendChild(card);
+      ov.addEventListener('click', (e) => {
+        if (e.target === ov) close();
+      });
+      document.body.appendChild(ov);
+      void ov.offsetWidth;
+    }
+    ov.classList.add('is-open');
+    document.addEventListener('keydown', onKey);
+    ov.querySelector('.dzs-x').focus({ preventScroll: true });
+  };
+  btn.addEventListener('click', open);
+  return wrap;
+}
+
 export async function renderLetter(data, container) {
   const sections = Array.isArray(data && data.sections) ? data.sections : [];
   const total = sections.length;
+  const dance = data && data.dance && typeof data.dance.label === 'string' && data.dance.label ? data.dance : null;
   const frag = document.createDocumentFragment();
   const jobs = [];
 
@@ -551,6 +610,7 @@ export async function renderLetter(data, container) {
     const ill = el('div', 'sec-ill rv');
     ill.setAttribute('aria-hidden', 'true');
     inner.appendChild(ill);
+    if (n === total - 1 && dance) inner.appendChild(buildDanceSave(dance));
 
     inner.appendChild(el('h2', 'sec-title rv', s.title || ''));
 

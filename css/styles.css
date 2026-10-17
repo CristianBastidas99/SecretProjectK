@@ -2571,6 +2571,31 @@ body:not(.music-on) .sec.is-alive.is-tap .dz-hipR { animation-name: dz2t-hipR; }
 body:not(.music-on) .sec.is-alive.is-tap .dz-knR { animation-name: dz2t-knR; }
 /* dz2:fin */
 
+/* Guardar el baile: botón bajo el bailarín (aparece cuando él ya está) y ventana con el GIF en grande */
+.dzs { display: flex; justify-content: center; margin: 4px auto 18px; opacity: 0; transition: opacity 1.6s ease; pointer-events: none; }
+.sec-song.is-alive .dzs { opacity: 1; transition-delay: 3s; pointer-events: auto; }
+.dzs-btn { min-height: 40px; padding: 6px 18px; font-size: 13px; }
+.dzs-ov {
+  position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center;
+  padding: calc(18px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));
+  background: rgba(28, 24, 20, 0.95); opacity: 0; visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+  --fg: #F2E8D5; --fg-soft: #CFC4B0; --accent: #CDAA70; color: var(--fg);
+}
+.dzs-ov.is-open { opacity: 1; visibility: visible; transition: opacity 0.35s ease, visibility 0s; }
+.dzs-card { display: flex; flex-direction: column; align-items: center; gap: 14px; width: min(100%, 440px); }
+.dzs-img {
+  display: block; width: 100%; aspect-ratio: 1; border-radius: 14px; background: #C8A66A;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45); -webkit-touch-callout: default; transition: opacity 0.6s ease;
+}
+.dzs-card.is-loading .dzs-img { opacity: 0.35; animation: reply-wait 1.4s ease-in-out infinite; }
+.dzs-hint { margin: 0; font-family: var(--font-sans); font-size: 14px; line-height: 1.45; text-align: center; color: var(--fg-soft); text-wrap: balance; }
+.dzs-acts { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+@media (prefers-reduced-motion: reduce) {
+  .sec-song.is-alive .dzs { transition-delay: 0s; }
+  .dzs-card.is-loading .dzs-img { animation: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dz-j, .dz-dancer, .dz-halo, .dz-show, .dz-sash, .dz-troupe, .dz-cloak, .dz-sand path { animation: none !important; }
   .dz-cloak, .dz-sand { display: none; }
