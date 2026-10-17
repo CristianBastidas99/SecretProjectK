@@ -881,9 +881,10 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
 /* Disco que se voltea: al frente el retrato, atrás ella como Nefertiti (closing.portrait trae las dos caras).
    Invitación: tras la entrada, cada 7 s la moneda amaga con girar y le pasa un brillo; al tocar se voltea. */
 .end-portrait .coin, .end-portrait .coin-in { transform-box: view-box; transform-origin: 200px 150px; }
-.end-portrait .face-b { display: none; }
-.end-portrait.is-back .face-a { display: none; }
-.end-portrait.is-back .face-b { display: inline; }
+/* visibility y no display: volver de display:none reinicia las animaciones y la cara se redibujaba en cada vuelta */
+.end-portrait .face-b { visibility: hidden; }
+.end-portrait.is-back .face-a { visibility: hidden; }
+.end-portrait.is-back .face-b { visibility: visible; }
 .end-portrait.can-flip { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .end-portrait .coin-shine { fill: #fff; opacity: 0; mix-blend-mode: soft-light; pointer-events: none; }
 .is-bloom .end-portrait.can-flip:not(.was-flipped) .coin-in { animation: cf-tease 7s ease-in-out 10s infinite; }
