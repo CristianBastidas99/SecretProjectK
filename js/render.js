@@ -531,8 +531,23 @@ const DANCE_GIF = 'data/d1.gif?v=1';
 
 function buildDanceSave(d) {
   const wrap = el('div', 'dzs');
-  const btn = el('button', 'keep-btn dzs-btn', d.label);
+  // Cartucho egipcio con un glifo de descarga, en la tinta y la arena del dibujo
+  const btn = el('button', 'dzs-btn');
   btn.type = 'button';
+  const icon = document.createElementNS(SVG_NS, 'svg');
+  icon.setAttribute('viewBox', '0 0 24 24');
+  icon.setAttribute('fill', 'none');
+  icon.setAttribute('stroke', 'currentColor');
+  icon.setAttribute('stroke-width', '1.5');
+  icon.setAttribute('stroke-linecap', 'round');
+  icon.setAttribute('stroke-linejoin', 'round');
+  icon.setAttribute('aria-hidden', 'true');
+  ['M12 4 L12 15', 'M7.5 11 L12 15.5 L16.5 11', 'M5 19.5 L19 19.5', 'M8 19.5 L8 21.5 M16 19.5 L16 21.5'].forEach((dd) => {
+    const p = document.createElementNS(SVG_NS, 'path');
+    p.setAttribute('d', dd);
+    icon.appendChild(p);
+  });
+  btn.append(icon, el('span', 'dzs-label', d.label));
   wrap.appendChild(btn);
   let ov = null;
   const close = () => {
