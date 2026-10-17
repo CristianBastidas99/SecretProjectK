@@ -412,13 +412,20 @@ function initFlip(box) {
   });
   hint.append(icon, document.createTextNode('toca para voltear'));
   let busy = false;
+  let sparkT = 0;
   const flip = () => {
     if (busy) return;
     busy = true;
-    box.classList.add('was-flipped', 'flip-out');
+    // is-spark: chispas en cada giro (se quita y se vuelve a poner para reiniciarlas)
+    box.classList.remove('is-spark');
+    void box.getBoundingClientRect();
+    box.classList.add('was-flipped', 'flip-out', 'is-spark');
+    clearTimeout(sparkT);
+    sparkT = setTimeout(() => box.classList.remove('is-spark'), 1800);
     hint.classList.add('is-done');
     setTimeout(() => {
-      box.classList.toggle('is-back');
+      // was-back: el reverso ya se vio una vez (su entrada no se repite)
+      if (box.classList.toggle('is-back')) box.classList.add('was-back');
       box.classList.remove('flip-out');
       box.classList.add('flip-in');
       setTimeout(() => {
