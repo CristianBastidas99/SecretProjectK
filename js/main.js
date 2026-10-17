@@ -7,7 +7,7 @@ import { playGreeting } from './greeting.js';
 import { initHints } from './hints.js';
 import { buildKeepsake } from './keepsake.js?v=2';
 
-export const VERSION = 30;
+export const VERSION = 31;
 
 const OPEN_MS = 950;
 

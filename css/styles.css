@@ -827,6 +827,30 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
 .end-portrait .feather { fill: var(--bg); stroke: var(--accent); stroke-width: 0.9; }
 .end-portrait .rachis { fill: none; stroke: var(--accent); stroke-width: 0.6; opacity: 0.6; }
 .end-portrait .barb { fill: none; stroke: var(--accent); stroke-width: 0.4; opacity: 0.4; }
+/* v2: franjas de color en las alas, puntas y cuentas */
+.end-portrait .feather.fa { fill: #4A463F; }
+.end-portrait .feather.fb { fill: #244A45; }
+.end-portrait .covert.ca { fill: #4A463F; }
+.end-portrait .covert.cb { fill: #244A45; }
+.end-portrait .ftip { fill: none; stroke: var(--accent); stroke-width: 0.7; }
+.end-portrait .beads circle { fill: var(--accent); stroke: none; opacity: 0.85; }
+/* Rayos tipo Atón detrás del disco */
+.end-portrait .rays { transform-box: view-box; transform-origin: 200px 150px; }
+.end-portrait .ray { fill: none; stroke: var(--accent); stroke-width: 0.6; opacity: 0.45; }
+.end-portrait .ray-dot { fill: var(--accent); stroke: none; opacity: 0.55; }
+/* Esmeraldas (su piedra favorita) */
+.end-portrait .em-set { fill: var(--bg); stroke: var(--accent); stroke-width: 1; }
+.end-portrait .em-claw { fill: var(--accent); stroke: none; }
+.end-portrait .em { fill: #155A45; stroke: #7FD8B2; stroke-width: 0.7; }
+.end-portrait .em-m { fill: #1F7A5C; stroke: #6CC9A2; stroke-width: 0.45; }
+.end-portrait .em-t { fill: #34A07A; stroke: #B5F0D6; stroke-width: 0.5; }
+.end-portrait .em-f { fill: none; stroke: #9BE6C4; stroke-width: 0.4; opacity: 0.7; }
+.end-portrait .em-hl { fill: none; stroke: #E9FFF4; stroke-width: 0.9; opacity: 0.85; }
+.end-portrait .em-spark { fill: #F2FFF8; stroke: none; opacity: 0; }
+.end-portrait .gem { transform-box: fill-box; }
+.end-portrait .maat .mt { fill: #244A45; stroke: var(--accent); stroke-width: 0.9; }
+.end-portrait .maat .mt-r { fill: none; stroke: var(--accent); stroke-width: 0.6; }
+.end-portrait .maat .mt-b { fill: none; stroke: var(--accent); stroke-width: 0.4; opacity: 0.7; }
 .end-portrait .glow { opacity: 0; }
 
 /* Retrato (acabado de solo línea) */
@@ -866,6 +890,13 @@ body:not(.is-scrub) .end-scene .occlude { transition: fill 1.2s ease; }
 .is-bloom .end-portrait .wing { animation: ep-unfold 1.8s var(--ease) 1s forwards, ep-flap 5s ease-in-out 2.8s infinite; }
 .is-bloom .end-portrait .glyph { --o: 0.85; animation: ep-fade 0.8s ease forwards; animation-delay: calc(1.4s + var(--k) * 0.06s); }
 .is-bloom .end-portrait .glyph-ring { animation: ep-spin 90s linear infinite; }
+.is-bloom .end-portrait .rays { animation: ep-in 2.4s ease 1.8s backwards, ep-spin 240s linear 1.8s infinite reverse; }
+.is-bloom .end-portrait .gems, .is-bloom .end-portrait .crown { animation: ep-in 1.4s ease 2s backwards; }
+.is-bloom .end-portrait .crown { animation-delay: 2.4s; }
+.is-bloom .end-portrait .em-spark { animation: ep-spark 8s ease-in-out infinite; animation-delay: calc(4s + var(--k, 0) * 0.55s); }
+.is-bloom .end-portrait .gem-big .em-t { animation: ep-pulse 5s ease-in-out 4s infinite; }
+@keyframes ep-in { from { opacity: 0; } }
+@keyframes ep-spark { 0%, 12%, 100% { opacity: 0; } 5% { opacity: 1; } }
 .is-bloom .end-portrait .portrait .draw { animation-duration: 3s; animation-delay: 2.6s; }
 .is-bloom .end-portrait .portrait .fillin { animation: ep-fade 1.4s ease 4.4s forwards; }
 .is-bloom .end-portrait .portrait .breath { animation: ep-breath 5s ease-in-out 6s infinite; }
