@@ -530,36 +530,69 @@ function el(tag, cls, text) {
 const DANCE_GIF = 'data/d1.gif?v=1';
 
 function buildDanceSave(d) {
+  // Pestaña que se asoma por el borde derecho mientras se ve la sección; al tocarla sale el cajón con el botón.
   const wrap = el('div', 'dzs');
-  // Cartucho egipcio con un glifo de descarga, en la tinta y la arena del dibujo
+  const glyph = (paths) => {
+    const icon = document.createElementNS(SVG_NS, 'svg');
+    icon.setAttribute('viewBox', '0 0 24 24');
+    icon.setAttribute('fill', 'none');
+    icon.setAttribute('stroke', 'currentColor');
+    icon.setAttribute('stroke-width', '1.5');
+    icon.setAttribute('stroke-linecap', 'round');
+    icon.setAttribute('stroke-linejoin', 'round');
+    icon.setAttribute('aria-hidden', 'true');
+    paths.forEach((dd) => {
+      const p = document.createElementNS(SVG_NS, 'path');
+      p.setAttribute('d', dd);
+      icon.appendChild(p);
+    });
+    return icon;
+  };
+  const tab = el('button', 'dzs-tab');
+  tab.type = 'button';
+  tab.setAttribute('aria-label', d.label);
+  tab.setAttribute('aria-expanded', 'false');
+  tab.appendChild(glyph(['M15 5 L8 12 L15 19']));
   const btn = el('button', 'dzs-btn');
   btn.type = 'button';
-  const icon = document.createElementNS(SVG_NS, 'svg');
-  icon.setAttribute('viewBox', '0 0 24 24');
-  icon.setAttribute('fill', 'none');
-  icon.setAttribute('stroke', 'currentColor');
-  icon.setAttribute('stroke-width', '1.5');
-  icon.setAttribute('stroke-linecap', 'round');
-  icon.setAttribute('stroke-linejoin', 'round');
-  icon.setAttribute('aria-hidden', 'true');
-  ['M12 4 L12 15', 'M7.5 11 L12 15.5 L16.5 11', 'M5 19.5 L19 19.5', 'M8 19.5 L8 21.5 M16 19.5 L16 21.5'].forEach((dd) => {
-    const p = document.createElementNS(SVG_NS, 'path');
-    p.setAttribute('d', dd);
-    icon.appendChild(p);
+  btn.tabIndex = -1;
+  btn.append(glyph(['M12 4 L12 15', 'M7.5 11 L12 15.5 L16.5 11', 'M5 19.5 L19 19.5']), el('span', 'dzs-label', d.label));
+  wrap.append(tab, btn);
+
+  // El cajón se recoge solo a los 8 s o al tocar fuera.
+  let hideT = 0;
+  const onDoc = (e) => {
+    if (!wrap.contains(e.target)) setOut(false);
+  };
+  const setOut = (on) => {
+    wrap.classList.toggle('is-out', on);
+    if (on) wrap.classList.add('was-out');
+    tab.setAttribute('aria-expanded', on ? 'true' : 'false');
+    btn.tabIndex = on ? 0 : -1;
+    clearTimeout(hideT);
+    document.removeEventListener('pointerdown', onDoc, true);
+    if (on) {
+      hideT = setTimeout(() => setOut(false), 8000);
+      document.addEventListener('pointerdown', onDoc, true);
+    }
+  };
+  tab.addEventListener('click', () => {
+    setOut(true);
+    btn.focus({ preventScroll: true });
   });
-  btn.append(icon, el('span', 'dzs-label', d.label));
-  wrap.appendChild(btn);
+
   let ov = null;
   const close = () => {
     if (!ov) return;
     ov.classList.remove('is-open');
     document.removeEventListener('keydown', onKey);
-    btn.focus();
+    tab.focus({ preventScroll: true });
   };
   const onKey = (e) => {
     if (e.key === 'Escape') close();
   };
   const open = () => {
+    setOut(false);
     if (!ov) {
       ov = el('div', 'dzs-ov');
       ov.setAttribute('role', 'dialog');
@@ -625,7 +658,6 @@ export async function renderLetter(data, container) {
     const ill = el('div', 'sec-ill rv');
     ill.setAttribute('aria-hidden', 'true');
     inner.appendChild(ill);
-    if (n === total - 1 && dance) inner.appendChild(buildDanceSave(dance));
 
     inner.appendChild(el('h2', 'sec-title rv', s.title || ''));
 
@@ -652,6 +684,7 @@ export async function renderLetter(data, container) {
     inner.appendChild(text);
 
     sec.append(top, inner, bottom);
+    if (n === total - 1 && dance) sec.appendChild(buildDanceSave(dance));
     frag.appendChild(sec);
     if (n === total - 2 && total > 2) frag.appendChild(makeTransition(jobs));
     else if (n < total) frag.appendChild(makeDivider());

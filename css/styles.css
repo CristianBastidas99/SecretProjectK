@@ -2571,24 +2571,37 @@ body:not(.music-on) .sec.is-alive.is-tap .dz-hipR { animation-name: dz2t-hipR; }
 body:not(.music-on) .sec.is-alive.is-tap .dz-knR { animation-name: dz2t-knR; }
 /* dz2:fin */
 
-/* Guardar el baile: botón bajo el bailarín (aparece cuando él ya está) y ventana con el GIF en grande */
-.dzs { display: flex; justify-content: center; margin: 4px auto 18px; opacity: 0; transition: opacity 1.6s ease; pointer-events: none; }
-.sec-song.is-alive .dzs { opacity: 1; transition-delay: 3s; pointer-events: auto; }
-/* Cartucho: óvalo de tinta con doble filete y la barra de cierre a la derecha, sobre la arena del dibujo */
-.dzs-btn {
-  position: relative; display: inline-flex; align-items: center; gap: 9px; min-height: 42px; margin: 0 8px 0 0;
-  padding: 7px 22px 7px 16px; background: rgba(232, 214, 183, 0.42); color: var(--fg);
-  border: 1.5px solid var(--fg); border-radius: 999px;
-  box-shadow: inset 0 0 0 3px rgba(232, 214, 183, 0.42), inset 0 0 0 4px rgba(82, 48, 26, 0.55);
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; line-height: 1.2;
-  cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease, transform 0.3s ease;
+/* Guardar el baile: una pestaña se asoma por el borde derecho mientras se ve la sección del bailarín (y él ya está);
+   al tocarla sale del lateral un cajón con el botón, que abre la ventana con el GIF en grande. */
+.dzs {
+  position: fixed; z-index: 30; right: 0; top: 30%; width: 0; height: 52px;
+  visibility: hidden; transform: translateX(60px); transition: transform 0.6s var(--ease), visibility 0s linear 0.6s;
 }
-.dzs-btn::after { content: ''; position: absolute; right: -7.5px; top: 8px; bottom: 8px; width: 2px; background: var(--fg); border-radius: 1px; }
-.dzs-btn::before { content: ''; position: absolute; right: -6.5px; top: 50%; width: 7px; height: 1.5px; margin-top: -0.75px; background: var(--fg); }
-.dzs-btn svg { width: 16px; height: 16px; flex: none; color: var(--accent); }
-.dzs-btn:hover { background: rgba(232, 214, 183, 0.62); }
-.dzs-btn:active { transform: scale(0.97); }
-.dzs-btn:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+.sec-song.is-alive.is-vis .dzs { visibility: visible; transform: none; transition: transform 0.9s var(--ease) 1.4s, visibility 0s; }
+.dzs-tab, .dzs-btn {
+  position: absolute; top: 0; right: 0; height: 52px; margin: 0;
+  background: #D9BF8E; color: var(--fg); border: 1.5px solid var(--fg); border-right: 0; border-radius: 26px 0 0 26px;
+  box-shadow: -3px 4px 14px rgba(60, 40, 18, 0.22); -webkit-tap-highlight-color: transparent; cursor: pointer;
+}
+/* La pestaña: media píldora pegada al borde, con una flecha que invita a jalar; de vez en cuando se asoma un poco más */
+.dzs-tab {
+  width: calc(34px + var(--safe-r, 0px)); padding: 0 0 0 7px; display: flex; align-items: center;
+  transition: transform 0.45s var(--ease), opacity 0.3s ease;
+}
+.dzs-tab svg { width: 18px; height: 18px; color: var(--accent); }
+.sec-song.is-alive.is-vis .dzs:not(.was-out) .dzs-tab { animation: dzs-peek 6s ease-in-out 3s infinite; }
+@keyframes dzs-peek { 0%, 80%, 100% { transform: none; } 86% { transform: translateX(-9px); } 92% { transform: translateX(-2px); } 96% { transform: translateX(-6px); } }
+/* El cajón: sale del lateral al tocar la pestaña */
+.dzs-btn {
+  display: inline-flex; align-items: center; gap: 10px; white-space: nowrap;
+  padding: 0 calc(20px + var(--safe-r, 0px)) 0 18px;
+  font-family: var(--font-sans); font-size: 14px; font-weight: 500; line-height: 1.2;
+  transform: translateX(calc(100% + 16px)); transition: transform 0.55s var(--ease);
+}
+.dzs-btn svg { width: 18px; height: 18px; flex: none; color: var(--accent); }
+.dzs.is-out .dzs-btn { transform: none; }
+.dzs.is-out .dzs-tab { transform: translateX(110%); opacity: 0; pointer-events: none; }
+.dzs-tab:focus-visible, .dzs-btn:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
 .dzs-ov {
   position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center;
   padding: calc(18px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));
@@ -2606,7 +2619,8 @@ body:not(.music-on) .sec.is-alive.is-tap .dz-knR { animation-name: dz2t-knR; }
 .dzs-hint { margin: 0; font-family: var(--font-sans); font-size: 14px; line-height: 1.45; text-align: center; color: var(--fg-soft); text-wrap: balance; }
 .dzs-acts { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
 @media (prefers-reduced-motion: reduce) {
-  .sec-song.is-alive .dzs { transition-delay: 0s; }
+  .dzs, .sec-song.is-alive.is-vis .dzs, .dzs-btn, .dzs-tab { transition-duration: 0.01s; transition-delay: 0s; }
+  .dzs-tab { animation: none !important; }
   .dzs-card.is-loading .dzs-img { animation: none; }
 }
 
